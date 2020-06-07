@@ -1,6 +1,7 @@
 const path = require('path')
 const express = require('express')
 const mongoose = require('mongoose')
+const taskRouter = require('./Tasks/task.route')
 
 const app = express()
 
@@ -13,7 +14,9 @@ app.get('/', (req, res) => {
     res.render('index')
 })
 
-mongoose.connect('mongodb://localhost:27017', {
+app.use('/task', taskRouter)
+
+mongoose.connect('mongodb://localhost:27017/motel_demo', {
     useNewUrlParser: true,
     useUnifiedTopology: true
 })
