@@ -1,14 +1,16 @@
 const path = require('path')
 const express = require('express')
 const mongoose = require('mongoose')
-const taskRouter = require('./Tasks/task.route')
+const bodyParser = require('body-parser')
+const taskRouter = require('./task/task.route')
 
 const app = express()
 
-app.use(express.static('public'))
-
 app.set('view engine', 'pug')
 app.set('views', path.resolve(__dirname, './views'))
+
+app.use(express.static('public'))
+app.use(bodyParser.json())
 
 app.get('/', (req, res) => {
     res.render('index')
