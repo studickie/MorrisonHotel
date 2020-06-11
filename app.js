@@ -6,9 +6,9 @@ const taskRouter = require('./task/task.route');
 const app = express();
 
 app.set('view engine', 'pug');
-app.set('views', path.resolve(__dirname, './views'));
+app.set('views', path.join(__dirname, 'views'));
 
-app.use(express.static('public'));
+app.use(express.static(path.join(__dirname, 'public')));
 app.use(bodyParser.json());
 
 app.get('/', (req, res) => {
