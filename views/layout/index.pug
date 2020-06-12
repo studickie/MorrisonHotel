@@ -4,9 +4,11 @@ html(lang='en')
         meta(charset='UTF-8')
         meta(name='viewport', content='width=device-width, initial-scale=1.0')
         title='Morrison Hotel'
+        link(href="https://fonts.googleapis.com/css2?family=Comfortaa:wght@400;600&family=Open+Sans&display=swap", rel="stylesheet")  
         link(rel="stylesheet", href="/css/setup.css")
         link(rel="stylesheet", href="/css/global.css")
     body
         include includes/header.pug
-        block content
+        main
+            block content
         include includes/footer.pug
