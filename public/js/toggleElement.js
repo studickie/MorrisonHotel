@@ -22,7 +22,7 @@ ToggleElement.prototype = {
         return this._active;
     },
     set active(newState) {
-        this._active = newState;
+        this._active = newState || false;
 
         this._el.classList.toggle('toggle--active', this._active);
     }

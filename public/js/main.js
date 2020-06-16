@@ -1,4 +1,4 @@
-function setDropdownEvents() {
+function initToggleElements() {
     var el = document.querySelector('[data-role=dropdown]');
 
     if (el) new ToggleElement(el);
@@ -6,7 +6,7 @@ function setDropdownEvents() {
 
 
 function init() {
-    setDropdownEvents();
+    initToggleElements();
 };
 
 window.addEventListener('load', init);
