@@ -1,0 +1,16 @@
+@media(min-width: 0px) {
+    table { 
+        width: 100%;
+    }
+
+    th {
+        padding: 1rem 0.5rem;
+        color: white;
+        text-align: left;
+        background-color: blue;
+    }
+
+    td {
+        padding: 1rem 0.5rem;
+    }
+} 

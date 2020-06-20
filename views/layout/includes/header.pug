@@ -1,7 +1,14 @@
 header
-    .content__wrapper
-        .toolbar
-            h1 Motel
-            include menu.pug
+    .toolbar
+        h1 Motel
+        .menu__dropdown(data-role="dropdown")
+            button(type="button" name="toggle_activator" aria-haspopup="true" aria-expanded="false") &#9776;
+
+            nav
+                ul.dropdown__list(aria-role="listbox")
+                    li 
+                        a(href="/") Home
+                    li
+                        a(href="/movies") Movies
 
 

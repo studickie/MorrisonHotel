@@ -12,9 +12,9 @@ function ToggleElement ($element, $state) {
     
     //~ Requires child with name attribute 'toggle_activator'
     //~ -----------------------------------------------------------
-    ctrl._el.children.toggle_activator.onclick = function() { 
+    ctrl._el.children.toggle_activator.addEventListener('click', function() { 
         ctrl.active = !ctrl.active; 
-    };
+    });
 };
 
 ToggleElement.prototype = {
