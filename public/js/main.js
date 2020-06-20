@@ -4,7 +4,6 @@ function initToggleElements() {
     if (el) new ToggleElement(el);
 };
 
-
 function init() {
     initToggleElements();
 };
