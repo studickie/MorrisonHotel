@@ -15,6 +15,7 @@ app.use(bodyParser.json());
 app.use(express.static(path.resolve(__dirname, 'public')));
 
 app.get('/', (req, res) => {
+    res.type('json');
     res.render('index');
 }); 
 
