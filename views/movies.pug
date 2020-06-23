@@ -3,9 +3,23 @@ extends layout/index.pug
 block headStyles 
     link(rel="stylesheet", href="/css/moviesTable.css")
 
+block modal
+
 block content
     .content__wrapper
         h2 myMovies
+        
+        form(action="", method="post", name="add_movie")
+            fieldset
+                legend Add movie
+                div
+                    label Title
+                        input(type="text", name="title", placeholder="Title")
+                div
+                    label Genre
+                        input(type="text", name="genre", placeholder="Genre")
+                div
+                    input(type="submit", name="submit" value="Add Movie")
 
         table
             tr
@@ -17,3 +31,8 @@ block content
                     td= index
                     td= val.title
                     td= val.genre
+
+        //- Modal content; visible only while modal is active
+        block modal
+            form(action="", method="post", name="add_movie")
+            

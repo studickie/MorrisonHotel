@@ -14,6 +14,7 @@ router.get('/', async (req, res) => {
 });
 
 router.post('/', async (req, res) => {
+    console.log(req.body)
     const { title, genre } = req.body;
 
     try {
@@ -23,7 +24,9 @@ router.post('/', async (req, res) => {
 
         if (!newMovie) return res.status(500).json({ message: 'Oops! Something went wrong' });
 
-        res.status(200).json({ message: 'Movie added!' });
+        const moviesList = await Movie.find();
+        
+        res.render('movies', { moviesList });
     } catch (e) {
         res.status(500).json({ message: 'Oops! Something went wrong' });
     }
