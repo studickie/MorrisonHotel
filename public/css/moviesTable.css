@@ -13,4 +13,9 @@
     td {
         padding: 1rem 0.5rem;
     }
+
+    th.table__col--hidden,
+    td.table__col--hidden {
+        display: none;
+    }
 } 

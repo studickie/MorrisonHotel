@@ -3,8 +3,6 @@ extends layout/index.pug
 block headStyles 
     link(rel="stylesheet", href="/css/moviesTable.css")
 
-block modal
-
 block content
     .content__wrapper
         h2 myMovies
@@ -18,21 +16,21 @@ block content
                 div
                     label Genre
                         input(type="text", name="genre", placeholder="Genre")
-                div
-                    input(type="submit", name="submit" value="Add Movie")
+                div 
+                    button(type="button", name="create_movie") Add Movie
 
         table
-            tr
-                th
-                th Title
-                th Genre
-            each val, index in moviesList
+            tbody
                 tr
-                    td= index
-                    td= val.title
-                    td= val.genre
+                    th
+                    th Title
+                    th Genre
+                each val in movies
+                    tr(id= val._id)
+                        td 
+                            button(type="button", name="remove_movie", data-id=val._id, aria-label="Delete") [X]
+                        td= val.title
+                        td= val.genre
 
-        //- Modal content; visible only while modal is active
-        block modal
-            form(action="", method="post", name="add_movie")
-            
+block scripts
+    script(src="/js/movies.js", type="text/javascript")
