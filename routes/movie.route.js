@@ -1,13 +1,13 @@
 const express = require('express');
 const router = express.Router();
-const bodyParser = require('body-parser');
 const Movie = require('../models/movie.model');
+const tmdb = require('../utils/tmdb');
 
 router.get('/', async (req, res) => {
     try {
-        const moviesList = await Movie.find();
-
-        res.render('movies', { movies: moviesList });
+        const movies = await tmdb.getDashboardMovies();
+        
+        res.render('movies', { movies });
 
     } catch (e) {
         res.status(500).json({ message: 'Oops! Something went wrong' });
@@ -16,7 +16,7 @@ router.get('/', async (req, res) => {
 
 router.post('/', async (req, res) => {
     const { title, genre } = req.body;
-       
+
     try {
         const movieToCreate = new Movie({ title, genre });
 
@@ -33,7 +33,7 @@ router.post('/', async (req, res) => {
 
 router.post('/:id', async (req, res) => {
     try {
-        
+
 
     } catch (e) {
         res.status(500).json({ message: 'Oops! Something went wrong' });
@@ -44,7 +44,7 @@ router.delete('/:id', async (req, res) => {
     try {
         const movieToDelete = await Movie.findByIdAndDelete(req.params.id);
 
-        res.status(200).json({ message: 'Operation success!', id: movieToDelete._id});
+        res.status(200).json({ message: 'Operation success!', id: movieToDelete._id });
 
     } catch (e) {
         res.status(500).json({ message: 'Oops! Something went wrong' });
