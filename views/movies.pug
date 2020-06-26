@@ -5,32 +5,15 @@ block headStyles
 
 block content
     .content__wrapper
-        h2 myMovies
-        
-        form(action="", method="post", name="add_movie")
-            fieldset
-                legend Add movie
-                div
-                    label Title
-                        input(type="text", name="title", placeholder="Title")
-                div
-                    label Genre
-                        input(type="text", name="genre", placeholder="Genre")
-                div 
-                    button(type="button", name="create_movie") Add Movie
-
         table
             tbody
                 tr
-                    th
                     th Title
-                    th Genre
+                    th Relase Date
                 each val in movies
-                    tr(id= val._id)
-                        td 
-                            button(type="button", name="remove_movie", data-id=val._id, aria-label="Delete") [X]
+                    tr(id= val.id)
                         td= val.title
-                        td= val.genre
+                        td= val.release_date
 
 block scripts
     script(src="/js/movies.js", type="text/javascript")

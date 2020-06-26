@@ -2,12 +2,15 @@ const express = require('express');
 const router = express.Router();
 const Movie = require('../models/movie.model');
 const tmdb = require('../utils/tmdb');
+const movieMapper = require('../utils/movieMapper');
 
 router.get('/', async (req, res) => {
     try {
-        const movies = await tmdb.getDashboardMovies();
+        const movies = await tmdb.getNowPlayingMovies();
         
-        res.render('movies', { movies });
+        const moviesToReturn = movieMapper.mapMovieThumbnails(movies.results);
+        
+        res.render('movies', { movies: moviesToReturn });
 
     } catch (e) {
         res.status(500).json({ message: 'Oops! Something went wrong' });
