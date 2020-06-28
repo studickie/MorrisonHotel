@@ -11,17 +11,20 @@ movies.scrollChange = 0;
 movies.addScrollEvents = function () {
     var scrollContainer = document.querySelector('.scrollContainer');
 
-    scrollContainer.addEventListener('touchstart', function (e) {
+    scrollContainer.addEventListener('touchstart', function (evt) {
+        evt.preventDefault();
+
         var eventDrag;
-        var scrollStart = e.touches[0].clientX;
+        var scrollStart = evt.touches[0].clientX;
         var scrollPosition = 0
 
-        scrollContainer.addEventListener('touchmove', function eventDrag(e) {
+        scrollContainer.addEventListener('touchmove', function eventDrag(evt) {
+            evt.preventDefault();
 
             if (!movies.scrolling) {
                 movies.scrolling = true;
 
-                movies.scrollChange = e.touches[0].clientX - scrollStart;
+                movies.scrollChange = evt.touches[0].clientX - scrollStart;
 
                 scrollPosition = (movies.scrollWidth * movies.scrollOffset) + (movies.scrollChange * -1);
 
@@ -35,7 +38,9 @@ movies.addScrollEvents = function () {
 
         });
 
-        scrollContainer.addEventListener('touchend', function eventEnd() {
+        scrollContainer.addEventListener('touchend', function eventEnd(evt) {
+            evt.preventDefault();
+
             console.log("distance changed: ", movies.scrollChange * -1)
 
             if (movies.scrollChange * -1 > movies.scrollWidth / 3) {
