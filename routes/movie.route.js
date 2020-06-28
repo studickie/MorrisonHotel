@@ -8,7 +8,7 @@ router.get('/', async (req, res) => {
     try {
         const movies = await tmdb.getNowPlayingMovies();
         
-        const moviesToReturn = movieMapper.mapMovieThumbnails(movies.results);
+        const moviesToReturn = movieMapper.mapMovieHighlights(movies.results);
         
         res.render('movies', { movies: moviesToReturn });
 

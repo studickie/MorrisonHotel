@@ -1,96 +1,80 @@
-//~ -------------------------
-//*         Utils
-//~ -------------------------
-
-function createMovieRow(movie) {
-    var parent = document.querySelector('tbody');
-    var tr = document.createElement('tr');
-    tr.setAttribute('id', movie._id);
-
-    var htmlString = "<td><button type=\"button\" name=\"remove_movie\" data-id=" + movie._id + "aria-label=\"Delete\">[X]</button></td>"
-        + "<td>" + movie.title + "</td>"
-        + "<td>" + movie.genre + "</td>";
-
-    tr.innerHTML = htmlString;
-    parent.appendChild(tr);
-
-    tr.querySelector('button[name=remove_movie]').addEventListener('click', function () {
-        removeMovie(movie._id);
-    });
-}
-
-function removeMovieRow(id) {
-    var parent = document.querySelector('tbody');
-    var rowToDelete = document.getElementById(id);
-    parent.removeChild(rowToDelete);
-}
-
-//~ -------------------------
-//*     Http Requests
-//~ -------------------------
-
-function createNewMovie() {
-    var form = document.querySelector('form[name=add_movie]');
-    var data = {
-        title: form.title.value,
-        genre: form.genre.value
-    };
-
-    form.title.value = '';
-    form.genre.value = '';
-
-    http('POST', 'http://localhost:3000/movies/', data)
-        .then(function (response) {
-            var data = JSON.parse(response);
-            createMovieRow(data.movie)
-        })
-        .catch(function (error) {
-            console.log('failed', error)
-        })
-}
-
-function removeMovie(id) {
-    http('DELETE', 'http://localhost:3000/movies/' + id)
-    .then(function (response) {
-        var data = JSON.parse(response);
-        removeMovieRow(data.id);
-    })
-    .catch(function (error) {
-        console.log('failed', error);
-    })
-}
-
+var movies = {};
+movies.scrolling = false;                   //- scroll state for throtteling
+movies.scrollOffset = 0;                    //- index of visible element
+movies.scrollWidth = window.innerWidth;     //- element width; works while element is full screen width
+movies.scrollIndex = 0;   
+movies.scrollList = document.querySelectorAll('[data-role=scroll_item]');
+movies.scrollChange = 0;
 //~ -------------------------
 //*     Event Listeners
 //~ -------------------------
 
-function initDeleteButtons() {
-    var deleteBtns = document.querySelectorAll('button[name=remove_movie]');
+movies.addScrollEvents = function () {
+    var scrollContainer = document.querySelector('.scrollContainer');
+    var eventDrag;
 
-    if (deleteBtns.length > 0) {
-        deleteBtns.forEach(function (btn) { 
-            btn.addEventListener('click', function () {
-                removeMovie(this.getAttribute('data-id'));
-            }); 
+    scrollContainer.addEventListener('touchstart', function (e) {
+
+        var scrollStart = e.touches[0].clientX;
+        console.log('Start- scrollStart: ', scrollStart);
+
+        var scrollPosition = 0
+        console.log('Start- scrollPosition: ', scrollPosition);
+
+        scrollContainer.addEventListener('touchmove', function eventDrag(e) {
+
+            if (!movies.scrolling) {
+                movies.scrolling = true;
+
+                movies.scrollChange = e.touches[0].clientX - scrollStart;
+                console.log('scrollChange: ', movies.scrollChange)
+
+                scrollPosition = (movies.scrollWidth * movies.scrollIndex) + (movies.scrollChange * -1);
+                console.log('scrollPosition: ', scrollPosition)
+
+                scrollContainer.scrollTo(scrollPosition, 0);
+
+                setTimeout(function () { movies.scrolling = false }, 60);
+            }
         });
-    }
-}
 
-function initCreateButton() {
-    var createBtn = document.querySelector('button[name=create_movie]');
+        scrollContainer.addEventListener('touchend', function eventEnd() {
+            console.log('eventEnd')
+            console.log('distance needed: ',  movies.scrollWidth / 3, "distance changed: ", movies.scrollChange * -1, movies.scrollChange * -1 > movies.scrollWidth / 3)
+            
+            if (movies.scrollChange * -1 > movies.scrollWidth / 3) {
+                movies.scrollIndex++;
+                var el = movies.scrollList[movies.scrollIndex];
 
-    if (createBtn) {
-        createBtn.addEventListener('click', createNewMovie);
-    }
+                el.scrollIntoView({
+                    behavior: 'smooth',
+                    inline: 'start'
+                });
+            }
+            
+            else {
+                var el = movies.scrollList[movies.scrollIndex];
+                
+                el.scrollIntoView({
+                    behavior: 'smooth',
+                    inline: 'start'
+                });
+            }
+            
+            scrollContainer.removeEventListener('touchmove', eventDrag);
+            scrollContainer.removeEventListener('touchend', eventEnd);
+            movies.scrollChange = 0;
+            
+        });
+    });
 }
 
 //~ -------------------------
 //*         Init
 //~ -------------------------
 
-function init() {
-    initCreateButton();
-    initDeleteButtons();
+movies.init = function () {
+    movies.addScrollEvents();
 }
 
-window.addEventListener('load', init);
+window.addEventListener('load', movies.init);

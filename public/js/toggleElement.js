@@ -6,10 +6,8 @@ function ToggleElement ($element, $state) {
     //~     $state: Boolean [optional]; initial state of dropdown
     //~ -----------------------------------------------------------
     ctrl._el = $element;
-    ctrl._active = false;
+    ctrl._active = (ctrl.active = $state || false);
 
-    ctrl.active = $state || false;
-    
     //~ Requires child with name attribute 'toggle_activator'
     //~ -----------------------------------------------------------
     ctrl._el.children.toggle_activator.addEventListener('click', function() { 
