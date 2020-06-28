@@ -4,19 +4,20 @@ movies.scrollOffset = 0;
 movies.scrollWidth = window.innerWidth;
 movies.scrollList = document.querySelectorAll('[data-role=scroll_item]');
 movies.scrollChange = 0;
+movies.scrollStart = 0;
 //~ -------------------------
 //*     Event Listeners
 //~ -------------------------
 
 movies.addScrollEvents = function () {
-    var scrollContainer = document.querySelector('.scrollContainer');
+    var scrollContainer = document.querySelector('.highlights');
 
     scrollContainer.addEventListener('touchstart', function (evt) {
         evt.preventDefault();
 
         var eventDrag;
-        var scrollStart = evt.touches[0].clientX;
-        var scrollPosition = 0
+        movies.scrollStart = evt.touches[0].clientX;
+        console.log('start', movies.scrollStart);
 
         scrollContainer.addEventListener('touchmove', function eventDrag(evt) {
             evt.preventDefault();
@@ -24,14 +25,8 @@ movies.addScrollEvents = function () {
             if (!movies.scrolling) {
                 movies.scrolling = true;
 
-                movies.scrollChange = evt.touches[0].clientX - scrollStart;
-
-                scrollPosition = (movies.scrollWidth * movies.scrollOffset) + (movies.scrollChange * -1);
-
-                scrollContainer.scroll({
-                    left: scrollPosition,
-                    behavior: 'smooth'
-                });
+                movies.scrollChange = evt.touches[0].clientX - movies.scrollStart;
+                console.log('start: ', movies.scrollStart, 'clientX', evt.touches[0].clientX, 'changed: ', movies.scrollChange);
 
                 setTimeout(function () { movies.scrolling = false; }, 17);
             }
@@ -40,32 +35,31 @@ movies.addScrollEvents = function () {
 
         scrollContainer.addEventListener('touchend', function eventEnd(evt) {
             evt.preventDefault();
+            
+            console.log("distance changed: ", movies.scrollChange)
 
-            console.log("distance changed: ", movies.scrollChange * -1)
-
-            if (movies.scrollChange * -1 > movies.scrollWidth / 3) {
+            if (movies.scrollChange < 0) {
                 movies.scrollOffset++;
 
                 var el = movies.scrollList[movies.scrollOffset];
 
-                el.scrollIntoView({
-                    behavior: 'smooth',
-                    inline: 'start',
-                    block: 'nearest'
-                });
+                el.scrollIntoView();
             }
-            else {
+            else if (movies.scrollChange > 0) {
+                movies.scrollOffset--;
+
                 var el = movies.scrollList[movies.scrollOffset];
 
-                el.scrollIntoView({
-                    behavior: 'smooth',
-                    inline: 'start',
-                    block: 'nearest'
-                });
+                el.scrollIntoView();
+            } else {
+                var el = movies.scrollList[movies.scrollOffset];
+
+                el.scrollIntoView();
             }
 
             //- Reset 
             movies.scrollChange = 0;
+            movies.scrollStart = 0;
             scrollContainer.removeEventListener('touchmove', eventDrag);
             scrollContainer.removeEventListener('touchend', eventEnd);
         });

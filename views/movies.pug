@@ -4,17 +4,18 @@ block headStyles
     link(rel="stylesheet" href="/css/moviesTable.css")
 
 block content
-    .scrollContainer
-        ul.highlights.list--noStyle
-            each mov in movies
-                li.highlights__item(id= mov.id, data-role="scroll_item")
-                    .highlights__backdrop
-                        img(src= mov.backdrop_path)
-                    .highlights__poster
-                        img(src= mov.poster_path)
-                    .highlights__details
-                        p= mov.title
-                        p= mov.release_date
+    ul.highlights.list--noStyle
+        each mov in movies
+            li.highlights__item(id= mov.id, data-role="scroll_item")
+                .highlights__backdrop
+                    img(src= mov.backdrop_path)
+                .highlights__poster
+                    img(src= mov.poster_path)
+                .highlights__details
+                    p= mov.title
+                    p= mov.release_date
+    //- .scrollContainer
+
 
 
 
