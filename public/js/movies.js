@@ -34,7 +34,7 @@ movies.addScrollEvents = function () {
 
                 scrollContainer.scrollTo(scrollPosition, 0);
 
-                setTimeout(function () { movies.scrolling = false }, 60);
+                setTimeout(function () { movies.scrolling = false }, 17);
             }
         });
 
