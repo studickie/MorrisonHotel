@@ -45,7 +45,8 @@ movies.addScrollEvents = function () {
 
                 el.scrollIntoView({
                     behavior: 'smooth',
-                    inline: 'start'
+                    inline: 'start',
+                    block: 'nearest'
                 });
             }
             else {
@@ -53,7 +54,8 @@ movies.addScrollEvents = function () {
 
                 el.scrollIntoView({
                     behavior: 'smooth',
-                    inline: 'start'
+                    inline: 'start',
+                    block: 'nearest'
                 });
             }
 
