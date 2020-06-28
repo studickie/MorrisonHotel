@@ -6,7 +6,7 @@ block headStyles
 block content
     ul.highlights.list--noStyle
         each mov in movies
-            li.highlights__item(id= mov.id, data-role="scroll_item")
+            li.highlights__item(data-role="scroll_item")
                 .highlights__backdrop
                     img(src= mov.backdrop_path)
                 .highlights__poster
@@ -14,10 +14,7 @@ block content
                 .highlights__details
                     p= mov.title
                     p= mov.release_date
-    //- .scrollContainer
-
-
-
-
+                    
 block scripts
+    script(src="/js/smoothScroller.js" type="text/javascript")
     script(src="/js/movies.js" type="text/javascript")

@@ -1,19 +1,25 @@
-function ToggleElement ($element, $state) {
+//~ --------------------------------------------------------------
+//*     Toggle Element Component
+//~ --------------------------------------------------------------
+//~     Parameters:
+//~     1. $element: HTMLElement; toggle element container
+//~     2. $state: Boolean [optional]; initial toggle state
+//~
+//~     Use:
+//~     > component toggles CSS class 'toggle--active' on provided 
+//~         element
+//~     !! markup must include an element with a name attribute of
+//~         'toggle_activator' which triggers the toggle effect
+//~ --------------------------------------------------------------
+
+function ToggleElement($element, $state) {
     var ctrl = this;
-    
-    //~ Expects:
-    //~     $element: HTMLElement; container element of dropdown
-    //~     $state: Boolean [optional]; initial state of dropdown
-    //~ -----------------------------------------------------------
+
     ctrl._el = $element;
     ctrl._active = (ctrl.active = $state || false);
 
-    //~ Requires child with name attribute 'toggle_activator'
-    //~ -----------------------------------------------------------
-    ctrl._el.children.toggle_activator.addEventListener('click', function() { 
-        ctrl.active = !ctrl.active; 
-    });
-};
+    addToggleElementEvents.call(ctrl);
+}
 
 ToggleElement.prototype = {
     get active() {
@@ -24,4 +30,16 @@ ToggleElement.prototype = {
 
         this._el.classList.toggle('toggle--active', this._active);
     }
-};
+}
+
+function addToggleElementEvents() {
+    var ctrl = this;
+
+    if (ctrl._el.children.toggle_activator) {
+        ctrl._el.children.toggle_activator.addEventListener('click', function () {
+            ctrl.active = !ctrl.active;
+        });
+    } else {
+        console.error('Error -ToggleElement. No \'toggle activator\' element found');
+    }
+}
