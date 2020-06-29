@@ -31,18 +31,15 @@
     }
 
     .highlights__item {
-        position: relative;
         width: 100vw;
         height: 17rem;
         margin-bottom: 2rem;
     }
 
     .highlights__item > a {
-        position: absolute;
-        top: 0;
-        left: 0;
+        position: relative;
         display: inline-block;
-        width: 100%;
+        width: inherit;
         height: 100%;
     }
 

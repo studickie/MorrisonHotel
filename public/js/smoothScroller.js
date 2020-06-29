@@ -15,7 +15,7 @@
 
 function SmoothScroller ($element) {
     var ctrl = this;
-    
+
     this._el = $element;
     ctrl._scrolling = false;
     ctrl._scrollList = $element.querySelector('[data-role=scroll_list]');
@@ -24,7 +24,6 @@ function SmoothScroller ($element) {
     ctrl._scrollWidth = $element.getBoundingClientRect().width;
     ctrl._scrollStart = 0;
     ctrl._scrollChange = 0;
-    ctrl._timeout = null;
     
     addSmoothScrollerEvents.call(ctrl);
 }
@@ -66,7 +65,7 @@ function addSmoothScrollerEvents() {
     var ctrl = this;
 
     ctrl._el.addEventListener('touchstart', function(evt) {
-        evt.preventDefault();
+        //evt.preventDefault();
 
         var eventDrag;
         

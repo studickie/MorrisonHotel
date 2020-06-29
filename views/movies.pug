@@ -9,13 +9,13 @@ block content
             each mov in movies
                 li.highlights__item(data-role="scroll_item")
                     a(href="/")
-                    .highlights__backdrop
-                        img(src= mov.backdrop_path)
-                    .highlights__poster
-                        img(src= mov.poster_path)
-                    .highlights__details
-                        p= mov.title
-                        p= mov.release_date
+                        .highlights__backdrop
+                            img(src= mov.backdrop_path)
+                        .highlights__poster
+                            img(src= mov.poster_path)
+                        .highlights__details
+                            p= mov.title
+                            p= mov.release_date
                     
 block scripts
     script(src="/js/smoothScroller.js" type="text/javascript")
