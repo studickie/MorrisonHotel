@@ -65,21 +65,17 @@ function addSmoothScrollerEvents() {
     var ctrl = this;
 
     ctrl._el.addEventListener('touchstart', function(evt) {
-        //evt.preventDefault();
-
         var eventDrag;
         
         ctrl._scrollStart = evt.touches[0].clientX;
 
         ctrl._el.addEventListener('touchmove', function eventDrag(evt) {
-            // evt.preventDefault();
+            evt.preventDefault();
 
             ctrl.throttledUpdateScroll(evt.touches[0].clientX);
         });
 
-        ctrl._el.addEventListener('touchend', function eventEnd(evt) {
-            // evt.preventDefault();
-
+        ctrl._el.addEventListener('touchend', function eventEnd() {
             ctrl.getScrollDirection();
 
             //- Reset
