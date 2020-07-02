@@ -1,0 +1,33 @@
+extends layout/index.pug
+
+block headStyles
+    link(rel="stylesheet", href="/css/title.css")
+
+block content
+    .title__header.title__section
+        .content__wrapper
+            .flex__wrapper--row 
+                h2= details.title
+                if details.release_year != ''
+                    span= "(" + details.release_year + ")"
+    .title__overview.title__section
+        .content__wrapper
+            .flex__wrapper--row
+                .title__poster
+                    img(src= details.poster_path, alt= "poster image for \"" + details.title + "\"")
+                .title__summary
+                    p= details.overview
+                    .title__watchlist
+                        if !details.isWatchlisted
+                            button.watchlist__button--add(type="button" name="watchlist_add", data-id= details.id) Add to Watchlist
+                        else
+                            span (on watchlist)
+    .title__ratings.title__section
+        .content__wrapper
+            .flex__wrapper--row
+                .ratings__average
+                    span= details.vote_average
+                .ratings__userRating
+            
+block scripts
+    script(src="/js/title.js" type="text/javascript")

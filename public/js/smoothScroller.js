@@ -29,7 +29,7 @@ function SmoothScroller ($element) {
 }
 
 SmoothScroller.prototype = {
-    throttledUpdateScroll: function(changeValue) {
+    updateScroll: function(changeValue) {
         var ctrl = this;
 
         if (!ctrl._scrolling) {
@@ -39,27 +39,22 @@ SmoothScroller.prototype = {
 
             ctrl._scrollChange = changeValue - ctrl._scrollStart;
         }
-
-        return;
     },
     getScrollDirection: function() {
-        if (this._scrollChange < 0 && this._scrollIndex < this._scrollCount) {
+        if (this._scrollChange < 0 && this._scrollIndex < this._scrollCount - 1) {
             this._scrollIndex++;
         }
         else if (this._scrollChange > 0 && this._scrollIndex > 0) {
             this._scrollIndex--;
         }
 
-        this.scrollToElement();
-        
-        return;
+        this.scrollToPosition();
     },
-    scrollToElement: function() {
-        this._scrollList.style.transform='translate(' + (this._scrollWidth * (this._scrollIndex * -1)) + 'px)';
-        
-        return;
+    scrollToPosition: function() {
+        this._scrollList.style.transform = 'translate(' 
+            + (this._scrollWidth * (this._scrollIndex * -1)) + 'px)';
     }
-}
+};
 
 function addSmoothScrollerEvents() {
     var ctrl = this;
@@ -72,7 +67,7 @@ function addSmoothScrollerEvents() {
         ctrl._el.addEventListener('touchmove', function eventDrag(evt) {
             evt.preventDefault();
 
-            ctrl.throttledUpdateScroll(evt.touches[0].clientX);
+            ctrl.updateScroll(evt.touches[0].clientX);
         });
 
         ctrl._el.addEventListener('touchend', function eventEnd() {

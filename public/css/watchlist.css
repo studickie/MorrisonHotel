@@ -1,0 +1,12 @@
+@media(min-width: 0) {
+    .watchlist__image {
+        flex-basis: 20%;
+        flex-grow: 1;
+        max-width: 342px;
+    }
+
+    .watchlist__details {
+        flex-basis: 60%;
+        flex-grow: 1;
+    }
+}

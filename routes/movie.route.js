@@ -34,24 +34,24 @@ router.post('/', async (req, res) => {
     }
 });
 
-router.post('/:id', async (req, res) => {
-    try {
+// router.post('/:id', async (req, res) => {
+//     try {
 
 
-    } catch (e) {
-        res.status(500).json({ message: 'Oops! Something went wrong' });
-    }
-});
+//     } catch (e) {
+//         res.status(500).json({ message: 'Oops! Something went wrong' });
+//     }
+// });
 
-router.delete('/:id', async (req, res) => {
-    try {
-        const movieToDelete = await Movie.findByIdAndDelete(req.params.id);
+// router.delete('/:id', async (req, res) => {
+//     try {
+//         const movieToDelete = await Movie.findByIdAndDelete(req.params.id);
 
-        res.status(200).json({ message: 'Operation success!', id: movieToDelete._id });
+//         res.status(200).json({ message: 'Operation success!', id: movieToDelete._id });
 
-    } catch (e) {
-        res.status(500).json({ message: 'Oops! Something went wrong' });
-    }
-});
+//     } catch (e) {
+//         res.status(500).json({ message: 'Oops! Something went wrong' });
+//     }
+// });
 
 module.exports = router;

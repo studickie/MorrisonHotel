@@ -3,6 +3,9 @@ const path = require('path');
 require('dotenv').config({ path: path.resolve(__dirname, '../.env') });
 
 const tmdb = {
+    //~ ---------------
+    //*     Lists
+    //~ ---------------
     getPopularMovies: async () => {
         try {
             const response = await axios.get('https://api.themoviedb.org/3/movie/popular',{
@@ -50,7 +53,42 @@ const tmdb = {
             console.log('error', e);
             return e;
         }
-    }
+    },
+    //~ ---------------
+    //*     Titles
+    //~ ---------------
+    getTitleDetails: async (titleId) => {
+        try {
+            const response = await axios.get(`https://api.themoviedb.org/3/movie/${titleId}`, {
+                params: {
+                    api_key: process.env.TMDB_KEY3,
+                    language: 'en-US'
+                }
+            });
+
+            return response.data;
+        } catch (e) {
+            console.log('error', e)
+            return e;
+        }
+    },
+    getTitleCredits: async (titleId) => {
+        try {
+            const response = await axios.get(`https://api.themoviedb.org/3/movie/${titleId}/credits`, {
+                params: { 
+                    api_key: process.env.TMDB_KEY3 
+                }
+            });
+
+            return response.data;
+        } catch (e) {
+            console.log('error', e)
+            return e;
+        }
+    },
+    //~ ---------------
+    //*     Names
+    //~ ---------------
 };
 
 module.exports = tmdb;

@@ -1,0 +1,23 @@
+extends layout/index.pug
+
+block headStyles
+    link(rel="stylesheet" href="/css/watchlist.css")
+
+block content
+    .content__wrapper
+        ul.watchlist__list.list--noStyle
+            each itm in watchlist
+                li(id= itm.id)
+                    span.flex__wrapper--row
+                        span.watchlist__image
+                            img(src= itm.poster_path, alt= "Movie poster for \"" + itm.title + "\"")
+                        span.watchlist__details
+                            span= itm.title
+                            span= "(" + itm.release_year + ")"
+                            button(type="button" name="watchlist_remove" aria-label="Remove from watchlist", data-id= itm.id) [x]
+    //- a(href= '/title/' + itm.id)
+
+
+
+block scripts
+    script(src="/js/watchlist.js" type="text/javascript")
