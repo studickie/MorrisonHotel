@@ -7,12 +7,17 @@ const options = {
     }
 };
 
-const WatchlistSchema = new mongoose.Schema({
+const RatingSchema = new mongoose.Schema({
     tmdbId: {
         type: String,
         required: true,
         unique: true
+    },
+    rating: {
+        type: Number,
+        min: 1,
+        max: 5
     }
 }, options);
 
-module.exports = mongoose.model('Watchlist', WatchlistSchema);
+module.exports = mongoose.model('Rating', RatingSchema);

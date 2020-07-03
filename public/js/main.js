@@ -1,11 +1,14 @@
-function initToggleElements() {
+var mainJs = {};
+mainJs.menuDropdown = null;
+
+mainJs.initToggleElements = function () {
     var el = document.querySelector('[data-role=dropdown]');
 
-    if (el) new ToggleElement(el);
-};
+    if (el) mainJs.menuDropdown = new ToggleElement(el);
+}
 
-function init() {
-    initToggleElements();
-};
+mainJs.init = function () {
+    mainJs.initToggleElements();
+}
 
-window.addEventListener('load', init);
+window.addEventListener('load', mainJs.init);

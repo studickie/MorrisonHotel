@@ -5,6 +5,7 @@ const bodyParser = require('body-parser');
 const movieRouter = require('./routes/movie.route');
 const titleRouter = require('./routes/title.route');
 const watchlistRouter = require('./routes/watchlist.route');
+const ratingRouter = require('./routes/rating.route');
 
 const app = express();
 
@@ -24,5 +25,6 @@ app.get('/favicon.ico', (req, res) => res.status(204));
 app.use('/movies', movieRouter);
 app.use('/title', titleRouter);
 app.use('/watchlist', watchlistRouter);
+app.use('/rating', ratingRouter);
 
 module.exports = app

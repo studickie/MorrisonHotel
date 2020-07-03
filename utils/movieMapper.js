@@ -14,7 +14,7 @@ const movieMapper = {
             return acc;
         }, []);
     },
-    mapTitleDetails: (obj, isWatchlisted) => {
+    mapTitleDetails: (obj, isWatchlisted, rating) => {
         return  {
             id: obj.id,
             title: obj.title,
@@ -27,7 +27,8 @@ const movieMapper = {
             poster_path: `https://image.tmdb.org/t/p/w342${obj.poster_path}`,
             cast: obj.cast.map(cst => ({ id, name, character, order } = cst)),
             crew: obj.crew.map(crw => ({ id, name, job } = crw)),
-            isWatchlisted: isWatchlisted ? true : false
+            isWatchlisted: isWatchlisted ? true : false,
+            user_rating: rating != null ? rating.rating : 0
         };
     },
     mapWatchlist: (list) => {

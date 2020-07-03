@@ -28,12 +28,33 @@ titlePage.addMovieToWatchlist = function (tmdbId) {
         })
 }
 
+titlePage.updateTitleRating = function( tmdbId, rating) {
+    http('POST', 'http://localhost:3000/rating', { tmdbId, rating })
+        .then(function(response) {
+            console.log('success', response);
+        })
+        .catch(function(error) {
+            console.log('error', error)
+        })
+}
+
 titlePage.init = function () {
     titlePage.btnAddWatchlist = document.querySelector('button[name=watchlist_add]');
+    var btnRating = document.querySelectorAll('button[name=rating]');
 
     if (titlePage.btnAddWatchlist) {
+        //- add watchlist button event listener
         titlePage.btnAddWatchlist.addEventListener('click', function() {
             titlePage.addMovieToWatchlist(this.getAttribute('data-id'));
+        });
+    }
+
+    if (btnRating.length > 0) {
+        // - add rating button event listeners
+        btnRating.forEach(function(btn) {
+            btn.addEventListener('click', function() {
+                titlePage.updateTitleRating(this.getAttribute('data-id'), parseInt(this.getAttribute('data-value')));
+            });
         });
     }
 }
