@@ -13,9 +13,6 @@ router.get('/:id', async (req, res) => {
             Watchlist.find({ tmdbId: req.params.id }),
             Rating.findOne({ tmdbId: req.params.id })    
         ]);
-        
-        console.log("watchlist query:", titleDetails[2]);
-        console.log("rating query:", titleDetails[3]);
 
         const mappedDetails = movieMapper.mapTitleDetails(
             Object.assign({}, titleDetails[0], titleDetails[1]), titleDetails[2].length || false, titleDetails[3]);

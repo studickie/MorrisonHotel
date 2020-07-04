@@ -1,6 +1,8 @@
 var titlePage = {};
 titlePage.btnAddWatchlist = null;
-
+//~ ----------------------
+//*         Utils
+//~ ----------------------
 titlePage.createWatchlistAnchor = function() {
     var parent = document.querySelector('.title__watchlist');
 
@@ -13,7 +15,9 @@ titlePage.createWatchlistAnchor = function() {
 
     parent.appendChild(anchor);
 }
-
+//~ ----------------------
+//*     HTTP Requests
+//~ ----------------------
 titlePage.addMovieToWatchlist = function (tmdbId) {
     //! disable button
     
@@ -37,7 +41,9 @@ titlePage.updateTitleRating = function( tmdbId, rating) {
             console.log('error', error)
         })
 }
-
+//~ ----------------------
+//*         Init
+//~ ----------------------
 titlePage.init = function () {
     titlePage.btnAddWatchlist = document.querySelector('button[name=watchlist_add]');
     var btnRating = document.querySelectorAll('button[name=rating]');

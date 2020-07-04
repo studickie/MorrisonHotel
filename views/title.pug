@@ -19,7 +19,8 @@ block content
                     p= details.overview
                     .title__watchlist
                         if !details.isWatchlisted
-                            button.watchlist__button--add(type="button", name="watchlist_add", data-id= details.id) Add to Watchlist
+                            button(type="button", name="watchlist_add", class="watchlist__button--add", 
+                                data-id= details.id) Add to Watchlist
                         else
                             span (on watchlist)
     .title__ratings.title__section
@@ -31,11 +32,39 @@ block content
                     span= details.user_rating
                     ul.list--noStyle
                         li
-                            button(type="button", name="rating", data-value="1", data-id= details.id, aria-label="Rate title width 1 star") 1
-                            button(type="button", name="rating", data-value="2", data-id= details.id, aria-label="Rate title width 2 stars") 2
-                            button(type="button", name="rating", data-value="3", data-id= details.id, aria-label="Rate title width 3 stars") 3
-                            button(type="button", name="rating", data-value="4", data-id= details.id, aria-label="Rate title width 4 stars") 4
-                            button(type="button", name="rating", data-value="5", data-id= details.id, aria-label="Rate title width 5 stars") 5
-            
+                            if details.user_rating >= 1
+                                button(type="button", name="rating", data-value="1", class="button__ratings button__ratings--filled", 
+                                    data-id= details.id, aria-label="Rate title width 1 star") 1
+                            else 
+                                button(type="button", name="rating", data-value="1", class="button__ratings button__ratings--empty", 
+                                    data-id= details.id, aria-label="Rate title width 1 star") 1
+                        li    
+                            if details.user_rating >= 2
+                                button(type="button", name="rating", data-value="2", class="button__ratings button__ratings--filled", 
+                                    data-id= details.id, aria-label="Rate title width 2 stars") 2
+                            else
+                                button(type="button", name="rating", data-value="2", class="button__ratings button__ratings--empty", 
+                                    data-id= details.id, aria-label="Rate title width 2 stars") 2
+                        li    
+                            if details.user_rating >= 3
+                                button(type="button", name="rating", data-value="3", class="button__ratings button__ratings--filled", 
+                                    data-id= details.id, aria-label="Rate title width 3 stars") 3
+                            else
+                                button(type="button", name="rating", data-value="3", class="button__ratings button__ratings--empty", 
+                                    data-id= details.id, aria-label="Rate title width 3 stars") 3
+                        li    
+                            if details.user_rating >= 4
+                                button(type="button", name="rating", data-value="4", class="button__ratings button__ratings--filled", 
+                                    data-id= details.id, aria-label="Rate title width 4 stars") 4
+                            else 
+                                button(type="button", name="rating", data-value="4", class="button__ratings button__ratings--empty", 
+                                    data-id= details.id, aria-label="Rate title width 4 stars") 4
+                        li    
+                            if details.user_rating == 5
+                                button(type="button", name="rating", data-value="5", class="button__ratings button__ratings--filled", 
+                                    data-id= details.id, aria-label="Rate title width 5 stars") 5
+                            else 
+                                button(type="button", name="rating", data-value="5", class="button__ratings button__ratings--empty", 
+                                    data-id= details.id, aria-label="Rate title width 5 stars") 5
 block scripts
     script(src="/js/title.js" type="text/javascript")

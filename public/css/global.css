@@ -143,7 +143,9 @@
         word-spacing: 0.1rem;
         letter-spacing: 0.015rem;
     }
-
+    /* ------------------- */
+    /*    Layout & Util    */
+    /* ------------------- */
     .content__wrapper {
         display: block;
         width: 88%;
@@ -167,7 +169,9 @@
         margin: 0;
         padding: 0;
     }
-
+    /* ------------------- */
+    /*  Modal Base Styles  */
+    /* ------------------- */
     .modal {
         position: fixed;
         top: 0;
@@ -197,8 +201,21 @@
     }
 
     .modal__header {
-        padding: 0.25rem 0.5    rem;
+        padding: 0.25rem 0.5rem;
         background-color: blue;
         color: white;
+    }
+    /* ------------------- */
+    /*  Rating Base Styles */
+    /* ------------------- */
+    .button__ratings {
+    }
+
+    .button__ratings--empty {
+        background-color: #fafafa;
+    }
+
+    .button__ratings--filled {
+        background-color: yellow;
     }
 }
