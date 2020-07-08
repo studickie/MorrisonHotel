@@ -2,8 +2,8 @@ const express = require('express');
 const router = express.Router();
 const tmdb = require('../utils/tmdb');
 const movieMapper = require('../utils/movieMapper');
-const Watchlist = require('../models/watchlist.model');
-const Rating = require('../models/rating.model');
+const Watchlist = require('../models/watchlistModel');
+const Rating = require('../models/ratingModel');
 
 router.get('/:id', async (req, res) => {
     try {

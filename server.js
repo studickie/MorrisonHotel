@@ -4,11 +4,10 @@ dotenv.config();
 const app = require('./app');
 
 const options = {
-    user: process.env.DB_USER,
-    pass:process.env.DB_PASS,
     useNewUrlParser: true,
     useUnifiedTopology: true,
-    useCreateIndex: true
+    useCreateIndex: true,
+    useFindAndModify: true
 };
 
 mongoose.connect(process.env.DB_URI, options);

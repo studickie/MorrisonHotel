@@ -10,8 +10,12 @@ const options = {
 const WatchlistSchema = new mongoose.Schema({
     tmdbId: {
         type: String,
-        required: true,
-        unique: true
+        required: true
+    },
+    posted: {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'User',
+        required: true
     }
 }, options);
 

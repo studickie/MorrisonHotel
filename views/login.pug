@@ -1,0 +1,17 @@
+extends layout/index.pug
+
+block content
+    .content__wrapper
+        form(name="login_form")
+            fieldset
+                legend= "Sign in"
+                div
+                    label(for="email")
+                    input(type="text" id="email", name="email")
+                div
+                    label(for="password")
+                    input(type="password", id="password", name="password")
+                button(type="button", name="submit") Sign in
+
+block scripts
+    script(src="/js/signin.js" type="text/javascript")

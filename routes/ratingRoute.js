@@ -1,8 +1,9 @@
 const express = require('express');
 const router = express.Router();
-const Rating = require('../models/rating.model');
+const Rating = require('../models/ratingModel');
+const auth = require('../middleware/authMiddleware');
 
-router.post('/', async (req, res) => {
+router.post('/', auth, async (req, res) => {
     try {
         let ratingToReturn;
         const ratingExists = await Rating.find({ tmdbId: req.body.tmdbId });

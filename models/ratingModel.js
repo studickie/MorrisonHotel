@@ -17,6 +17,10 @@ const RatingSchema = new mongoose.Schema({
         type: Number,
         min: 1,
         max: 5
+    },
+    posted: {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'User'
     }
 }, options);
 

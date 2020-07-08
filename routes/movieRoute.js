@@ -1,6 +1,6 @@
 const express = require('express');
 const router = express.Router();
-const Movie = require('../models/movie.model');
+const Movie = require('../models/movieModel');
 const tmdb = require('../utils/tmdb');
 const movieMapper = require('../utils/movieMapper');
 
