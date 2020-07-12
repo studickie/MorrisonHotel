@@ -2,26 +2,37 @@ const express = require('express');
 const router = express.Router();
 const Rating = require('../models/ratingModel');
 const auth = require('../middleware/authMiddleware');
+const User = require('../models/userModel');
 
 router.post('/', auth, async (req, res) => {
-    try {
-        let ratingToReturn;
-        const ratingExists = await Rating.find({ tmdbId: req.body.tmdbId });
+    const { tmdbId, 'rating': userRating } = req.body;
+    const { '_id': userid, ratings } = req.session.user;
 
-        if (ratingExists.length > 0) {
+    try {
+        const user = await User.findOne({ _id: userid }).populate('ratings');
+        let rating;
+
+        if (user.ratings.findIndex(itm => itm.tmdbId == tmdbId) != -1) {
             //- update existing rating
-            ratingToReturn = await Rating.findOneAndUpdate({ tmdbId: req.body.tmdbId }, { rating: req.body.rating });
+            rating = await Rating.findOneAndUpdate({ tmdbId }, { rating: userRating });
         } else {
             //- create new rating
-            const newRating = new Rating({
-                tmdbId: req.body.tmdbId,
-                rating: req.body.rating
+            rating = await Rating.create({
+                tmdbId: tmdbId,
+                rating: userRating,
+                posted: userid
             });
-
-            ratingToReturn = await newRating.save();
         }
 
-        res.status(200). json({ message: 'Successfuly rated title', rating: ratingToReturn });
+        ratings.push(rating);
+        
+        await User.findByIdAndUpdate(userid, {
+            $push: {
+                ratings: rating._id
+            }
+        });
+        
+        res.status(200). json({ message: 'Successfuly rated title', rating: rating });
         
     } catch (e) {
         res.status(500).json({ message: "Oops! Something went wrong", error: e });

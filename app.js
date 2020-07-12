@@ -6,7 +6,7 @@ const bodyParser = require('body-parser');
 require('dotenv').config();
 const helmet = require('helmet');
 
-const movieRouter = require('./routes/movieRoute');
+const homeRouter = require('./routes/homeRoute');
 const titleRouter = require('./routes/titleRoute');
 const watchlistRouter = require('./routes/watchlistRoute');
 const ratingRouter = require('./routes/ratingRoute');
@@ -40,15 +40,9 @@ app.use(session({
     saveUninitialized: true     //? research into this setting
 }));
 
-app.get('/', (req, res) => {
-    console.log('session user exists: ', req.session.user ? true : false);
-    if (req.session.user) console.log('session user: ', req.session.user);
-    console.log('session', req.session);
-    
-    res.render('index')
-});
+//app.get('/', (req, res) => res.render('index'));
 app.get('/favicon.ico', (req, res) => res.status(204));
-app.use('/movies', movieRouter);
+app.use('/', homeRouter);
 app.use('/title', titleRouter);
 app.use('/watchlist', watchlistRouter);
 app.use('/rating', ratingRouter);

@@ -169,42 +169,11 @@
         margin: 0;
         padding: 0;
     }
-    /* ------------------- */
-    /*  Modal Base Styles  */
-    /* ------------------- */
-    .modal {
-        position: fixed;
-        top: 0;
-        left: 0;
-        z-index: 1000;
-        display: none;
-        width: 100vw;
-        height: 100vh;
-    }
 
-    .modal__blackout {
-        position: absolute;
-        z-index: -1;
-        width: inherit;
-        height: inherit;
-        background-color: hsla(0, 0%, 40%, 0.5);
+    .posterGroup ul {
+        display: flex;
     }
-
-    .modal__body {
-        position: relative;
-        top: 50%;
-        left: 50%;
-        z-index: 100;
-        transform: translate(-50%, -50%);
-        background-color: #fff;
-        border: 1px solid black;
-    }
-
-    .modal__header {
-        padding: 0.25rem 0.5rem;
-        background-color: blue;
-        color: white;
-    }
+    
     /* ------------------- */
     /*  Rating Base Styles */
     /* ------------------- */

@@ -10,8 +10,7 @@ const options = {
 const RatingSchema = new mongoose.Schema({
     tmdbId: {
         type: String,
-        required: true,
-        unique: true
+        required: true
     },
     rating: {
         type: Number,
@@ -20,7 +19,8 @@ const RatingSchema = new mongoose.Schema({
     },
     posted: {
         type: mongoose.Schema.Types.ObjectId,
-        ref: 'User'
+        ref: 'User',
+        required: true
     }
 }, options);
 

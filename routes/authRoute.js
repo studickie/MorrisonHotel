@@ -1,6 +1,7 @@
 const express = require('express');
 const router = express.Router();
 const User = require('../models/userModel');
+const { render } = require('../app');
 
 router.post('/signup', async (req, res) => {
     const { email, password } = req.body;
@@ -23,6 +24,8 @@ router.post('/signup', async (req, res) => {
         res.status(500).json({ message: 'Oops! Something went wrong', error: e });
     }
 });
+
+router.get('/signin', (req, res) => res.render('signin'));
 
 router.post('/signin', async (req, res) => {
     const { email, password } = req.body;

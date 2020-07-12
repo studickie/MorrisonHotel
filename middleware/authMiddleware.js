@@ -1,8 +1,6 @@
-//const session = require('express-session');
-
 const auth = (req, res, next) => {
     if (!req.session.user) {
-        return res.render('login');
+        return res.redirect('/auth/signin');
     }
 
     return next();

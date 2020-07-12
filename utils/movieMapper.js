@@ -1,22 +1,39 @@
 const movieMapper = {
-    mapMovieHighlights: (list) => {
-        return list.reduce((acc, mov) => {
-            if (!mov.poster_path || !mov.backdrop_path) return acc;
-
+    mapHomepageHighlights: (list) => {
+        return list.reduce((acc, ttl) => {
+            if (!ttl.poster_path || !ttl.backdrop_path) return acc;
+    
             acc.push({ 
-                title: mov.title, 
-                release_date: mov.release_date, 
-                id: mov.id, 
-                backdrop_path: `https://image.tmdb.org/t/p/w780${mov.backdrop_path}`, 
-                poster_path: `https://image.tmdb.org/t/p/w342${mov.poster_path}` 
+                title: ttl.title || ttl.name, 
+                release_date: ttl.release_date || ttl.first_air_date, 
+                tmdbid: ttl.id, 
+                backdrop_path: `https://image.tmdb.org/t/p/w780${ttl.backdrop_path}`, 
+                poster_path: `https://image.tmdb.org/t/p/w342${ttl.poster_path}` 
             });
-
+    
             return acc;
         }, []);
     },
-    mapTitleDetails: (obj, isWatchlisted, rating) => {
+    mapPosterLinkList: (list, max = null) => {
+        max = max || list.length;
+        let counter = 0, listToReturn = [];
+        
+        while(listToReturn.length < max) {
+            if (list[counter].poster_path) {
+                listToReturn.push({
+                    poster_path: `https://image.tmdb.org/t/p/w342${list[counter].poster_path}`,
+                    tmdbid: list[counter].id,
+                });
+            }
+
+            counter++;
+        };
+
+        return listToReturn;
+    },
+    mapTitleDetails: (isSignedin, obj, isWatchlisted = false, rating = 0) => {
         return  {
-            id: obj.id,
+            tmdbid: obj.id,
             title: obj.title,
             release_date: obj.release_date,
             release_year: mapYear(obj.release_date),
@@ -27,8 +44,9 @@ const movieMapper = {
             poster_path: `https://image.tmdb.org/t/p/w342${obj.poster_path}`,
             cast: obj.cast.map(cst => ({ id, name, character, order } = cst)),
             crew: obj.crew.map(crw => ({ id, name, job } = crw)),
-            isWatchlisted: isWatchlisted ? true : false,
-            user_rating: rating != null ? rating.rating : 0
+            isSignedin: isSignedin,
+            isWatchlisted: isWatchlisted,
+            user_rating: rating
         };
     },
     mapWatchlist: (list) => {
@@ -47,6 +65,6 @@ const movieMapper = {
 const mapYear = (string) => {
     const regexp = new RegExp('\\d{4}');
     return string.match(regexp)[0] || '';
-}
+};
 
 module.exports = movieMapper;
