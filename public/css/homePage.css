@@ -1,0 +1,14 @@
+@media(min-width: 0px) {
+    [data-role=smooth_scroller] {
+        position: relative;
+        overflow: hidden;
+    }
+
+    [data-role=scroll_list] {
+        display: flex;
+        flex-flow: row nowrap;
+        transition: transform 320ms ease-out;
+    }
+
+    
+} 

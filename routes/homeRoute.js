@@ -11,13 +11,11 @@ router.get('/', async (req, res) => {
             tmdb.getUpcommingMovies()
         ]);
         
-        const mappedContent = {
-            highlights: movieMapper.mapHomepageHighlights(content[0].results),
-            nowPlaying: movieMapper.mapPosterLinkList(content[1].results, 3),
-            upcoming: movieMapper.mapPosterLinkList(content[2].results, 3)
-        };
-        
-        res.render('index', { content: mappedContent });
+        res.render('index', { 
+            highlights: movieMapper.mapHighlightsList(content[0].results, 10),
+            moviesNowPlaying: movieMapper.mapPosterGroup(content[1].results, 3),
+            moviesUpcoming: movieMapper.mapPosterGroup(content[2].results, 3)
+        });
 
     } catch (e) {
         res.status(500).json({ message: 'Oops! Something went wrong', error: e });

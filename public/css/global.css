@@ -3,9 +3,12 @@
     --height-header: 3.5rem;
     --height-footer: 3rem;
     --padding-header: 0.5rem;
+    --section-padding-y: 6%;
 
     /* Colour Variables */
-    --bg-primary: #232323;
+    --bg-primary: #101010;
+    --bg-secondary: #232323;
+    --txt-primary: #fdfdfd;
     --td-border-light: #cbcbcb;
     --td-border-dark: #ababab;
 
@@ -34,25 +37,25 @@
         overflow-y: auto;
         margin: 0;
     }
-
+    
     header {
-        flex-basis: var(--height-header);
-        flex-grow: 0;
+        position: fixed;
+        z-index: 500; /* should be top element, unless modal exists */
+        height: var(--height-header);
         display: flex;
         flex-flow: row nowrap;
         align-items: center;
         width: 100%;
-        /* height: var(--height-header);  */
         padding: var(--padding-header) 1rem;
-        background-color: var(--bg-primary);
+        background-color: var(--bg-secondary);
     }
 
     header h1 {
         flex-basis: 60%;
         flex-grow: 1;
         font-family: var(--type-primary);
-        font-size: 2rem;
-        color: #efefef;
+        font-size: 1.5rem;
+        color: var(--txt-primary);
     }
 
     .toolbar {
@@ -109,12 +112,14 @@
         display: block;
         width: 100%;
         height: 100%;
-        padding: 2rem 0;
+        margin-top: var(--height-header);
+        padding: 1.5rem 0;
+        background-color: var(--bg-primary);
     }
 
     h2 {
         margin-bottom: 2rem;
-        font-size: 2rem;
+        font-size: 1.5rem;
     }
 
     footer {
@@ -170,21 +175,9 @@
         padding: 0;
     }
 
-    .posterGroup ul {
-        display: flex;
-    }
-    
-    /* ------------------- */
-    /*  Rating Base Styles */
-    /* ------------------- */
-    .button__ratings {
+    .section__padding {
+        padding: 0 6%;
     }
 
-    .button__ratings--empty {
-        background-color: #fafafa;
-    }
 
-    .button__ratings--filled {
-        background-color: yellow;
-    }
 }

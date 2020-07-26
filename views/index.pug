@@ -1,38 +1,57 @@
 extends layout/index.pug
 
 block headStyles 
-    link(rel="stylesheet" href="/css/moviesTable.css")
+    link(rel="stylesheet" href="/css/homePage.css")
+    link(rel="stylesheet" href="/css/highlights.css")
 
 block content
-    h2 Trending Today
-    .scroller__container(data-role="smooth_scroller")
-        ul.highlights.list--noStyle(data-role="scroll_list")
-            each ttl in content.highlights
-                li.highlights__item(data-role="scroll_item")
-                    a(href="/title/" + ttl.tmdbid)
-                        .highlights__backdrop
-                            img(src= ttl.backdrop_path)
-                        .highlights__poster
-                            img(src= ttl.poster_path)
-                        .highlights__details
-                            p= ttl.title
-                            p= ttl.release_date
-    
-    h2 New in Movies
-    .posterGroup
-        ul.list--noStyle
-            each ptr in content.nowPlaying
-                li
-                    img(src= ptr.poster_path)
-        h3 See now-playing movies
-    
-    .posterGroup
-        ul.list--noStyle
-            each ptr in content.upcoming
-                li
-                    img(src= ptr.poster_path)
-        h3 See upcoming movies
-                    
+    section
+        .section__head
+            .content__wrapper
+                h2 Trending Today
+        .section__main
+            ul.list--noStyle
+                each ttl in highlights
+                    li
+                        .highlight
+                            .highlight__display
+                                .highlight__backdrop
+                                    picture
+                                        source(media="(max-width:991px)" srcset= ttl.backdropSm)
+                                        source(media="(min-width:1280px)" srcset= ttl.backdropLg)
+                                        img(src= ttl.backdropLg)
+                                .highlight__poster
+                                    picture
+                                        source(media="(max-width: 991px)" srcset= ttl.posterSm)
+                                        source(media="(max-width: 1280px)" srcset= ttl.posterLg)
+                                        img(src= ttl.posterLg)
+                            .highlight__details
+                                div
+                                    p= ttl.title
+                                    p= ttl.releaseYear
+                            a.highlight__anchor(href= `/title/${ttl.mediaType}/${ttl.tmdbId}`)
+
+
+
+
+    section
+        .section__head
+            .content__wrapper
+                h2 New in Movies
+        .posterGroup
+            ul.list--noStyle
+                each ptr in moviesNowPlaying
+                    li
+                        img(src= ptr.poster_path)
+            h3 See now-playing movies
+
+        .posterGroup
+            ul.list--noStyle
+                each ptr in moviesUpcoming
+                    li
+                        img(src= ptr.poster_path)
+            h3 See upcoming movies
+
 block scripts
     script(src="/js/smoothScroller.js" type="text/javascript")
     script(src="/js/movies.js" type="text/javascript")

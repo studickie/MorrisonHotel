@@ -104,8 +104,22 @@ const tmdb = {
         }
     },
     //~ ---------------
-    //*     Names
+    //*     Config
     //~ ---------------
+    getConfig: async () => {
+        try {
+            const response = await axios.get('https://api.themoviedb.org/3/configuration', {
+                params: {
+                    api_key: process.env.TMDB_KEY3
+                }
+            });
+
+            return response.data;
+        } catch (e) {
+            console.log(e);
+            return e;
+        }
+    }
 };
 
 module.exports = tmdb;

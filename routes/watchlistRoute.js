@@ -24,7 +24,6 @@ router.get('/', auth, async (req, res) => {
 });
 
 router.post('/', auth, async (req, res) => {
-    console.log('requested post watchlist')
     const { tmdbId } = req.body;
     const { '_id': userid, watchlist } = req.session.user;
     

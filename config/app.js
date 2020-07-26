@@ -6,11 +6,11 @@ const bodyParser = require('body-parser');
 require('dotenv').config();
 const helmet = require('helmet');
 
-const homeRouter = require('./routes/homeRoute');
-const titleRouter = require('./routes/titleRoute');
-const watchlistRouter = require('./routes/watchlistRoute');
-const ratingRouter = require('./routes/ratingRoute');
-const authRouter = require('./routes/authRoute');
+const homeRouter = require('../routes/homeRoute');
+const titleRouter = require('../routes/titleRoute');
+const watchlistRouter = require('../routes/watchlistRoute');
+const ratingRouter = require('../routes/ratingRoute');
+const authRouter = require('../routes/authRoute');
 
 const app = express();
 const store = new MongoDBStore({
@@ -23,9 +23,9 @@ store.on('error', (error) => {
 });
 
 app.set('view engine', 'pug');
-app.set('views', path.resolve(__dirname, 'views'));
+app.set('views', path.resolve(__dirname, '../views'));
 
-app.use(express.static(path.resolve(__dirname, 'public')));
+app.use(express.static(path.resolve(__dirname, '../public')));
 app.use(helmet());
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
@@ -40,7 +40,6 @@ app.use(session({
     saveUninitialized: true     //? research into this setting
 }));
 
-//app.get('/', (req, res) => res.render('index'));
 app.get('/favicon.ico', (req, res) => res.status(204));
 app.use('/', homeRouter);
 app.use('/title', titleRouter);

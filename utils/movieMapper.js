@@ -1,70 +1,110 @@
-const movieMapper = {
-    mapHomepageHighlights: (list) => {
-        return list.reduce((acc, ttl) => {
-            if (!ttl.poster_path || !ttl.backdrop_path) return acc;
-    
-            acc.push({ 
-                title: ttl.title || ttl.name, 
-                release_date: ttl.release_date || ttl.first_air_date, 
-                tmdbid: ttl.id, 
-                backdrop_path: `https://image.tmdb.org/t/p/w780${ttl.backdrop_path}`, 
-                poster_path: `https://image.tmdb.org/t/p/w342${ttl.poster_path}` 
-            });
-    
-            return acc;
-        }, []);
-    },
-    mapPosterLinkList: (list, max = null) => {
-        max = max || list.length;
-        let counter = 0, listToReturn = [];
-        
-        while(listToReturn.length < max) {
-            if (list[counter].poster_path) {
-                listToReturn.push({
-                    poster_path: `https://image.tmdb.org/t/p/w342${list[counter].poster_path}`,
-                    tmdbid: list[counter].id,
-                });
-            }
+exports.mapPosterList = (list, count = 0) => {
+    count = count || list.length;
+    let i = 0, listToReturn = [];
 
-            counter++;
-        };
+    while(listToReturn.length < count && i < list.length) {
+        if (list[i].poster_path) {
+            let itm = list[i];
+            listToReturn.push(
+                new PosterListItem(itm.id, itm.media_type, itm.title, itm.poster_path, itm.release_date, 
+                    itm.vote_average));
+        }
 
-        return listToReturn;
-    },
-    mapTitleDetails: (isSignedin, obj, isWatchlisted = false, rating = 0) => {
-        return  {
-            tmdbid: obj.id,
-            title: obj.title,
-            release_date: obj.release_date,
-            release_year: mapYear(obj.release_date),
-            tagline: obj.tagline,
-            overview: obj.overview,
-            vote_average: obj.vote_average,
-            backdrop_path: `https://image.tmdb.org/t/p/w780${obj.backdrop_path}`, 
-            poster_path: `https://image.tmdb.org/t/p/w342${obj.poster_path}`,
-            cast: obj.cast.map(cst => ({ id, name, character, order } = cst)),
-            crew: obj.crew.map(crw => ({ id, name, job } = crw)),
-            isSignedin: isSignedin,
-            isWatchlisted: isWatchlisted,
-            user_rating: rating
-        };
-    },
-    mapWatchlist: (list) => {
-        return list.map(itm => {
-            return {
-                id: itm.id,
-                title: itm.title,
-                release_year: mapYear(itm.release_date),
-                poster_path: `https://image.tmdb.org/t/p/w342${itm.poster_path}`
-            }
-        })
+        i++;
     }
-};
 
-//- returns 'yyyy' from given string formated as ex: 'yyyy-mm-dd'
-const mapYear = (string) => {
-    const regexp = new RegExp('\\d{4}');
-    return string.match(regexp)[0] || '';
-};
+    return listToReturn;
+}
 
-module.exports = movieMapper;
+//  <summary>
+//  retuns data for grouped images
+exports.mapPosterGroup = (list, count = 0) => {
+    count = count || list.length;
+    let i = 0; listToReturn = [];
+    
+    while(listToReturn.length < count && i < list.length) {
+        if (list[i].poster_path) {
+            let itm = list[i];
+            listToReturn.push(
+                new BaseTitleDetails(itm.id, itm.media_type, itm.title, itm.poster_path, itm.release_date));
+        }
+
+        i++;
+    }
+
+    return listToReturn;
+}
+
+//  <summary>
+//  returns data for home page highlights reel
+exports.mapHighlightsList = (list, count = 0) => {
+    count = count || list.length;
+    let i = 0, listToReturn = [];
+
+    while(listToReturn.length < count && i < list.length) {
+        if (list[i].poster_path && list[i].backdrop_path) {
+            let itm = list[i], 
+                title = itm.title || itm.name, 
+                releaseDate = itm.release_date || itm.first_air_date;
+
+            listToReturn.push(
+                new HighlightsItem(itm.id, itm.media_type, title, itm.poster_path, releaseDate, itm.backdrop_path));
+        }
+
+        i++;
+    }
+
+    return listToReturn;
+}
+
+exports.mapTitleDetails = (data) => {
+    const title = data.title || data.name,
+        releaseDate = itm.release_date || itm.first_air_date;
+    return new TitleFullDetails(data.id, data.media_type, title, data.poster_path, releaseDate, data.overview)
+}
+
+exports.mapWatchlist = (list) => {
+    return list.map(itm => {
+        return {
+            id: itm.id,
+            title: itm.title,
+            release_year: itm.release_date.slice(0, 4),
+            poster_path: `https://image.tmdb.org/t/p/w342${itm.poster_path}`
+        }
+    })
+}
+
+class BaseTitleDetails {
+    constructor(tmdbId, mediaType, title, posterPath, releaseDate) {
+        this.tmdbId = tmdbId;
+        this.mediaType = mediaType;
+        this.title = title;
+        this.posterSm = `https://image.tmdb.org/t/p/w185${posterPath}`;
+        this.posterLg = `https://image.tmdb.org/t/p/w342${posterPath}`;
+        this.releaseYear = this.dateToYear(releaseDate);
+    }
+
+    dateToYear = (date) => date.slice(0, 4); 
+}
+
+class TitleFullDetails extends BaseTitleDetails {
+    constructor(tmdbId, mediaType, title, posterPath, releaseDate) {
+        super(tmdbId, mediaType, title, posterPath, releaseDate);
+        this.summary = summary;
+    }
+}
+
+class PosterListItem extends BaseTitleDetails {
+    constructor(tmdbId, mediaType, title, posterPath, releaseDate, avgRating) {
+        super(tmdbId, mediaType, title, posterPath, releaseDate);
+        this.avgRating = avgRating;
+    }
+}
+
+class HighlightsItem extends BaseTitleDetails {
+    constructor(tmdbId, mediaType, title, posterPath, releaseDate, backdropPath) {
+        super(tmdbId, mediaType, title, posterPath, releaseDate);
+        this.backdropSm = `https://image.tmdb.org/t/p/w780${backdropPath}`;
+        this.backdropLg = `https://image.tmdb.org/t/p/w1280${backdropPath}`;
+    }
+}

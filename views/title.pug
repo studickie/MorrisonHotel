@@ -7,70 +7,82 @@ block content
     .title__header.title__section
         .content__wrapper
             .flex__wrapper--row 
-                h2= details.title
-                if details.release_year != ''
-                    span= "(" + details.release_year + ")"
+                h2= titleDetails.title
+                if titleDetails.releaseYear != ''
+                    span= "(" + titleDetails.releaseYear + ")"
     .title__overview.title__section
         .content__wrapper
             .flex__wrapper--row
                 .title__poster
-                    img(src= details.poster_path, alt= "poster image for \"" + details.title + "\"")
+                    img(src= titleDetails.posterPath, alt= "poster image for \"" + titleDetails.title + "\"")
                 .title__summary
-                    p= details.overview
-                    .title__watchlist
-                        if details.isSignedin
-                            if !details.isWatchlisted
-                                button(type="button", name="watchlist_add", class="watchlist__button--add", 
-                                    data-id= details.id) Add to Watchlist
-                            else
-                                span (on watchlist)
-                        else 
-                            a(href= "/auth/signin") Add to Watchlist
-    .title__ratings.title__section
-        .content__wrapper
-            .flex__wrapper--row
-                .ratings__average
-                    span= details.vote_average
-                .ratings__userRating
-                    span= details.user_rating
-                    if details.isSignedin
-                        ul.list--noStyle
-                            li
-                                if details.user_rating >= 1
-                                    button(type="button", name="rating", data-value="1", class="button__ratings button__ratings--filled", 
-                                        data-id= details.id, aria-label="Rate title width 1 star") 1
-                                else 
-                                    button(type="button", name="rating", data-value="1", class="button__ratings button__ratings--empty", 
-                                        data-id= details.id, aria-label="Rate title width 1 star") 1
-                            li    
-                                if details.user_rating >= 2
-                                    button(type="button", name="rating", data-value="2", class="button__ratings button__ratings--filled", 
-                                        data-id= details.id, aria-label="Rate title width 2 stars") 2
-                                else
-                                    button(type="button", name="rating", data-value="2", class="button__ratings button__ratings--empty", 
-                                        data-id= details.id, aria-label="Rate title width 2 stars") 2
-                            li    
-                                if details.user_rating >= 3
-                                    button(type="button", name="rating", data-value="3", class="button__ratings button__ratings--filled", 
-                                        data-id= details.id, aria-label="Rate title width 3 stars") 3
-                                else
-                                    button(type="button", name="rating", data-value="3", class="button__ratings button__ratings--empty", 
-                                        data-id= details.id, aria-label="Rate title width 3 stars") 3
-                            li    
-                                if details.user_rating >= 4
-                                    button(type="button", name="rating", data-value="4", class="button__ratings button__ratings--filled", 
-                                        data-id= details.id, aria-label="Rate title width 4 stars") 4
-                                else 
-                                    button(type="button", name="rating", data-value="4", class="button__ratings button__ratings--empty", 
-                                        data-id= details.id, aria-label="Rate title width 4 stars") 4
-                            li    
-                                if details.user_rating == 5
-                                    button(type="button", name="rating", data-value="5", class="button__ratings button__ratings--filled", 
-                                        data-id= details.id, aria-label="Rate title width 5 stars") 5
-                                else 
-                                    button(type="button", name="rating", data-value="5", class="button__ratings button__ratings--empty", 
-                                        data-id= details.id, aria-label="Rate title width 5 stars") 5
-                    else 
-                        a(href= "/auth/signin") Rate title
+                    p= titleDetails.summary
+                    .title__watchlist   
+                        //- if details.isSignedin
+                        //-     if !details.isWatchlisted
+                        //-         button(type="button", name="watchlist_add", class="watchlist__button--add", 
+                        //-             data-id= details.id) Add to Watchlist
+                        //-     else
+                        //-         span (on watchlist)
+                        //- else 
+                        //-     a(href= "/auth/signin") Add to Watchlist
+    //- .title__ratings.title__section
+    //-     .content__wrapper
+    //-         .flex__wrapper--row
+    //-             .ratings__average
+    //-                 span= details.vote_average
+    //-             .ratings__userRating
+    //-                 span= details.user_rating
+    //-                 if details.isSignedin
+    //-                     ul.list--noStyle
+    //-                         li
+    //-                             if details.user_rating >= 1
+    //-                                 button(type="button", name="rating", data-value="1", class="button__ratings button__ratings--filled", 
+    //-                                     data-id= details.id, aria-label="Rate title width 1 star") 1
+    //-                             else 
+    //-                                 button(type="button", name="rating", data-value="1", class="button__ratings button__ratings--empty", 
+    //-                                     data-id= details.id, aria-label="Rate title width 1 star") 1
+    //-                         li    
+    //-                             if details.user_rating >= 2
+    //-                                 button(type="button", name="rating", data-value="2", class="button__ratings button__ratings--filled", 
+    //-                                     data-id= details.id, aria-label="Rate title width 2 stars") 2
+    //-                             else
+    //-                                 button(type="button", name="rating", data-value="2", class="button__ratings button__ratings--empty", 
+    //-                                     data-id= details.id, aria-label="Rate title width 2 stars") 2
+    //-                         li    
+    //-                             if details.user_rating >= 3
+    //-                                 button(type="button", name="rating", data-value="3", class="button__ratings button__ratings--filled", 
+    //-                                     data-id= details.id, aria-label="Rate title width 3 stars") 3
+    //-                             else
+    //-                                 button(type="button", name="rating", data-value="3", class="button__ratings button__ratings--empty", 
+    //-                                     data-id= details.id, aria-label="Rate title width 3 stars") 3
+    //-                         li    
+    //-                             if details.user_rating >= 4
+    //-                                 button(type="button", name="rating", data-value="4", class="button__ratings button__ratings--filled", 
+    //-                                     data-id= details.id, aria-label="Rate title width 4 stars") 4
+    //-                             else 
+    //-                                 button(type="button", name="rating", data-value="4", class="button__ratings button__ratings--empty", 
+    //-                                     data-id= details.id, aria-label="Rate title width 4 stars") 4
+    //-                         li    
+    //-                             if details.user_rating == 5
+    //-                                 button(type="button", name="rating", data-value="5", class="button__ratings button__ratings--filled", 
+    //-                                     data-id= details.id, aria-label="Rate title width 5 stars") 5
+    //-                             else 
+    //-                                 button(type="button", name="rating", data-value="5", class="button__ratings button__ratings--empty", 
+    //-                                     data-id= details.id, aria-label="Rate title width 5 stars") 5
+    //-                 else 
+    //-                     a(href= "/auth/signin") Rate title
+
+    h3 Cast
+    h3 Crew
+    h3 Similar Titles
+    ul.list--noStyle
+        each ttl in similarTitles
+            li
+                .posterList__image
+                    img(src= ttl.poster_path)
+                .posterList__details
+                    span= ttl.title
+                    span= "(" + ttl.release_year + ")"
 block scripts
     script(src="/js/title.js" type="text/javascript")
