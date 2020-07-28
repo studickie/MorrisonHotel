@@ -208,7 +208,9 @@
     .scroller__list {
         display: flex;
         flex-flow: row nowrap;
-        transition: transform 320ms ease-out;
+        transition-property: transform;
+        transition-timing-function: ease-out;
+        /* transition: transform 1000ms ease-out; */
     }
     
     .scroller__item {
