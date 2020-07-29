@@ -9,7 +9,7 @@
 //~     > component toggles CSS class 'toggle--active' on provided 
 //~         element
 //~     !! markup must include an element with a name attribute of
-//~         'toggle_activator' which triggers the toggle effect
+//~         'toggle_activator' which triggers the state change
 //~ --------------------------------------------------------------
 
 function ToggleElement($element, $state) {
