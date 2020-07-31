@@ -3,23 +3,26 @@
 //~     -------------------------
 //~     Parameters:
 //~     1. element: HTMLElement; scroller containing element
-//~     2. time: number; scroller transition time
+//~     2. transitionTime: number; scroller transition time
+//~     3. intervalTime: number; time between auto-scrolls
 //~
 //~     Use:
 //~     > modifies element CSS to create a smooth-scroll effects
-//~     > requires a list parent with attribute data-role as
-//~         'scroll_list'
-//~     > requires scroll children with attribute data-role as 
+//~     > requires a list with attribute 'data-role' as
+//~         'scroll_list', children with attribute 'data-role' as 
 //~         'scroll_item'
 //~ --------------------------------------------------------------
 
-function SmoothScroller(element, time) {
+function SmoothScroller(element, transitionTime, intervalTime) {
     var ctrl = this;
 
     ctrl.element = element;
-    ctrl.transitionTime = 0;
+    ctrl.intervalTime = intervalTime;
+    ctrl.interval = null;
+    ctrl.intervalActive = false;
+    ctrl.transitionTime = transitionTime;
+    ctrl.transition = null;
     ctrl.transitionActive = false;
-    ctrl.transitionInterval = null;
     ctrl.scrollList = null;
     ctrl.scrollCount = 0;
     ctrl.scrollIndex = 0;
@@ -28,44 +31,29 @@ function SmoothScroller(element, time) {
     ctrl.activeScrolling = false;
     ctrl.positionStart = 0;
     ctrl.positionChange = 0;
+    ctrl.touchMove = null;
+    ctrl.touchEnd = null;
 
-
-    this._el = $element;
-    this._transitionTime = $transitionTime;
-    ctrl._scrolling = false;
-    ctrl._scrollList = this.setScrollList();
-    ctrl._scrollCount = this._scrollList.children.length;
-    ctrl._scrollIndex = 0;
-    ctrl._indexOffset = 0;
-    ctrl._scrollWidth = this._el.getBoundingClientRect().width;
-    ctrl._scrollStart = 0;
-    ctrl._scrollChange = 0;
-    ctrl._eventDrag = null;
-    ctrl._eventEnd = null;
-    ctrl._scrollInterval = null;
-    ctrl._inTransition = false;
-
-    addSmoothScrollerEvents.call(this);
-    this.startScrollInterval();
-    this.setElementTransitionTime();
-
-    if (!this.init(time)) {
+    if (!this.init()) {
         console.error('Error - Smooth Scroller init');
         return;
     }
+
+    this.startInterval();
+    addSmoothScrollerEvents.call(this);
 }
 
 SmoothScroller.prototype = {
-    //~ Init Methods
+    //~ Init Methodss
     //~ --------------
     init: function () {
-        if (!this.setTransitionTime(time)) return false;
         if (!this.setScrollList()) return false;
+        if (!this.setTransitionTime()) return false;
 
         return true;
     },
     setScrollList: function () {
-        const scrollList = this._el.querySelector('[data-role=scroll_list]');
+        const scrollList = this.element.querySelector('[data-role=scroll_list]');
         if (scrollList) {
             this.scrollList = scrollList;
             this.scrollCount = scrollList.children.length;
@@ -75,145 +63,110 @@ SmoothScroller.prototype = {
         }
         return false;
     },
-    setTransitionTime: function (time) {
-        if (time) {
-            this.transitionTime = time;
-            this.scrollList.style.transitionDuration = `${time}ms`;
+    setTransitionTime: function () {
+        if (this.transitionTime != undefined) {
+            this.scrollList.style.transitionDuration = `${this.transitionTime}ms`;
 
             return true;
         }
         return false;
     },
-    //~ Utility Methods
+    //~ Timing Methods
     //~ ----------------
     startTransition: function () {
         var ctrl = this;
 
-        if (ctrl.transitionActive) this.stopTransition();
+        if (ctrl.transitionActive) ctrl.stopTransition();
 
-        ctrl.transitionInterval = setTimeout(function () {
-            ctrl.transitionActive = false;
-            ctrl.scrollList.classList.toggle('scroller--active', false);
-        }, ctrl.transitionTime);
-
-        ctrl.transitionActive = true;
-        ctrl.scrollList.classList.toggle('scroller--active', true);
-        ctrl.scrollList.style.transform = 'translate('
-            + (ctrl.scrollWidth * (ctrl.scrollIndex * -1)) + 'px)';
+        if (ctrl.scrollIndex != ctrl.scrollCount - 1) {
+            ctrl.transition = setTimeout(function () {
+                ctrl.transitionActive = false;
+                ctrl.scrollList.classList.toggle('scroller--active', false);
+                ctrl.startInterval();
+            }, ctrl.transitionTime);
+    
+            //~ Updates CSS, sets appropriate object state flags
+            ctrl.transitionActive = true;
+            ctrl.scrollList.classList.toggle('scroller--active', true);
+            ctrl.scrollList.style.transform = 'translate('
+                + (ctrl.scrollWidth * (ctrl.scrollIndex * -1)) + 'px)';
+        }
     },
     stopTransition: function () {
         this.transitionActive = false;
         ctrl.scrollList.classList.toggle('scroller--active', false);
+        this.scrollList.style.transform = getComputedStyle(this.scrollList).transform;
         clearInterval(this.transition);
     },
-    setScrollIndexFromTouch: function() {
-        if (this.scrollChange < 0 && this.scrollIndex < this.scrollCount - 1) {
-            this.scrollIndex += (1 + this.indexOffset);
-
-        } else if (this._scrollChange > 0 && this._scrollIndex > 0) {
-            this._scrollIndex--;
-
-        } else {
-            //* scrollIndex stays at current value
-        }
-
-        this.indexOffset = 0;
-    },
-    setScrollIndexFromClick: function() {
-        // if (button next) index++
-        // else if (button prex) index--
-        // else nothing
-
-        // this.indexOffset = 0 (?)
-    },
-    setElementTransitionTime: function () {
-        this._scrollList.style.transitionDuration = `${this._transitionTime}ms`
-    },
-    updateChangeFromTouch: function (changeValue) {
+    startInterval: function () {
         var ctrl = this;
 
-        if (!ctrl._scrolling) {
-            ctrl._scrolling = true;
-
-            setTimeout(function () { ctrl._scrolling = false; }, 500);
-
-            ctrl._scrollChange = changeValue - ctrl._scrollStart;
+        if (ctrl.intervalActive) ctrl.stopInterval();
+        if (ctrl.scrollIndex != ctrl.scrollCount - 1) {
+            ctrl.interval = setTimeout(function() {
+                ctrl.intervalActive = false;
+                ctrl.scrollIndex++;
+                ctrl.startTransition();
+            }, ctrl.intervalTime);
+    
+            ctrl.intervalActive = true;
         }
     },
-    updateIndexFromTouch: function () {
-        if (this._scrollChange < 0 && this._scrollIndex < this._scrollCount - 1) {
-            this._scrollIndex += (1 + this._indexOffset);
+    stopInterval: function () {
+        this.intervalActive = false;
+        clearInterval(this.interval);
+    },
+    //~ Utility Methods
+    //~ -----------------
+    setPositionChangeFromTouch: function (changeValue) {
+        var ctrl = this;
 
-        } else if (this._scrollChange > 0 && this._scrollIndex > 0) {
-            this._scrollIndex--;
+        if (!ctrl.activeScrolling) {
+            ctrl.activeSscrolling = true;
+
+            setTimeout(function () { ctrl.activeSscrolling = false; }, 500);
+
+            ctrl.positionChange = changeValue - ctrl.positionStart;
+        }
+    },
+    setScrollIndexFromTouch: function() {
+        if (this.positionChange < 0 && this.scrollIndex < this.scrollCount - 1) {
+            this.scrollIndex ++;
+
+        } else if (this.positionChange > 0 && this.scrollIndex > 0) {
+            this.scrollIndex--;
 
         } else {
             //* scrollIndex stays at current value
         }
-
-        this._indexOffset = 0;
-    },
-    transitionToNext: function () {
-        this._scrollList.style.transform = 'translate('
-            + (this._scrollWidth * (this._scrollIndex * -1)) + 'px)';
-    },
-    stopTransition: function () {
-        this._scrollList.style.transform = getComputedStyle(this._scrollList).transform;
-        if (this._inTransition) this._indexOffset = -1;
     },
     resetEvents: function () {
-        this._scrollChange = 0;
-        this._scrollStart = 0;
-        this._el.removeEventListener('touchmove', this._eventDrag);
-        this._el.removeEventListener('touchend', this._eventEnd);
-    },
-    startScrollInterval: function () {
-        var ctrl = this;
-        ctrl._scrollInterval = setInterval(function () {
-            if (ctrl._scrollIndex < ctrl._scrollCount - 1) {
-                ctrl._scrollIndex++;
-                ctrl.setTransitionClass();
-                ctrl.transitionToNext();
-            } else {
-                clearInterval(ctrl._scrollInterval);
-            }
-        }, 5000);
-    },
-    stopScrollInterval: function () {
-        clearInterval(this._scrollInterval);
-    },
-    setTransitionClass: function () {
-        var ctrl = this;
-
-        setTimeout(function () { //! better state tracking
-            ctrl._inTransition = false;
-            ctrl._scrollList.classList.toggle('scroll--transition', ctrl._inTransition);
-        }, ctrl._transitionTime);
-
-        this._inTransition = true;
-        this._scrollList.classList.toggle('scroll--transition', this._inTransition);
+        this.positionChange = 0;
+        this.positionStart = 0;
+        this.element.removeEventListener('touchmove', this.touchMove);
+        this.element.removeEventListener('touchend', this.touchEnd);
     }
 };
 
 function addSmoothScrollerEvents() {
     var ctrl = this;
 
-    ctrl._el.addEventListener('touchstart', function (evt) {
-        ctrl._scrollStart = evt.touches[0].clientX;
-        ctrl.stopScrollInterval();
-        ctrl.stopTransition();
+    ctrl.element.addEventListener('touchstart', function (evt) {
+        ctrl.positionStart = evt.touches[0].clientX;
 
-        ctrl._el.addEventListener('touchmove', ctrl._eventDrag = function (evt) {
+        if (ctrl.transitionActive) ctrl.stopTransition();
+        if (ctrl.intervalActive) ctrl.stopInterval();
+        ctrl.stopInterval();
+
+        ctrl.element.addEventListener('touchmove', ctrl.touchMove = function (evt) {
             evt.preventDefault();
-            ctrl.updateChangeFromTouch(evt.touches[0].clientX);
+            ctrl.setPositionChangeFromTouch(evt.touches[0].clientX);
         });
 
-        ctrl._el.addEventListener('touchend', ctrl._eventEnd = function () {
-            ctrl.updateIndexFromTouch();
-            ctrl.setTransitionClass();
-            ctrl.transitionToNext();
+        ctrl.element.addEventListener('touchend', ctrl.touchEnd = function () {
+            ctrl.setScrollIndexFromTouch();
+            ctrl.startTransition();
             ctrl.resetEvents();
-            ctrl.startScrollInterval();
         });
     });
 }
