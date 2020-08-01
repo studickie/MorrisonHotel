@@ -116,13 +116,13 @@ SmoothScroller.prototype = {
             ctrl.transition = setTimeout(function () {
                 ctrl.transitionActive = false;
                 ctrl.transitionDirection = 0;
-                ctrl.scrollList.classList.toggle('scroller--active', false);
+                //ctrl.scrollList.classList.toggle('scroller--active', false);
                 ctrl.startInterval();
             }, ctrl.transitionTime);
     
             //~ Updates CSS, sets appropriate object state flags
             ctrl.transitionActive = true;
-            ctrl.scrollList.classList.toggle('scroller--active', true);
+            //ctrl.scrollList.classList.toggle('scroller--active', true);
             ctrl.scrollList.style.transform = 'translate('
                 + (ctrl.scrollWidth * (ctrl.scrollIndex * -1)) + 'px)';
         }
@@ -131,7 +131,7 @@ SmoothScroller.prototype = {
         this.indexOffset = this.transitionDirection;
         this.transitionActive = false;
         this.transitionDirection = 0;
-        this.scrollList.classList.toggle('scroller--active', false);
+        //this.scrollList.classList.toggle('scroller--active', false);
         clearInterval(this.transition);
         this.scrollList.style.transform = getComputedStyle(this.scrollList).transform;
     },

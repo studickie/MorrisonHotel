@@ -210,7 +210,6 @@
         flex-flow: row nowrap;
         transition-property: transform;
         transition-timing-function: ease-out;
-        /* transition: transform 1000ms ease-out; */
     }
     
     .scroller__item {

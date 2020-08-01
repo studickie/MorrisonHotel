@@ -53,8 +53,8 @@
         height: 100%;
     }
 
-    .scroller--active a.highlight__anchor {
+    /* .scroller--active a.highlight__anchor {
         z-index: -1;
-    }
+    } */
 } 
 /* '.highlights' Specific - END */
