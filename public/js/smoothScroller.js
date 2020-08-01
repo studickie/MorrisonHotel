@@ -4,7 +4,8 @@
 //~     Parameters:
 //~     1. element: HTMLElement; scroller containing element
 //~     2. transitionTime: number; scroller transition time
-//~     3. intervalTime: number; time between auto-scrolls
+//~     3. autoInterval: boolean [optional]; add auto scroll interval
+//~     3. intervalTime: number [optional]; time between auto-scrolls
 //~
 //~     Use:
 //~     > modifies element CSS to create a smooth-scroll effects
@@ -13,11 +14,12 @@
 //~         'scroll_item'
 //~ --------------------------------------------------------------
 
-function SmoothScroller(element, transitionTime, intervalTime) {
+function SmoothScroller(element, transitionTime, autoInterval, intervalTime) {
     var ctrl = this;
 
     ctrl.element = element;
-    ctrl.intervalTime = intervalTime;
+    ctrl.autoInterval = autoInterval || false;
+    ctrl.intervalTime = intervalTime || 0;
     ctrl.interval = null;
     ctrl.intervalActive = false;
     ctrl.transitionTime = transitionTime;
@@ -36,8 +38,8 @@ function SmoothScroller(element, transitionTime, intervalTime) {
     ctrl.touchEnd = null;
 
     var check = this.init();
-    if (!check.status) {s
-        console.error('Smooth Scroller Error - ' + check.message);
+    if (!check) {
+        console.error('Smooth Scroller Init Error');
         return;
     }
 }
@@ -46,19 +48,17 @@ SmoothScroller.prototype = {
     //~ Init Methodss
     //~ --------------
     init: function () {
-        if (!this.addTouchEvents()) {
-            return { status: false, message: 'first argument \"element\" not found' };
+        if (window.innerWidth < 990) {
+            if (!this.addTouchEvents()) return false;
+        } else {
+            if (!this.addClickEvents()) return false;
         }
-        if (!this.setScrollList()) {
-            return { status: false, message: 'child scroll list not found' };
-        }
-        if (!this.setTransitionTime()) {
-            return { status: false, message: 'second argument \"transition time\" not found' };
-        }
+        if (!this.setScrollList()) return false;
+        if (!this.setTransitionTime()) return false;
 
-        this.startInterval();
+        if (this.autoInterval) this.startInterval();
 
-        return { status: true };
+        return true
     },
     setScrollList: function () {
         const scrollList = this.element.querySelector('[data-role=scroll_list]');
@@ -81,25 +81,57 @@ SmoothScroller.prototype = {
     },
     addTouchEvents: function () {
         var ctrl = this;
-        
+
         if (ctrl.element) {
             ctrl.element.addEventListener('touchstart', function (evt) {
                 ctrl.positionStart = evt.touches[0].clientX;
-        
+
                 if (ctrl.transitionActive) ctrl.stopTransition();
                 if (ctrl.intervalActive) ctrl.stopInterval();
-        
+
                 ctrl.element.addEventListener('touchmove', ctrl.touchMove = function (evt) {
                     evt.preventDefault();
                     ctrl.setPositionChangeFromTouch(evt.touches[0].clientX);
                 });
-        
+
                 ctrl.element.addEventListener('touchend', ctrl.touchEnd = function () {
                     ctrl.setScrollIndex();
                     ctrl.startTransition();
                     ctrl.resetEvents();
                 });
             });
+
+            return true;
+        }
+        return false;
+    },
+    addClickEvents: function () {
+        var ctrl = this;
+
+        if (ctrl.element) {
+            var buttonLeft = ctrl.element.querySelector('button[data-role=scroller_button_left]');
+            if (buttonLeft) {
+                buttonLeft.addEventListener('click', function () {
+                    if (ctrl.transitionActive) return;
+
+                    ctrl.setScrollIndex(1);
+                    ctrl.startTransition();
+                });
+            } else {
+                return false;
+            }
+
+            var buttonRight = ctrl.element.querySelector('button[data-role=scroller_button_right]');
+            if (buttonRight) {
+                buttonRight.addEventListener('click', function () {
+                    if (ctrl.transitionActive) return;
+
+                    ctrl.setScrollIndex(-1);
+                    ctrl.startTransition();
+                });
+            } else {
+                return false;
+            }
 
             return true;
         }
@@ -117,9 +149,9 @@ SmoothScroller.prototype = {
                 ctrl.transitionActive = false;
                 ctrl.transitionDirection = 0;
                 //ctrl.scrollList.classList.toggle('scroller--active', false);
-                ctrl.startInterval();
+                if (ctrl.autoInterval) ctrl.startInterval();
             }, ctrl.transitionTime);
-    
+
             //~ Updates CSS, sets appropriate object state flags
             ctrl.transitionActive = true;
             //ctrl.scrollList.classList.toggle('scroller--active', true);
@@ -140,12 +172,12 @@ SmoothScroller.prototype = {
 
         if (ctrl.intervalActive) ctrl.stopInterval();
         if (ctrl.scrollIndex != ctrl.scrollCount) {
-            ctrl.interval = setTimeout(function() {
+            ctrl.interval = setTimeout(function () {
                 ctrl.intervalActive = false;
                 ctrl.setScrollIndex(-1);
                 ctrl.startTransition();
             }, ctrl.intervalTime);
-    
+
             ctrl.intervalActive = true;
         }
     },
@@ -166,7 +198,7 @@ SmoothScroller.prototype = {
             ctrl.positionChange = changeValue - ctrl.positionStart;
         }
     },
-    setScrollIndex: function(forceChange) {
+    setScrollIndex: function (forceChange) {
         //- process used to increment, decrement scrollIndex
         var change = forceChange || this.positionChange;
 

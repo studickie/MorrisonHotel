@@ -30,7 +30,8 @@
         position: realtive;
         flex-basis: 4rem;
         padding-left: 45%;
-    }
+        padding-right: var(--page-padding-y);
+    }   
 
     .highlight__details > div {
         position: absolute;
@@ -57,4 +58,14 @@
         z-index: -1;
     } */
 } 
+
+@media(min-width: 640px) {
+    .highlight__poster {
+        width: 32%;
+    }
+
+    .highlight__details {
+        padding-left: 37%;
+    } 
+}
 /* '.highlights' Specific - END */

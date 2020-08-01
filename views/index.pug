@@ -5,7 +5,7 @@ block headStyles
 
 block content
     //- Highlights Section
-    section
+    section.page__section
         .section__head
             div
                 h2 Trending Today
@@ -18,19 +18,24 @@ block content
                                 .highlight__display
                                     .highlight__backdrop
                                         picture
-                                            source(media="(max-width:991px)" srcset= ttl.backdropSm)
-                                            source(media="(min-width:1280px)" srcset= ttl.backdropLg)
+                                            source(media="(max-width:639px)" srcset= ttl.backdropSm)
+                                            source(media="(min-width:640px)" srcset= ttl.backdropLg)
                                             img(src= ttl.backdropLg alt= `backdrop graphic for '${ttl.title}'`)
                                     .highlight__poster
                                         picture
-                                            source(media="(max-width: 991px)" srcset= ttl.posterSm)
-                                            source(media="(max-width: 1280px)" srcset= ttl.posterLg)
+                                            source(media="(max-width: 639px)" srcset= ttl.posterSm)
+                                            source(media="(min-width: 640px)" srcset= ttl.posterLg)
                                             img(src= ttl.posterLg alt=`poster art for '${ttl.title}'`)
                                 .highlight__details
                                     span
                                         span= ttl.title
                                         span= ttl.releaseYear
                                 a.highlight__anchor(href= `/title/${ttl.mediaType}/${ttl.tmdbId}`)
+                .scroller__button.scroller__button--left
+                    button(type="button" name="scroller_button_left" data-role='scroller_button_left' aria-label="scroll left") &#60;
+                .scroller__button.scroller__button--right
+                    button(type="button" name="scroller_button_right" data-role="scroller_button_right" aria-label="scroll right") &#62;
+
     //- New Titles
     section
         .section__head
