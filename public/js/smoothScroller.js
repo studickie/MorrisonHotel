@@ -87,7 +87,7 @@ SmoothScroller.prototype = {
                 ctrl.positionStart = evt.touches[0].clientX;
         
                 if (ctrl.transitionActive) ctrl.stopTransition();
-                if (ctrl.intervalActive) ctrl.stopInterval();q
+                if (ctrl.intervalActive) ctrl.stopInterval();
         
                 ctrl.element.addEventListener('touchmove', ctrl.touchMove = function (evt) {
                     evt.preventDefault();

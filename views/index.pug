@@ -2,42 +2,39 @@ extends layout/index.pug
 
 block headStyles 
     link(rel="stylesheet" href="/css/homePage.css")
-    link(rel="stylesheet" href="/css/highlights.css")
 
 block content
+    //- Highlights Section
     section
         .section__head
-            .content__wrapper
+            div
                 h2 Trending Today
         .section__main
-            ul.list--noStyle
-                each ttl in highlights
-                    li
-                        .highlight
-                            .highlight__display
-                                .highlight__backdrop
-                                    picture
-                                        source(media="(max-width:991px)" srcset= ttl.backdropSm)
-                                        source(media="(min-width:1280px)" srcset= ttl.backdropLg)
-                                        img(src= ttl.backdropLg)
-                                .highlight__poster
-                                    picture
-                                        source(media="(max-width: 991px)" srcset= ttl.posterSm)
-                                        source(media="(max-width: 1280px)" srcset= ttl.posterLg)
-                                        img(src= ttl.posterLg)
-                            .highlight__details
-                                div
-                                    p= ttl.title
-                                    p= ttl.releaseYear
-                            a.highlight__anchor(href= `/title/${ttl.mediaType}/${ttl.tmdbId}`)
-
-
-
-
+            div.scroller__container(data-role="smooth_scroller")
+                ul.list--noStyle.scroller__list(data-role="scroll_list")
+                    each ttl in highlights
+                        li.scroller__item(data-role="scroll_item")
+                            .highlight
+                                .highlight__display
+                                    .highlight__backdrop
+                                        picture
+                                            source(media="(max-width:991px)" srcset= ttl.backdropSm)
+                                            source(media="(min-width:1280px)" srcset= ttl.backdropLg)
+                                            img(src= ttl.backdropLg alt= `backdrop graphic for '${ttl.title}'`)
+                                    .highlight__poster
+                                        picture
+                                            source(media="(max-width: 991px)" srcset= ttl.posterSm)
+                                            source(media="(max-width: 1280px)" srcset= ttl.posterLg)
+                                            img(src= ttl.posterLg alt=`poster art for '${ttl.title}'`)
+                                .highlight__details
+                                    span
+                                        span= ttl.title
+                                        span= ttl.releaseYear
+                                a.highlight__anchor(href= `/title/${ttl.mediaType}/${ttl.tmdbId}`)
+    //- New Titles
     section
         .section__head
-            .content__wrapper
-                h2 New in Movies
+            h2 New in Movies
         .posterGroup
             ul.list--noStyle
                 each ptr in moviesNowPlaying
