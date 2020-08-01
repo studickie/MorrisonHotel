@@ -53,7 +53,7 @@
         height: 100%;
     }
 
-    .scroll--transition a.highlight__anchor {
+    .scroller--active a.highlight__anchor {
         z-index: -1;
     }
 } 
