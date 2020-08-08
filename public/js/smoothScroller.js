@@ -42,6 +42,17 @@ function SmoothScroller(element, transitionTime, autoInterval, intervalTime) {
         console.error('Smooth Scroller Init Error');
         return;
     }
+
+    window.addEventListener('resize', function () {
+        //! refactor into callabled actions
+        ctrl.scrollWidth = ctrl.scrollList.getBoundingClientRect().width;
+        ctrl.scrollList.style.transitionDuration = '0ms'
+        ctrl.scrollList.style.transform = 'translate('
+            + (ctrl.scrollWidth * (ctrl.scrollIndex * -1)) + 'px)';
+        setTimeout(function () {
+            ctrl.scrollList.style.transitionDuration = ctrl.transitionTime + 'ms';
+        }, 50)
+    });
 }
 
 SmoothScroller.prototype = {
@@ -73,7 +84,7 @@ SmoothScroller.prototype = {
     },
     setTransitionTime: function () {
         if (this.transitionTime != undefined) {
-            this.scrollList.style.transitionDuration = `${this.transitionTime}ms`;
+            this.scrollList.style.transitionDuration = this.transitionTime + 'ms';
 
             return true;
         }
