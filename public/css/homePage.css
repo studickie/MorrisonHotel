@@ -1,18 +1,15 @@
-/* '.highlights' Specific - START */
+/** 'Highlights' Specific - START */
 @media(min-width: 0px) { 
+    /* .highlight > .highlight__graphics + .highlight__details */
     .highlight {
         position: relative;
-        display: flex;
-        flex-flow: column wrap;
         width: 100%;
-        max-width: 640px;
-        padding-bottom: 2rem;
     }
 
-    .highlight__display {
-        flex-basis: auto;
-        flex-grow: 0;
+    /* .highlight__graphics > .highlight__backdrop + .highlight__poster */
+    .highlight__graphics {
         position: relative;
+        width: 100%;
     }
 
     .highlight__backdrop {
@@ -21,21 +18,17 @@
 
     .highlight__poster {
         position: absolute;
-        bottom: -4rem;
+        bottom: -25%;
+        width: 100%;
+    }
+
+    .highlight__image--poster {
         width: 40%;
-        padding-left: var(--page-padding-y);
+        max-width: 185px;
     }
 
     .highlight__details {
-        position: realtive;
-        flex-basis: 4rem;
-        padding-left: 45%;
-        padding-right: var(--page-padding-y);
-    }   
-
-    .highlight__details > div {
-        position: absolute;
-        padding-right: var(--page-padding-y)
+        padding-left: 41%;
     }
 
     .highlight__details span {
@@ -44,7 +37,7 @@
         color: var(--txt-primary);
     }
 
-    a.highlight__anchor { /* hide, somehow, during transition */
+    a.highlight__anchor {
         position: absolute;
         top: 0;
         left: 0;
@@ -53,19 +46,4 @@
         width: 100%;
         height: 100%;
     }
-
-    /* .scroller--active a.highlight__anchor {
-        z-index: -1;
-    } */
-} 
-
-@media(min-width: 640px) {
-    .highlight__poster {
-        width: 32%;
-    }
-
-    .highlight__details {
-        padding-left: 37%;
-    } 
 }
-/* '.highlights' Specific - END */

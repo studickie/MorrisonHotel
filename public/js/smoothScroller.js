@@ -199,7 +199,7 @@ SmoothScroller.prototype = {
         }
     },
     setScrollIndex: function (forceChange) {
-        //- process used to increment, decrement scrollIndex
+        //- increment, decrement scrollIndex
         var change = forceChange || this.positionChange;
 
         if (change < 0 && this.scrollIndex < this.scrollCount - 1) {
@@ -215,7 +215,7 @@ SmoothScroller.prototype = {
         }
     },
     resetEvents: function () {
-        //- process to run at the end of all touch events
+        //- run after touch events
         this.positionChange = 0;
         this.positionStart = 0;
         this.indexOffset = 0;
