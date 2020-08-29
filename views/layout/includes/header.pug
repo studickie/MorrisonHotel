@@ -2,14 +2,13 @@ header
     .page__wrapper
         .header__wrapper
             h1 Motel Movies 
-            .menu__dropdown(data-role="dropdown")
-                button(type="button" name="toggle_activator" aria-haspopup="true" aria-expanded="false") =
-
+            .dropdown__nav(data-role="dropdown")
+                button(type="button" name="btn_toggle" aria-haspopup="true" aria-expanded="false") =
                 nav
                     ul.dropdown__list(aria-role="listbox")
-                        li 
+                        li.dropdown__item 
                             a(href="/") Home
-                        li
+                        li.dropdown__item
                             a(href="/auth/signin") Signin
 
 

@@ -1,6 +1,6 @@
 extends layout/index.pug
 
-block headStyles 
+block styles 
     link(rel="stylesheet" href="/css/homePage.css")
 
 block content
@@ -31,12 +31,12 @@ block content
                                 .highlight__details
                                     .page__wrapper
                                         span= ttl.title
-                                        span= ttl.releaseYear               
+                                        span= "(" + ttl.releaseYear + ")"               
                                 a.highlight__anchor(href= `/title/${ttl.mediaType}/${ttl.tmdbId}`)
                 .scroller__button.scroller__button--left
-                    button(type="button" name="scroller_button_left" data-role="scroller_button_left" aria-label="scroll left")
+                    button(type="button" name="scroll_left" aria-label="scroll left")
                 .scroller__button.scroller__button--right
-                    button(type="button" name="scroller_button_right" data-role="scroller_button_right" aria-label="scroll right")
+                    button(type="button" name="scroll_right" aria-label="scroll right")
 
 block scripts
     script(src="/js/smoothScroller.js" type="text/javascript")

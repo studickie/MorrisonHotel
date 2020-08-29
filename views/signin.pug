@@ -1,17 +1,38 @@
 extends layout/index.pug
 
 block content
-    .content__wrapper
-        form(name="login_form")
-            fieldset
-                legend= "Sign in"
-                div
-                    label(for="email")
-                    input(type="text" id="email", name="email")
-                div
-                    label(for="password")
-                    input(type="password", id="password", name="password")
-                button(type="button", name="submit") Sign in
+    .page__signin
+        .page__wrapper
+            .signin__container
+                form.signin__form(name="signin" method="POST" action="" enctype="application/x-www-form-urlencoded")
+                    fieldset
+                        legend.signin__legend= "Sign in"
+                        
+                        if formHasError && formErrorMessage
+                            .signin__alert--error 
+                                span.alert__icon--error &#33;
+                                span.alert__text= formErrorMessage
+
+                        .signin__inputGroup
+                            label.signin__label(for="email") Email
+                            input.signin__input(type="text" id="email" name="email" value= submittedEmail)
+
+                            if emailHasError && emailErrorMessage
+                                .signin__alert--error 
+                                    span.alert__icon--error &#33;
+                                    span.alert__text= emailErrorMessage
+
+                        .signin__inputGroup
+                            label.signin__label(for="password") Password
+                            input.signin__input(type="password" id="password" name="password" value= submittedPassword)
+
+                            if passwordHasError && passwordErrorMessage
+                                .signin__alert--error 
+                                    span.alert__icon--error &#33;
+                                    span.alert__text= passwordErrorMessage
+
+                        .signin__button
+                            button(type="submit" name="submit") Sign in
 
 block scripts
     script(src="/js/signin.js" type="text/javascript")
