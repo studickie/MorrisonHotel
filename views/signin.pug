@@ -7,29 +7,36 @@ block content
                 form.signin__form(name="signin" method="POST" action="" enctype="application/x-www-form-urlencoded")
                     fieldset
                         legend.signin__legend= "Sign in"
-                        
-                        if formHasError && formErrorMessage
-                            .signin__alert--error 
-                                span.alert__icon--error &#33;
-                                span.alert__text= formErrorMessage
 
-                        .signin__inputGroup
-                            label.signin__label(for="email") Email
-                            input.signin__input(type="text" id="email" name="email" value= submittedEmail)
+                        if errors
+                            each err in errors
+                                if err.param == 'email'
+                                    .signin__inputGroup
+                                        label.signin__label(for="email") Email
+                                        input.signin__input(type="text" id="email" name="email" value= err.value)
+                                    .signin__alert--error 
+                                        span.alert__icon--error &#33;
+                                        span.alert__text= err.msg
+                        else
+                            .signin__inputGroup
+                                label.signin__label(for="email") Email
+                                input.signin__input(type="text" id="email" name="email")        
 
-                            if emailHasError && emailErrorMessage
-                                .signin__alert--error 
-                                    span.alert__icon--error &#33;
-                                    span.alert__text= emailErrorMessage
 
-                        .signin__inputGroup
-                            label.signin__label(for="password") Password
-                            input.signin__input(type="password" id="password" name="password" value= submittedPassword)
+                        if errors
+                            each err in errors
+                                if err.param == 'password'
+                                    .signin__inputGroup
+                                        label.signin__label(for="password") Password
+                                        input.signin__input(type="password" id="password" name="password" value= err.value)
+                                    .signin__alert--error 
+                                        span.alert__icon--error &#33;
+                                        span.alert__text= err.msg
+                        else
+                            .signin__inputGroup
+                                label.signin__label(for="password") Password
+                                input.signin__input(type="password" id="password" name="password")
 
-                            if passwordHasError && passwordErrorMessage
-                                .signin__alert--error 
-                                    span.alert__icon--error &#33;
-                                    span.alert__text= passwordErrorMessage
 
                         .signin__button
                             button(type="submit" name="submit") Sign in

@@ -1,5 +1,6 @@
 const express = require('express');
 const router = express.Router();
+const { body, validationResult } = require('express-validator');
 const User = require('../models/userModel');
 
 // router.post('/signup', async (req, res) => {
@@ -26,23 +27,18 @@ const User = require('../models/userModel');
 
 router.get('/signin', (req, res) => res.render('signin'));
 
-router.post('/signin', async (req, res) => {
-    const { email, password } = req.body;
+router.post('/signin', [
+    body('email').isEmail().withMessage('Must be a valid email'),
+    body('password').isLength({ min: 8, max: 16}).withMessage('Must be between 8-16 characters')
+], async (req, res) => {
 
-    if (email.length < 8 || password.length < 8) {
-        return res.render('signin', {
-            emailHasError: email.length < 8,
-            emailErrorMessage: 'Email must be at least 8 chatacters long',
-            passwordHasError: password.length < 8,
-            passwordErrorMessage: 'Password must be at least 8 characters long',
-            submittedEmail: email,
-            submittedPassword: password
-        });
+    const errors = validationResult(req);
+    if (!errors.isEmpty()) {
+        console.log('errors', errors.array());
+        return res.render('signin', { errors: errors.array() });
     }
-
     
-
-    res.render('index');
+    res.redirect('/')
 });
 
 router.post('/signout', async (req, res) => {
