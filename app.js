@@ -13,6 +13,7 @@ const ratingRouter = require('./routes/ratingRoute');
 const authRouter = require('./routes/authRoute');
 
 const app = express();
+
 const store = new MongoDBStore({
     uri: process.env.DB_URI,
     collection: 'sessions'
@@ -33,11 +34,14 @@ app.use(session({
     secret: process.env.SESSION_SECRET,
     cookie: {
         httpOnly: true,
-        maxAge: new Date().getTime() + (24 * 60 * 60 * 1000)
+        maxAge: new Date().getTime() + (24 * 60 * 60 * 1000),
+        sameSite: true,
+        secure: true
     },
     store: store,
     resave: true,               //? research into this setting
-    saveUninitialized: true     //? research into this setting
+    saveUninitialized: false,     //? research into this setting
+    unset: 'destroy'
 }));
 
 app.get('/favicon.ico', (req, res) => res.status(204));
