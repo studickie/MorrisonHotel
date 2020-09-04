@@ -3,28 +3,6 @@ const router = express.Router();
 const { body, validationResult } = require('express-validator');
 const User = require('../models/userModel');
 
-// router.post('/signup', async (req, res) => {
-//     const { email, password } = req.body;
-
-//     try {
-//         const userExists = await User.findOne({ email });
-
-//         if (userExists) {
-//             return res.status(404).json({ message: 'User already exists' });
-//         }
-
-//         const newUser = new User({ email, password });
-
-//         await newUser.save();
-
-//         req.session.user = newUser;
-//         res.render('index', { message: 'User created' });
-
-//     } catch (e) {
-//         res.status(500).json({ message: 'Oops! Something went wrong', error: e });
-//     }
-// });
-
 router.get('/signin', (req, res) => res.render('signin'));
 
 router.post('/signin', [
@@ -53,8 +31,8 @@ router.post('/signin', [
             return res.render('signin', { userError: true });
         }
 
-        req.session.user = user;
-        res.redirect('/')
+        req.session.user = user._id;
+        res.redirect('/');
 
     } catch (e) {
         console.log('Error - signin', e);
@@ -63,7 +41,7 @@ router.post('/signin', [
 
 router.post('/signout', async (req, res) => {
     req.session.destroy();
-    res.render('index');
+    return res.status(200).json({ message: 'signout success'});
 });
 
 module.exports = router;

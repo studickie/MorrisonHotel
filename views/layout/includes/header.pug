@@ -8,7 +8,10 @@ header
                     ul.dropdown__list(aria-role="listbox")
                         li.dropdown__item 
                             a(href="/") Home
-                        li.dropdown__item
-                            a(href="/auth/signin") Signin
-
-
+                            
+                        if isAuth
+                            li.dropdown__item
+                                button(type="button" name="btn_signout") Sign Out
+                        else 
+                            li.dropdown__item
+                                a(href="/auth/signin") Sign In

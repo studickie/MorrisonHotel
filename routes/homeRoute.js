@@ -11,7 +11,8 @@ router.get('/', async (req, res) => {
             tmdb.getUpcommingMovies()
         ]);
         
-        res.render('index', { 
+        res.render('index', {
+            isAuth: req.isAuth,
             highlights: movieMapper.mapHighlightsList(content[0].results, 10),
             moviesNowPlaying: movieMapper.mapPosterGroup(content[1].results, 3),
             moviesUpcoming: movieMapper.mapPosterGroup(content[2].results, 3)
