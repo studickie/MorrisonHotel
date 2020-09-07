@@ -74,9 +74,24 @@ const tmdb = {
     //~ ---------------
     //*     Titles
     //~ ---------------
-    getTitleDetails: async (titleId) => {
+    fetchTitleDetails: async (mediaType, titleId) => {
         try {
-            const response = await axios.get(`https://api.themoviedb.org/3/movie/${titleId}`, {
+            const response = await axios.get(`https://api.themoviedb.org/3/${mediaType}/${titleId}`, {
+                params: {
+                    api_key: process.env.TMDB_KEY3,
+                    language: 'en-US'
+                }
+            });
+
+            return response.data;
+        } catch (e) {
+            console.log('error', e)
+            return e;
+        }
+    },
+    fetchTitleVideos: async (mediaType, titleId) => {
+        try {
+            const response = await axios.get(`https://api.themoviedb.org/3/${mediaType}/${titleId}/videos`, {
                 params: {
                     api_key: process.env.TMDB_KEY3,
                     language: 'en-US'

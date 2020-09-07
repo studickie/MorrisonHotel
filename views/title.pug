@@ -1,88 +1,49 @@
 extends layout/index.pug
 
-block styles
-    link(rel="stylesheet", href="/css/title.css")
-
 block content
-    .title__header.title__section
-        .content__wrapper
-            .flex__wrapper--row 
-                h2= titleDetails.title
-                if titleDetails.releaseYear != ''
-                    span= "(" + titleDetails.releaseYear + ")"
-    .title__overview.title__section
-        .content__wrapper
-            .flex__wrapper--row
-                .title__poster
-                    img(src= titleDetails.posterPath, alt= "poster image for \"" + titleDetails.title + "\"")
-                .title__summary
-                    p= titleDetails.summary
-                    .title__watchlist   
-                        //- if details.isSignedin
-                        //-     if !details.isWatchlisted
-                        //-         button(type="button", name="watchlist_add", class="watchlist__button--add", 
-                        //-             data-id= details.id) Add to Watchlist
-                        //-     else
-                        //-         span (on watchlist)
-                        //- else 
-                        //-     a(href= "/auth/signin") Add to Watchlist
-    //- .title__ratings.title__section
-    //-     .content__wrapper
-    //-         .flex__wrapper--row
-    //-             .ratings__average
-    //-                 span= details.vote_average
-    //-             .ratings__userRating
-    //-                 span= details.user_rating
-    //-                 if details.isSignedin
-    //-                     ul.list--noStyle
-    //-                         li
-    //-                             if details.user_rating >= 1
-    //-                                 button(type="button", name="rating", data-value="1", class="button__ratings button__ratings--filled", 
-    //-                                     data-id= details.id, aria-label="Rate title width 1 star") 1
-    //-                             else 
-    //-                                 button(type="button", name="rating", data-value="1", class="button__ratings button__ratings--empty", 
-    //-                                     data-id= details.id, aria-label="Rate title width 1 star") 1
-    //-                         li    
-    //-                             if details.user_rating >= 2
-    //-                                 button(type="button", name="rating", data-value="2", class="button__ratings button__ratings--filled", 
-    //-                                     data-id= details.id, aria-label="Rate title width 2 stars") 2
-    //-                             else
-    //-                                 button(type="button", name="rating", data-value="2", class="button__ratings button__ratings--empty", 
-    //-                                     data-id= details.id, aria-label="Rate title width 2 stars") 2
-    //-                         li    
-    //-                             if details.user_rating >= 3
-    //-                                 button(type="button", name="rating", data-value="3", class="button__ratings button__ratings--filled", 
-    //-                                     data-id= details.id, aria-label="Rate title width 3 stars") 3
-    //-                             else
-    //-                                 button(type="button", name="rating", data-value="3", class="button__ratings button__ratings--empty", 
-    //-                                     data-id= details.id, aria-label="Rate title width 3 stars") 3
-    //-                         li    
-    //-                             if details.user_rating >= 4
-    //-                                 button(type="button", name="rating", data-value="4", class="button__ratings button__ratings--filled", 
-    //-                                     data-id= details.id, aria-label="Rate title width 4 stars") 4
-    //-                             else 
-    //-                                 button(type="button", name="rating", data-value="4", class="button__ratings button__ratings--empty", 
-    //-                                     data-id= details.id, aria-label="Rate title width 4 stars") 4
-    //-                         li    
-    //-                             if details.user_rating == 5
-    //-                                 button(type="button", name="rating", data-value="5", class="button__ratings button__ratings--filled", 
-    //-                                     data-id= details.id, aria-label="Rate title width 5 stars") 5
-    //-                             else 
-    //-                                 button(type="button", name="rating", data-value="5", class="button__ratings button__ratings--empty", 
-    //-                                     data-id= details.id, aria-label="Rate title width 5 stars") 5
-    //-                 else 
-    //-                     a(href= "/auth/signin") Rate title
+    include includes/videoModal.pug
 
-    h3 Cast
-    h3 Crew
-    h3 Similar Titles
-    ul.list--noStyle
-        each ttl in similarTitles
-            li
-                .posterList__image
-                    img(src= ttl.poster_path)
-                .posterList__details
-                    span= ttl.title
-                    span= "(" + ttl.release_year + ")"
-block scripts
-    script(src="/js/title.js" type="text/javascript")
+    section
+        .section__head
+            .page__wrapper
+                h2= title.title
+                div
+                    span= "(" + title.releaseYear + ")"
+        .section__main
+            .page__wrapper
+                .title
+                    div
+                        .title__poster
+                            picture
+                                source(media="(max-width:639px)" srcset= title.posterSm)
+                                source(media="(min-width:640px)" srcset= title.posterLg)
+                                img(src= title.posterLg alt= `backdrop graphic for '${title.title}'`)
+                        .title__meta.title__meta--displaySm
+                            .title__metaItem
+                                <i class="fas fa-film" aria-hidden="true"></i>
+                                span(aria-label="Film runtime")= title.runtime + "min"
+                    div
+                        .title__summary
+                            p= title.summary
+                        .title__video
+                            if video.key
+                                .video__image
+                                    img(src= title.backdropSm)
+                                a(href="#" data-src= video.key id="ancr_modal_open")
+                        //- .title__metaItem
+                        //-     <i class="far fa-star" aria-hidden="true"></i>
+                        //-     span(aria-label="Voter average rating")= title.voteAverage + "/5"
+                        //- .title__metaItem
+                        //-     span.rating__user
+                        //-         if isAuth
+                        //-             select(name="slct_rating")
+                        //-                 option(value="-1" disabled selected) Rate
+                        //-                 option(value="5") 5
+                        //-                 option(value="4") 4
+                        //-                 option(value="3") 3
+                        //-                 option(value="2") 2
+                        //-                 option(value="1") 1
+                        //-                 option(value="0") 0
+                        //-         else 
+                        //-             a(href="/auth/signin") Signin to Rate
+                    

@@ -13,14 +13,14 @@
     --tmdb-secondary: #01b4e4;
     --tmdb-tertiary: #90cea1;
     --black: #101010;
-    --white: #F3F3F3;
-    --off-white: #F3F8F2;
-    --yellow: #E6AF2E;
-    --orange: #DB5A42;
+    --white: #f3f3f3;
+    --off-white: #f3f8f2;
+    --yellow: #e6af2e;
+    --orange: #db5a42;
 
     /* Fonts */
-    --type-header: 'Comfortaa', Arial, Helvetica, sans-serif;
-    --type-primary: 'Open Sans', Arial, Helvetica, sans-serif;
+    --type-header: "Comfortaa", Arial, Helvetica, sans-serif;
+    --type-primary: "Open Sans", Arial, Helvetica, sans-serif;
 
     /* Calc */
     --header-stuff: calc(var(--height-header) - var(--padding-header));
@@ -63,6 +63,7 @@
     p {
         word-spacing: 0.1rem;
         letter-spacing: 0.015rem;
+        line-height: 1.1rem;
     }
 
     img {
@@ -87,10 +88,31 @@
         margin: 0;
         padding: 0;
     }
+
+    /* ----------------------------------------------------------- */
+    /*  From example at https://css-tricks.com/aspect-ratio-boxes/ */
+    /* ----------------------------------------------------------- */
+    .box__aspectRatio {
+        position: relative;
+        height: 0;
+        padding-bottom: 56.25%; /* 9/16 = 0.5625 */
+    }
+
+    .box__aspectRatio iframe {
+        width: 100%;
+        height: 100%;
+    }
+
+    .box__aspectRatio_inside {
+        position: absolute;
+        display: block;
+        width: 100%;
+        height: 100%;
+    }
 }
 
 /** Page Header, Nav-Menu Specific - START */
-@media(min-width: 0px) {
+@media (min-width: 0px) {
     header {
         position: fixed;
         z-index: 500; /* should be top element, unless modal exists */
@@ -143,7 +165,7 @@
 
     .dropdown__nav > button {
         position: relative;
-        z-index: 110;   
+        z-index: 110;
         width: var(--header-stuff);
         height: var(--header-stuff);
         color: #fefefe;
@@ -169,7 +191,7 @@
 }
 
 /** Page Footer Specific - START */
-@media(min-width: 0px) {
+@media (min-width: 0px) {
     footer {
         width: 100%;
         height: var(--height-footer);
@@ -197,7 +219,7 @@
 }
 
 /** Page Sections Specific - START */
-@media(min-width: 0px) {
+@media (min-width: 0px) {
     .section__head {
         height: 4rem;
     }
@@ -215,71 +237,8 @@
     /* section > .section__main { } */
 }
 
-/** Smooth Scroller Specific - START */
-@media(min-width: 0px) {
-    .scroller__container {
-        position: relative;
-        width: 100%;
-        max-width: calc(var(--app-width) - (var(--app-padding-y) * 2));
-        height: auto;
-        margin: 0 auto;
-        overflow: hidden;
-    }
-    
-    .scroller__list {
-        display: flex;
-        flex-flow: row nowrap;
-        transition-duration: 400ms;
-        transition-property: transform;
-        transition-timing-function: ease-out;
-    }
-    
-    .scroller__item {
-        flex-basis: 100%;
-        flex-shrink: 0;
-    }
-
-    .scroller__button {
-        position: absolute;
-        z-index: 600;
-        top: calc(50% - 3rem);
-        transform: translate(0, -50%);
-        display: none;
-        margin: 0 0.5rem;
-    }
-
-    .scroller__button > button {
-        width: 64px;
-        height: 64px;
-        border-radius: 50%;
-        background-color: hsla(0, 0%, 20%, 0.5);
-        background-image: url("/images/icon_sprite.png");
-        background-size: 256px;
-        background-repeat: no-repeat;
-        border: 3px solid var(--tmdb-tertiary);
-    }
-
-    .scroller__button--right {
-        right: 0;
-    }
-
-    .scroller__button--right > button {
-        background-position: -64px -11px;
-    }
-
-    .scroller__button--left > button {
-        background-position: 0 -11px;
-    }
-}
-
-@media(min-width: 991px) {
-    .scroller__button {
-        display: block;
-    }
-}
-
 /** Sign-in Page, Form Specific - START  */
-@media(min-width: 0px) {
+@media (min-width: 0px) {
     .page__signin {
         height: calc(100vh - (var(--height-header) + var(--height-footer)));
         background-image: linear-gradient(to bottom right, var(--tmdb-tertiary), var(--tmdb-secondary));
@@ -348,5 +307,284 @@
 
     .alert__text {
         padding-top: 0.1rem;
+    }
+}
+
+/** Title Page Specific - START */
+@media (min-width: 0px) {
+    .title {}
+
+    .title > div:first-child {
+        display: flex;
+        flex-flow: column wrap;
+        align-items: center;
+    }
+
+    .title > div:last-child {
+        flex-basis: 65%;
+        max-width: 640px;
+    }
+
+    .title__details--left {
+        display: flex;
+        flex-flow: column wrap;
+        align-items: center;
+    }
+
+    .title__poster {
+        max-width: 185px;
+    }
+
+    .title__video {
+        position: relative;
+    }
+
+    .title__video > a {
+        position: absolute;
+        top: 0;
+        left: 0;
+        display: inline-block;
+        width: 100%;
+        height: 100%;
+    }
+
+    .title__meta {
+        display: flex;
+        flex-flow: row nowrap;
+        align-items: center;
+        width: 100%;
+        margin: 0.5rem 0;
+        padding: 0.5rem 0;
+        border: 1px solid hsla(0, 0%, 60%, 0.4);
+        border-left: none;
+        border-right: none;
+    }
+
+    .title__meta--displaySm {
+        display: block;
+    }
+
+    .title__meta--displayLg {
+        display: none;
+    }
+
+    .title__metaItem {
+        flex: 1;
+    }
+}
+
+@media (min-width: 540px) {
+    /* begins change towards larger display design */
+    .title {
+        display: flex;
+        flex-flow: row wrap;
+        justify-content: space-between;
+        align-items: flex-start;
+    }
+
+    .title > div:first-child {
+        flex-basis: 30%;
+        max-width: 340px;
+    }
+
+    .title > div:last-child {
+        flex-basis: 65%;
+        max-width: 640px;
+    }
+}
+
+@media (min-width: 640px) {
+    /* 'picture' element selects larger sized image */
+
+    .title__poster {
+        max-width: 340px;
+    }
+}
+
+/** '.modal--video' Specific - START */
+@media (min-width: 0px) {
+    .modal--hidden {
+        display: none !important;
+    }
+
+    .modal--video {
+        position: fixed;
+        top: 0;
+        left: 0;
+        z-index: 1000;
+        display: block;
+        width: 100%;
+        height: 100%;
+    }
+
+    .modal__overlay {
+        position: absolute;
+        z-index: -1;
+        width: inherit;
+        height: inherit;
+        background-color: hsla(0, 0%, 20%, 0.8);
+    }
+
+    .modal__body {
+        width: 100%;
+        height: 100%;
+        display: flex;
+        flex-flow: row nowrap;
+        justify-content: center;
+        align-items: center;
+        position: relative;
+    }
+
+    /* flex-child wrapper for modal header, main */
+    .modal__body > div {
+        width: 100%;
+    }
+
+    .modal__main {
+        position: relative;
+        height: 0;
+        /* 16:9 ratio */
+        padding-bottom: 56.25%;
+        overflow: hidden;
+    }
+
+    .modal__iframe {
+        position: absolute;
+        width: 100%;
+        height: 100%;
+    }
+
+    .modal__iframe > iframe {
+        width: 100%;
+        height: 100%;
+    }
+}
+
+/** '.highlights' Specific - START */
+@media (min-width: 0px) {
+    /* .highlight > .highlight__graphics + .highlight__details */
+    .highlight {
+        position: relative;
+        width: 100%;
+    }
+
+    /* .highlight__graphics > .highlight__backdrop + .highlight__poster */
+    .highlight__graphics {
+        position: relative;
+        width: 100%;
+    }
+
+    .highlight__backdrop {
+        width: 100%;
+    }
+
+    .highlight__poster {
+        position: absolute;
+        bottom: -4rem;
+        width: 100%;
+    }
+
+    .highlight__image--poster {
+        width: 40%;
+        max-width: 185px;
+        box-shadow: 3px 2px 6px hsla(0, 0%, 30%, 0.2);
+    }
+
+    .highlight__details {
+        height: auto;
+        min-height: 4rem;
+        padding-left: 41%;
+    }
+
+    .highlight__details span {
+        display: block;
+        margin: 0.5rem 0;
+        color: var(--txt-primary);
+    }
+
+    a.highlight__anchor {
+        position: absolute;
+        top: 0;
+        left: 0;
+        z-index: 100;
+        display: block;
+        width: 100%;
+        height: 100%;
+    }
+}
+
+@media (min-width: 640px) {
+    /* matches highlight 'picture' element image break-point value */
+
+    .highlight__image--poster {
+        width: 35%;
+        max-width: 342px;
+    }
+
+    .highlight__details span:first-of-type {
+        font-size: 1.5rem;
+    }
+}
+
+/** Smooth Scroller Specific - START */
+@media (min-width: 0px) {
+    .scroller__container {
+        position: relative;
+        width: 100%;
+        max-width: calc(var(--app-width) - (var(--app-padding-y) * 2));
+        height: auto;
+        margin: 0 auto;
+        overflow: hidden;
+    }
+
+    .scroller__list {
+        display: flex;
+        flex-flow: row nowrap;
+        transition-duration: 400ms;
+        transition-property: transform;
+        transition-timing-function: ease-out;
+    }
+
+    .scroller__item {
+        flex-basis: 100%;
+        flex-shrink: 0;
+    }
+
+    .scroller__button {
+        position: absolute;
+        z-index: 600;
+        top: calc(50% - 3rem);
+        transform: translate(0, -50%);
+        display: none;
+        margin: 0 0.5rem;
+    }
+
+    .scroller__button > button {
+        width: 64px;
+        height: 64px;
+        border-radius: 50%;
+        background-color: hsla(0, 0%, 20%, 0.5);
+        background-image: url("/images/icon_sprite.png");
+        background-size: 256px;
+        background-repeat: no-repeat;
+        border: 3px solid var(--tmdb-tertiary);
+    }
+
+    .scroller__button--right {
+        right: 0;
+    }
+
+    .scroller__button--right > button {
+        background-position: -64px -11px;
+    }
+
+    .scroller__button--left > button {
+        background-position: 0 -11px;
+    }
+}
+
+@media (min-width: 991px) {
+    .scroller__button {
+        display: block;
     }
 }

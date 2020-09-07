@@ -11,7 +11,8 @@ const titleRouter = require('./routes/titleRoute');
 const watchlistRouter = require('./routes/watchlistRoute');
 const ratingRouter = require('./routes/ratingRoute');
 const authRouter = require('./routes/authRoute');
-const { isAuth } = require('./middleware/isAuthMiddleware');
+const { isAuthMiddleware: isAuth } = require('./middleware/isAuthMiddleware');
+const { findUserMiddlware: findUser } = require('./middleware/userMiddleware');
 
 const app = express();
 
@@ -47,9 +48,9 @@ app.use(bodyParser.urlencoded({ extended: false }));
 
 app.get('/favicon.ico', (req, res) => res.status(204));
 app.use('/', isAuth, homeRouter);
-app.use('/title', isAuth, titleRouter);
-app.use('/watchlist', isAuth, watchlistRouter);
-app.use('/rating', isAuth, ratingRouter);
-app.use('/auth', isAuth, authRouter);
+app.use('/title', findUser, titleRouter);
+app.use('/watchlist', watchlistRouter);
+app.use('/rating', ratingRouter);
+app.use('/auth', authRouter);
 
 module.exports = app;

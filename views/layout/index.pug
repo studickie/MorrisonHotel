@@ -7,14 +7,14 @@ html(lang="en")
         link(href="https://fonts.googleapis.com/css2?family=Comfortaa:wght@400;600&family=Open+Sans&display=swap", rel="stylesheet")  
         link(rel="stylesheet", href="/css/setup.css")
         link(rel="stylesheet", href="/css/global.css")
-        block styles
+        script(src="https://kit.fontawesome.com/1c16a594be.js" crossorigin="anonymous")
     body
         include includes/header.pug
         main
             block content
         include includes/footer.pug
 
-        script(src="/js/http.js", type="text/javascript")
-        script(src="/js/toggleElement.js", type="text/javascript")
+        script(src="/js/http.js" type="text/javascript")
+        script(src="/js/toggleElement.js" type="text/javascript")
         block scripts
-        script(src="/js/global.js", type="text/javascript")
+        script(src="/js/global.js" type="text/javascript")

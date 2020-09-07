@@ -1,16 +1,3 @@
-//~ --------------------------------------------------------------
-//*     Smooth Scroller Component
-//~     -------------------------
-//~     Parameters:
-//~     1. element: HTMLElement; scroller containing element
-//~
-//~     Use:
-//~     > modifies element CSS to create a smooth-scroll effects
-//~     > requires a list with attribute 'data-role' as
-//~         'scroll_list', children with attribute 'data-role' as 
-//~         'scroll_item'
-//~ --------------------------------------------------------------
-
 function SmoothScroller(scrollElement) {
     this._index = 0;
 
@@ -60,7 +47,7 @@ SmoothScroller.prototype = {
                 
                 if (this.name == 'scroll_right') {
                     changeValue = ctrl._changeValues.back;
-                } else { //~ it's gunna' be scroll_left
+                } else {
                     changeValue = ctrl._changeValues.forward;
                 }
 
@@ -92,22 +79,19 @@ SmoothScroller.prototype = {
         return ((this._scrollList.width * multiplyer) * -1);
     },
     transitionToNext: function (transformValue) {
-        this._scrollList.element.style.transform = 'translate(' + transformValue + 'px)';
+        this._scrollList._list.style.transform = 'translate(' + transformValue + 'px)';
     }
 };
 
 function ScrollList(scrollElement) {
-    this._scrollElement = scrollElement;
+    this._list = scrollElement;
 }
 
 ScrollList.prototype = {
-    get element() {
-        return this._scrollElement;
-    },
     get width() {
-        return this._scrollElement.getBoundingClientRect().width;
+        return this._list.getBoundingClientRect().width;
     },
     get length() {
-        return this._scrollElement.children.length;
+        return this._list.children.length;
     }
 };

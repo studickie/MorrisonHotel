@@ -1,0 +1,14 @@
+.modal--video.modal--hidden(id="modal_video")
+    .modal__overlay
+    .page__wrapper
+        .modal__body
+            div
+                .modal__header 
+                    button(type="button" name="btn_modal_close" aria-label="Close") X
+                .modal__main
+                    .modal__iframe
+                        iframe(id="modal_video_iframe"
+                        src="" 
+                        frameborder="0" 
+                        allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" 
+                        allowfullscreen)
