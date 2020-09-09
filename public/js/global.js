@@ -24,7 +24,7 @@ mainJs.initSignoutButton = function () {
 }
 
 mainJs.initModalOpenButton = function () {
-    var button = document.querySelector('a#ancr_modal_open');
+    var button = document.querySelector('a#anc_modal_open');
 
     if (button) {
         button.addEventListener('click', function (e) {

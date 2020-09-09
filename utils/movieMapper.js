@@ -157,7 +157,7 @@ class TitleFullDetails extends BaseTitleDetails {
         super(tmdbId, mediaType, title, posterPath, releaseDate);
         this.summary = summary;
         this.runtime = runtime;
-        this.voteAverage = voteAverage;
+        this.voteAverage = ((+voteAverage) / 2).toString();
         this.backdropSm = `https://image.tmdb.org/t/p/w300${backdropPath}`;
     }
 }
