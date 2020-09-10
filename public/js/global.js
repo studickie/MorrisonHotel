@@ -12,7 +12,8 @@ mainJs.initSignoutButton = function () {
     if (button) {
         button.addEventListener('click', function () {
             const xhr = new XMLHttpRequest();
-            xhr.open('POST', 'http://localhost:3000/auth/signout');
+            //xhr.open('POST', 'http://localhost:3000/auth/signout');
+            xhr.open('POST', 'https://morrisonhotel.tech/auth/signout');
 
             xhr.onload = function () {
                 window.location.reload();
