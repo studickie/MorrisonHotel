@@ -44,43 +44,4 @@ router.post('/signout', async (req, res) => {
     return res.status(200).json({ message: 'signout success'});
 });
 
-router.post('/signup', [
-    //~ form validation with express-validator
-    body('email').isEmail()
-        .withMessage('Must be a valid email')
-        .normalizeEmail(),
-    body('password').isLength({ min: 8, max: 16})
-        .withMessage('Must be between 8-16 characters')    
-        .trim()
-        .escape()
-
-], async (req, res) => {
-    //~ act on any form validation errors 
-    const errors = validationResult(req);
-    if (!errors.isEmpty()) {
-        return res.render('signin', { errors: errors.array() });
-    }
-
-    try {
-        const { email, password } = req.body;
-        
-        // find user, validate password
-        const user = await User.findOne({ email });
-        if (user) {
-            return res.render('signin', { userExistsError: true });
-        }
-
-        const newUser = await User.create({
-            email,
-            password
-        });
-        
-        req.session.user = newUser._id;
-        res.redirect('/');
-
-    } catch (e) {
-        console.log('Error - signup', e);
-    }
-});
-
 module.exports = router;
