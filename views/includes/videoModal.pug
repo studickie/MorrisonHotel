@@ -6,9 +6,7 @@
                 .modal__header 
                     button(type="button" name="btn_modal_close" aria-label="Close") X
                 .modal__main
-                    .modal__iframe
-                        iframe(id="modal_video_iframe"
-                        src="" 
-                        frameborder="0" 
-                        allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" 
-                        allowfullscreen)
+                    .modal__iframe(id="video_modal_iframe")
+
+block scripts
+    script(src="/js/videoModal.js" type="text/javascript")
