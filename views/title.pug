@@ -1,32 +1,29 @@
 extends layout/index.pug
 
 block content
-    include includes/videoModal.pug
 
     section
-        .section__head
+        .section__head.section__head--title
             .page__wrapper
                 h2= title.title
-                div
-                    span= "(" + title.releaseYear + ")"
-        .section__main
+                span= "(" + title.releaseYear + ")"
+        .section__main--title
             .page__wrapper
                 .title
-                    .title__content--left
-                        .title__poster
-                            picture
-                                source(media="(max-width:639px)" srcset= title.posterSm)
-                                source(media="(min-width:640px)" srcset= title.posterLg)
-                                img(src= title.posterLg alt= `backdrop graphic for '${title.title}'`)
+                    .title__video
+                        if video.key
+                            .title__iframe--video
+                            div(id="video_iframe" data-src= video.key)
 
-                    .title__content--right
-                        .title__summary
-                            p= title.summary
-                        .title__preview
-                            if video.key
-                                .preview__image
-                                    img(src= title.backdropSm)
-                                    a(href="#" data-src= video.key id="anc_modal_open")
+                    .title__poster
+                        picture(id="poster_picture")
+                            source(media="(max-width:639px)" srcset= title.posterSm)
+                            source(media="(min-width:640px)" srcset= title.posterLg)
+                            img(src= title.posterLg alt= `backdrop graphic for '${title.title}'`)
+
+                    .title__summary
+                        p= title.summary 
+                    
 
                 //- .title__meta.title__meta--displaySm
                 //-     .title__metaItem
@@ -48,4 +45,6 @@ block content
                 //-                     option(value="0") 0
                 //-             else 
                 //-                 a(href="/auth/signin") Signin to Rate
-
+block scripts
+    script(src="https://www.youtube.com/iframe_api" type="text/javascript" defer="true")
+    script(src="/js/title.js" type="text/javascript")

@@ -1,9 +1,34 @@
-// var titlePage = {};
+//~ --------------------------------------------------------------
+//~     YouTube iframe API
+//~     https://developers.google.com/youtube/iframe_api_reference
+//~ --------------------------------------------------------------
 
-// titlePage.init = function() {}
+var player = null;
 
-// window.addEventListener('load', titlePage.init);
+function onYouTubeIframeAPIReady() {
+    var key = document.querySelector('#video_iframe').getAttribute('data-src');
+    var iframeHeight = window.innerWidth < 1024 
+        ? document.querySelector('.page__wrapper').getBoundingClientRect().width * 0.5625
+        : document.querySelector('#poster_picture').getBoundingClientRect().height;
+        
+    player = new YT.Player('video_iframe', {
+        videoId: key,
+        width: '100%',
+        height: iframeHeight,
+        events: {
+            //'onReady': onPlayerReady,
+            //'onStateChange': onPlayerStateChange
+        }
+    });
+}
 
+function onPlayerReady(event) {
+    console.log('on ready', event, event.target);
+}
+
+function onPlayerStateChange(event) {
+    console.log('change', event, event.target);
+}
 
 
 
@@ -46,7 +71,7 @@
 // //~ ----------------------
 // titlePage.addMovieToWatchlist = function (tmdbId) {
 //     //! disable button
-    
+
 //     http('POST', 'http://localhost:3000/watchlist', { tmdbId })
 //         .then(function(response) {
 //             console.log('success:', response);
