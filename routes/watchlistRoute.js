@@ -3,10 +3,9 @@ const router = express.Router();
 const Watchlist = require('../models/watchlistModel');
 const tmdb = require('../utils/tmdb');
 const movieMapper = require('../utils/movieMapper');
-const auth = require('../middleware/authMiddleware');
 const User = require('../models/userModel');
 
-router.get('/', auth, async (req, res) => {
+router.get('/', async (req, res) => {
     const { '_id': userid } = req.session.user;
     
     try {
@@ -23,23 +22,24 @@ router.get('/', auth, async (req, res) => {
     }
 });
 
-router.post('/', auth, async (req, res) => {
+router.post('/', async (req, res) => {
     const { tmdbId } = req.body;
-    const { '_id': userid, watchlist } = req.session.user;
+    const { '_id': userid } = req.session.user;
     
     try {
+        const user = await User.findById(userid).populate('watchlist', 'tmdbId');
+        
+        if (user.watchlist.filter(itm => itm.tmdbId == tmdbId).length > 0) {
+            return res.status(404).json({ message: 'Movie is already in watchlist' });
+        }
+
         const newWatchlist = await Watchlist.create({ 
             tmdbId: tmdbId,
             posted: userid
         });
-        
-        watchlist.push(newWatchlist);
 
-        await User.findByIdAndUpdate(userid, {
-            $push: {
-                watchlist: newWatchlist._id
-            }
-        });
+        user.watchlist.push(newWatchlist._id);
+        await user.save();
         
         res.status(200).json({ message: 'Movie successfuly added to watchlist', newMovie: newWatchlist });
 
@@ -48,7 +48,7 @@ router.post('/', auth, async (req, res) => {
     }
 });
 
-router.delete('/:id', auth, async (req, res) => {
+router.delete('/:id', async (req, res) => {
     const { 'id': tmdbId } = req.params;
     const { '_id': userid, watchlist } = req.session.user;
 

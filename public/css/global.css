@@ -111,9 +111,17 @@
         width: 100%;
         height: 100%;
     }
+
+    /* ------------------- */
+    /*     Re-Useable      */
+    /* ------------------- */
+    .icon__star {
+        color: var(--yellow);
+    }
 }
 
-@media(min-width: 1024px) { /* max width of .page__wrapper */
+@media (min-width: 1024px) {
+    /* max width of .page__wrapper */
 
     /* main::before {
         content: "";
@@ -251,6 +259,10 @@
         height: 4rem;
     }
 
+    .section__main--gray {
+        background-color: hsl(0, 0%, 33%);
+    }
+
     .section__head--title {
         height: auto;
         padding: 2rem 0;
@@ -291,7 +303,7 @@
     /* section > .section__main { } */
 }
 
-@media(min-width: 1024px) {
+@media (min-width: 1024px) {
     .section__main--title {
         padding-top: 2rem;
     }
@@ -373,36 +385,76 @@
 /** Title Page Specific - START */
 @media (min-width: 0px) {
     .title {
+        position: relative;
+        display: flex;
+        flex-flow: row wrap;
+    }
+
+    .title > div {
         display: flex;
         flex-flow: row wrap;
     }
 
     .title__video {
+        order: 1;
         flex-basis: 100%;
     }
 
     .title__poster {
+        order: 2;
         flex-basis: 40%;
         padding: 1rem 0.5rem 1rem 0;
     }
 
     .title__summary {
+        order: 3;
         flex-basis: 60%;
         padding: 1rem 0 1rem 0.5rem;
     }
 
-    .title__summary > p{
+    .title__summary > p {
         font-size: 0.8rem;
         color: hsla(0, 0%, 80%);
     }
+
+    /*  ratings, watchlist section */
+
+    .title__actions {
+        display: flex;
+        flex-flow: row nowrap;
+    }
+
+    .title__ratings {
+        flex-basis: 40%;
+        display: flex;
+        flex-flow: row wrap;
+        justify-content: center;
+        align-items: center;
+    }
+
+    .title__button--watchlist {
+        flex-grow: 1;
+        display: flex;
+        flex-flow: row nowrap;
+        justify-content: center;
+        align-items: center;
+    }
+
+    .title__button--watchlist > button,
+    .title__button--watchlist > a {
+        display: inline-block;
+        padding: 0.5rem 1rem;
+        background-color: var(--tmdb-secondary);
+        border: 1px solid var(--tmdb-primary);
+        border-radius: 5px;
+    }
 }
 
-@media(min-width: 1024px) {
-
+@media (min-width: 640px) {
     .title__video {
+        order: 2;
         flex-basis: auto;
         flex-grow: 1;
-        order: 1;
         position: relative;
         height: 0;
         padding-bottom: 42%; /* why does 42 work? */
@@ -410,13 +462,12 @@
     }
 
     .title__poster {
+        order: 1;
         flex-basis: 28%;
-        order: 0;
         padding: 0;
     }
 
     .title__summary {
-        order: 2;
         flex-basis: 100%;
         padding: 2rem 10px;
         color: hsl(0, 0%, 90%);
@@ -627,7 +678,7 @@
     }
 }
 
-@media(min-width: 1024px) {
+@media (min-width: 1024px) {
     .scroller__container {
         max-width: calc(var(--app-width) - (var(--app-padding-lg) * 2));
     }

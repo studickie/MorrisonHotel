@@ -62,7 +62,7 @@ exports.mapHighlightsList = (list, count = 0) => {
 exports.mapTitleDetails = (data) => {
     const title = data.title || data.name,
         releaseDate = data.release_date || data.first_air_date,
-        runtime = data.runtime || data.episode_run_time[0];
+        runtime = (data.runtime != undefined) ? data.runtime : data.episode_run_time[0];
 
     return new TitleFullDetails(
         data.id,
@@ -157,7 +157,7 @@ class TitleFullDetails extends BaseTitleDetails {
         super(tmdbId, mediaType, title, posterPath, releaseDate);
         this.summary = summary;
         this.runtime = runtime;
-        this.voteAverage = ((+voteAverage) / 2).toString();
+        this.voteAverage = voteAverage;
         this.backdropSm = `https://image.tmdb.org/t/p/w300${backdropPath}`;
     }
 }

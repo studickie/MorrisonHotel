@@ -48,7 +48,7 @@ app.use(bodyParser.urlencoded({ extended: false }));
 
 app.get('/favicon.ico', (req, res) => res.status(204));
 app.use('/', isAuth, homeRouter);
-app.use('/title', findUser, titleRouter);
+app.use('/title', titleRouter);
 app.use('/watchlist', watchlistRouter);
 app.use('/rating', ratingRouter);
 app.use('/auth', authRouter);

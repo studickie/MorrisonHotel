@@ -6,12 +6,12 @@ const User = require('../models/userModel');
 
 router.post('/', auth, async (req, res) => {
     const { tmdbId, 'rating': userRating } = req.body;
-    const { '_id': userid, ratings } = req.session.user;
+    const { '_id': userid } = req.session.user;
 
     try {
-        const user = await User.findOne({ _id: userid }).populate('ratings');
+        const user = await User.findOne({ _id: userid }).populate('ratings', 'tmdbId');
         let rating;
-
+        console.log('pop user', user)
         if (user.ratings.findIndex(itm => itm.tmdbId == tmdbId) != -1) {
             //- update existing rating
             rating = await Rating.findOneAndUpdate({ tmdbId }, { rating: userRating });
@@ -24,13 +24,15 @@ router.post('/', auth, async (req, res) => {
             });
         }
 
-        ratings.push(rating);
-        
-        await User.findByIdAndUpdate(userid, {
-            $push: {
-                ratings: rating._id
-            }
-        });
+        user.ratings.push(rating._id);
+        console.log('after push', user)
+
+        await user.save();
+        // await User.findByIdAndUpdate(userid, {
+        //     $push: {
+        //         ratings: rating._id
+        //     }
+        // });
         
         res.status(200). json({ message: 'Successfuly rated title', rating: rating });
         

@@ -8,6 +8,7 @@ exports.findUserMiddlware = async (req, res, next) => {
         try {
             const user = await User.findById(req.session.user);
             req.user = user;
+
             return next();
 
         } catch (e) {

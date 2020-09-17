@@ -2,6 +2,8 @@ extends layout/index.pug
 
 block content
 
+    input(type="hidden" value= userRating id="hdn_user_rating")
+
     section
         .section__head.section__head--title
             .page__wrapper
@@ -10,41 +12,54 @@ block content
         .section__main--title
             .page__wrapper
                 .title
-                    .title__video
-                        if video.key
-                            .title__iframe--video
-                            div(id="video_iframe" data-src= video.key)
+                    div
+                        .title__video
+                            if video.key
+                                .title__iframe--video
+                                div(id="video_iframe" data-src= video.key)
 
-                    .title__poster
-                        picture(id="poster_picture")
-                            source(media="(max-width:639px)" srcset= title.posterSm)
-                            source(media="(min-width:640px)" srcset= title.posterLg)
-                            img(src= title.posterLg alt= `backdrop graphic for '${title.title}'`)
+                        .title__poster
+                            picture(id="poster_picture")
+                                source(media="(max-width:639px)" srcset= title.posterSm)
+                                source(media="(min-width:640px)" srcset= title.posterLg)
+                                img(src= title.posterLg alt= `Movie poster for '${title.title}'`)
 
-                    .title__summary
-                        p= title.summary 
-                    
+                        .title__summary
+                            p= title.summary
 
-                //- .title__meta.title__meta--displaySm
-                //-     .title__metaItem
-                //-         //- <i class="fas fa-film" aria-hidden="true"></i>
-                //-         span(aria-label="Runtime")= title.runtime + "min"
-                //-     .title__metaItem
-                //-         //- <i class="far fa-star" aria-hidden="true"></i>
-                //-         span(aria-label="Average rating")= title.voteAverage + "/5"
-                //-     .title__metaItem
-                //-         span.rating__user
-                //-             if isAuth
-                //-                 select(name="slct_rating")
-                //-                     option(value="-1" disabled selected) Rate
-                //-                     option(value="5") 5
-                //-                     option(value="4") 4
-                //-                     option(value="3") 3
-                //-                     option(value="2") 2
-                //-                     option(value="1") 1
-                //-                     option(value="0") 0
-                //-             else 
-                //-                 a(href="/auth/signin") Signin to Rate
+    section
+        .section__main.section__main--gray
+            .page__wrapper
+                .title__actions
+                    .title__ratings
+                        div
+                            i.fas.fa-star.icon__star(aria-hidden="true")
+                            span
+                                span= title.voteAverage
+                                span /10
+                        div
+                            if isAuth
+                                span= userRating
+                                select(name="slct_rating" data-id= title.tmdbId)
+                                    each num in [-1, 10, 9, 8, 7, 6, 5, 4, 3, 2, 1]
+                                        if num == -1
+                                            if userRating == num
+                                                option(value= num disabled selected) Rate
+                                            else 
+                                                option(value= num disabled) Rate
+                                        else
+                                            if userRating == num
+                                                option(value= num selected)= num
+                                            else 
+                                                option(value= num)= num
+                            else
+                                a.title__anchor--rate(href="/signin") Sign in to rate
+                    .title__button--watchlist
+                        if isWatchlisted
+                            a(href='/watchlist') See my watchlist
+                        else
+                            button(type="button" name="btn_watchlist_add" data-id= title.tmdbId) Add to watchlist
+
 block scripts
-    script(src="https://www.youtube.com/iframe_api" type="text/javascript" defer="true")
     script(src="/js/title.js" type="text/javascript")
+    script(src="https://www.youtube.com/iframe_api" type="text/javascript" defer="true")
