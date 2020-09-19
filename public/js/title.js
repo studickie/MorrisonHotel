@@ -49,17 +49,6 @@ titlePage.init = function () {
 window.addEventListener('load', titlePage.init);
 
 titlePage.player = null;
-titlePage.breakpointWidth = 640;
-
-titlePage.getPlayerIframeHeight = function () {
-    return window.innerWidth < titlePage.breakpointWidth 
-        ? document.querySelector('.page__wrapper').getBoundingClientRect().width * 0.5625
-        : document.querySelector('#poster_picture').getBoundingClientRect().height;
-}
-
-window.addEventListener('resize', function() {
-    titlePage.player.f.height = titlePage.getPlayerIframeHeight();
-});
 
 //~ --------------------------------------------------------------
 //~     YouTube iframe API
@@ -72,7 +61,7 @@ function onYouTubeIframeAPIReady() {
     titlePage.player = new YT.Player('video_iframe', {
         videoId: key,
         width: '100%',
-        height: titlePage.getPlayerIframeHeight(),
+        height: '100%',
         events: {
             //'onReady': onPlayerReady,
             //'onStateChange': onPlayerStateChange
