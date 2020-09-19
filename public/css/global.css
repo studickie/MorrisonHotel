@@ -8,6 +8,8 @@
     --height-footer: 3rem;
     --page-padding-y: 1.6rem;
     --h1-sm: 1.5rem;
+    --title-poster-width-sm: 40%;
+    --title-poster-width-lg: 28%;
 
     /* Colours */
     --tmdb-primary: #0d253f;
@@ -402,7 +404,7 @@
 
     .title__poster {
         order: 2;
-        flex-basis: 40%;
+        flex-basis: var(--title-poster-width-sm);
         padding: 1rem 0.5rem 1rem 0;
     }
 
@@ -422,14 +424,44 @@
     .title__actions {
         display: flex;
         flex-flow: row nowrap;
+        padding: 0.5rem 0
     }
 
     .title__ratings {
-        flex-basis: 40%;
+        flex-basis: var(--title-poster-width-sm);
         display: flex;
         flex-flow: row wrap;
         justify-content: center;
         align-items: center;
+    }
+
+    .title__rating--average {
+        display: flex;
+        flex-flow: row wrap;
+        justify-content: center;
+        align-items: center;
+        width: 100%;
+        padding-bottom: 0.25rem;
+    }
+
+    .title__rating--average i {
+        flex-basis: 20%;
+        font-size: 1rem;
+        text-align: center;
+    }
+
+    .title__rating--average .rating__numerator {
+        margin-right: 0.2rem;
+        font-size: 1.6rem;
+        color: var(--white);
+    }
+
+    .title__rating--average .rating__denominator {
+        color: hsl(0, 0%, 70%);
+    }
+
+    .title__rating--user {
+        padding-top: 0.25rem;
     }
 
     .title__button--watchlist {
@@ -443,10 +475,14 @@
     .title__button--watchlist > button,
     .title__button--watchlist > a {
         display: inline-block;
+        width: auto;
         padding: 0.5rem 1rem;
+        text-align: center;
+        font-family: var(--type-header);
+        font-weight: 600;
         background-color: var(--tmdb-secondary);
         border: 1px solid var(--tmdb-primary);
-        border-radius: 5px;
+        /* border-radius: 5px; */
     }
 }
 
@@ -470,7 +506,7 @@
 
     .title__poster {
         order: 1;
-        flex-basis: 28%;
+        flex-basis: var(--title-poster-width-lg);
         padding: 0;
     }
 
@@ -483,6 +519,55 @@
     .title__summary > p {
         font-size: 1rem;
     }
+
+    .title__ratings {
+        flex-basis: var(--title-poster-width-lg);
+    }
+
+    .title__rating--average,
+    .title__rating--user {
+        padding: 0;
+    }
+
+    .title__rating--average i {
+        font-size: 1.3rem;
+    }
+
+    .title__rating--average .rating__numerator {
+        font-size: 2rem;
+    }
+
+    .title__button--watchlist > button,
+    .title__button--watchlist > a {
+        width: 60%;
+        font-size: 1.3rem;
+    }
+}
+
+@media(min-width: 768px) {
+
+    .title__actions {
+        padding: 1rem 0;
+    }
+
+    .title__ratings {
+        justify-content: flex-start;
+    }
+
+    .title__rating--average,
+    .title__rating--user {
+        flex: 1;
+    }
+
+    .title__rating--user {
+        text-align: center;
+    }
+
+    .title__rating--average i {
+        flex-basis: unset;
+        margin-right: 5%;
+    }
+       
 }
 
 /** '.highlights' Specific - START */

@@ -28,12 +28,12 @@ block content
             .page__wrapper
                 .title__actions
                     .title__ratings
-                        div
+                        .title__rating.title__rating--average
                             i.fas.fa-star.icon__star(aria-hidden="true")
                             span
-                                span= title.voteAverage
-                                span /10
-                        div 
+                                span.rating__numerator= title.voteAverage
+                                span.rating__denominator /10
+                        .title__rating.title__rating--user 
                             if isAuth
                                 input(type="hidden" value= userRating id="hdn_user_rating")
                                 select(name="slct_rating" data-id= title.tmdbId)
