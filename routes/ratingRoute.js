@@ -1,38 +1,37 @@
 const express = require('express');
 const router = express.Router();
 const Rating = require('../models/ratingModel');
-const auth = require('../middleware/authMiddleware');
 const User = require('../models/userModel');
 
-router.post('/', auth, async (req, res) => {
+router.post('/', async (req, res) => {
     const { tmdbId, 'rating': userRating } = req.body;
     const { '_id': userid } = req.session.user;
 
     try {
-        const user = await User.findOne({ _id: userid }).populate('ratings', 'tmdbId');
+        const user = await User.findOne({ _id: userid }).populate({
+            path: 'ratings', 
+            match: { tmdbId }
+        });
+        
         let rating;
-        console.log('pop user', user)
-        if (user.ratings.findIndex(itm => itm.tmdbId == tmdbId) != -1) {
+        if (user.ratings[0]) {
             //- update existing rating
-            rating = await Rating.findOneAndUpdate({ tmdbId }, { rating: userRating });
+            rating = await Rating.findById(user.ratings[0]._id);
+            rating.rating = userRating;
+            await rating.save();
+
         } else {
-            //- create new rating
+            //~ create new rating
             rating = await Rating.create({
                 tmdbId: tmdbId,
                 rating: userRating,
                 posted: userid
             });
+
+            //~ only push to user if new rating
+            user.ratings.push(rating._id);
+            await user.save();
         }
-
-        user.ratings.push(rating._id);
-        console.log('after push', user)
-
-        await user.save();
-        // await User.findByIdAndUpdate(userid, {
-        //     $push: {
-        //         ratings: rating._id
-        //     }
-        // });
         
         res.status(200). json({ message: 'Successfuly rated title', rating: rating });
         

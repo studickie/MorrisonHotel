@@ -2,8 +2,6 @@ extends layout/index.pug
 
 block content
 
-    input(type="hidden" value= userRating id="hdn_user_rating")
-
     section
         .section__head.section__head--title
             .page__wrapper
@@ -27,7 +25,6 @@ block content
                         .title__summary
                             p= title.summary
 
-    section
         .section__main.section__main--gray
             .page__wrapper
                 .title__actions
@@ -37,21 +34,15 @@ block content
                             span
                                 span= title.voteAverage
                                 span /10
-                        div
+                        div 
                             if isAuth
-                                span= userRating
+                                input(type="hidden" value= userRating id="hdn_user_rating")
                                 select(name="slct_rating" data-id= title.tmdbId)
                                     each num in [-1, 10, 9, 8, 7, 6, 5, 4, 3, 2, 1]
                                         if num == -1
-                                            if userRating == num
-                                                option(value= num disabled selected) Rate
-                                            else 
-                                                option(value= num disabled) Rate
-                                        else
-                                            if userRating == num
-                                                option(value= num selected)= num
-                                            else 
-                                                option(value= num)= num
+                                            option(value= num disabled selected) Rate
+                                        else 
+                                            option(value= num)= num
                             else
                                 a.title__anchor--rate(href="/signin") Sign in to rate
                     .title__button--watchlist

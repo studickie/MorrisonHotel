@@ -14,8 +14,8 @@ const RatingSchema = new mongoose.Schema({
     },
     rating: {
         type: Number,
-        min: 1,
-        max: 5
+        min: 0,
+        max: 10
     },
     posted: {
         type: mongoose.Schema.Types.ObjectId,

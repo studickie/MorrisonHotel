@@ -15,27 +15,15 @@ titlePage.createWatchlistAnchor = function() {
 }
 
 titlePage.addMovieToWatchlist = function (tmdbId) {
-    //! disable button
-
     http('POST', 'http://localhost:3000/watchlist', { tmdbId })
-        .then(function(response) {
-            console.log('success:', response);
-
-            titlePage.createWatchlistAnchor();
-        })
+        .then(titlePage.createWatchlistAnchor())
         .catch(function(error) {
             console.log('error:', error);
-        })
+        });
 }
 
 titlePage.updateTitleRating = function( tmdbId, rating) {
-    http('POST', 'http://localhost:3000/rating', { tmdbId, rating })
-        .then(function(response) {
-            console.log('success', response);
-        })
-        .catch(function(error) {
-            console.log('error', error)
-        })
+    http('POST', 'http://localhost:3000/rating', { tmdbId, rating });
 }
 
 titlePage.init = function () {
@@ -49,6 +37,7 @@ titlePage.init = function () {
     }
 
     if (slctRating) {
+        //~ set value of rating dropdown from hidden input value
         slctRating.value = document.querySelector('input[id=hdn_user_rating]').value;
 
         slctRating.addEventListener('change', function(e) {
