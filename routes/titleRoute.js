@@ -2,8 +2,8 @@ const express = require('express');
 const router = express.Router();
 const User = require('../models/userModel');
 const {
-    fetchTitleDetails,
-    fetchTitleVideos
+    getTitleDetails,
+    getTitleVideos
 } = require('../utils/tmdb');
 const {
     mapTitleDetails,
@@ -24,13 +24,16 @@ router.get('/:mediaType/:id', async (req, res, next) => {
         }
 
         const response = await Promise.all([
-                fetchTitleDetails(mediaType, tmdbId),
-                fetchTitleVideos(mediaType, tmdbId)
+                getTitleDetails(mediaType, tmdbId),
+                getTitleVideos(mediaType, tmdbId)
         ]);
+        
+        console.log('detail', mapTitleDetails(response[0]))
 
         res.render('title', {
             isAuth: req.isAuth,
             title: mapTitleDetails(response[0]),
+            mediaType: mediaType,
             video: selectRelevantVideo(response[1].results || []),
             isWatchlisted: user && user.watchlist[0]
                 ? (user.watchlist[0].tmdbId == tmdbId) 

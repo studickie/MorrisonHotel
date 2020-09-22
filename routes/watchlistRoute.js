@@ -2,7 +2,7 @@ const express = require('express');
 const router = express.Router();
 const Watchlist = require('../models/watchlistModel');
 const tmdb = require('../utils/tmdb');
-const movieMapper = require('../utils/movieMapper');
+const { mapTitleList } = require('../utils/movieMapper');
 const User = require('../models/userModel');
 
 router.get('/', async (req, res) => {
@@ -11,11 +11,10 @@ router.get('/', async (req, res) => {
     try {
         const user = await User.findOne({ _id: userid }).populate('watchlist');
         
-        const titleDetails = await Promise.all(user.watchlist.map(itm => tmdb.getTitleDetails(itm.tmdbId)));
+        const response = await Promise.all(user.watchlist.map(itm => tmdb.getTitleDetails(itm.mediaType, itm.tmdbId)));
         
-        const listToReturn = movieMapper.mapWatchlist(titleDetails);
-        
-        res.render('watchlist', { watchlist: listToReturn });
+        res.render('watchlist', { titles: mapTitleList(response, user.watchlist) });
+        //res.status(200).json({ user, titles: mapTitleList(response, user.watchlist) });
 
     } catch (e) {
         res.status(500).json({ message: "Oops! Something went wrong", error: e });
@@ -23,7 +22,7 @@ router.get('/', async (req, res) => {
 });
 
 router.post('/', async (req, res) => {
-    const { tmdbId } = req.body;
+    const { tmdbId, mediaType } = req.body;
     const { '_id': userid } = req.session.user;
     
     try {
@@ -35,7 +34,8 @@ router.post('/', async (req, res) => {
 
         const newWatchlist = await Watchlist.create({ 
             tmdbId: tmdbId,
-            posted: userid
+            posted: userid,
+            mediaType: mediaType
         });
 
         user.watchlist.push(newWatchlist._id);

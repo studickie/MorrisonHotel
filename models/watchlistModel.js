@@ -19,4 +19,7 @@ const WatchlistSchema = new mongoose.Schema({
     }
 }, options);
 
+
+WatchlistSchema.add({ mediaType: 'string' });
+
 module.exports = mongoose.model('Watchlist', WatchlistSchema);

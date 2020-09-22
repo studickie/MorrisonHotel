@@ -14,8 +14,8 @@ titlePage.createWatchlistAnchor = function() {
     parent.appendChild(anchor);
 }
 
-titlePage.addMovieToWatchlist = function (tmdbId) {
-    http('POST', 'http://localhost:3000/watchlist', { tmdbId })
+titlePage.addMovieToWatchlist = function (tmdbId, mediaType) {
+    http('POST', 'http://localhost:3000/watchlist', { tmdbId, mediaType })
         .then(titlePage.createWatchlistAnchor())
         .catch(function(error) {
             console.log('error:', error);
@@ -32,7 +32,7 @@ titlePage.init = function () {
 
     if (titlePage.btnAddWatchlist) {
         titlePage.btnAddWatchlist.addEventListener('click', function() {
-            titlePage.addMovieToWatchlist(this.getAttribute('data-id'));
+            titlePage.addMovieToWatchlist(this.getAttribute('data-id'), this.getAttribute('data-type'));
         });
     }
 

@@ -74,7 +74,7 @@ const tmdb = {
     //~ ---------------
     //*     Titles
     //~ ---------------
-    fetchTitleDetails: async (mediaType, titleId) => {
+    getTitleDetails: async (mediaType, titleId) => {
         try {
             const response = await axios.get(`https://api.themoviedb.org/3/${mediaType}/${titleId}`, {
                 params: {
@@ -89,7 +89,7 @@ const tmdb = {
             return e;
         }
     },
-    fetchTitleVideos: async (mediaType, titleId) => {
+    getTitleVideos: async (mediaType, titleId) => {
         try {
             const response = await axios.get(`https://api.themoviedb.org/3/${mediaType}/${titleId}/videos`, {
                 params: {

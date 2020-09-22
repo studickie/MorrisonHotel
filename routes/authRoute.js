@@ -1,6 +1,8 @@
+const path = require('path');
 const express = require('express');
 const router = express.Router();
 const { body, validationResult } = require('express-validator');
+require('dotenv').config({ path: path.resolve(__dirname, '../.env') });
 const User = require('../models/userModel');
 
 router.get('/signin', (req, res) => res.render('signin'));
@@ -34,6 +36,18 @@ router.post('/signin', [
         req.session.user = user._id;
         res.redirect('/');
 
+    } catch (e) {
+        console.log('Error - signin', e);
+    }
+});
+
+router.post('/signin?mode=guest', async (req, res) => {
+    try {
+        const user = await User.findOne({ email: process.env.GUEST_EMAIL });
+
+        req.session.user = user._id;
+        res.redirect('/');
+        
     } catch (e) {
         console.log('Error - signin', e);
     }

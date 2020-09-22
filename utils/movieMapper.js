@@ -1,60 +1,42 @@
 exports.mapPosterList = (list, count = 0) => {
     count = count || list.length;
-    let i = 0, listToReturn = [];
 
-    while (listToReturn.length < count && i < list.length) {
-        if (list[i].poster_path) {
-            let itm = list[i];
-            listToReturn.push(
-                new PosterListItem(itm.id, itm.media_type, itm.title, itm.poster_path, itm.release_date,
-                    itm.vote_average));
+    return iterate(list, count, (itm) => {
+        if (itm.poster_path) {
+            let itm = itm;
+            let title = itm.title || itm.name, releaseDate = itm.release_date || itm.first_air_date;
+
+            return new PosterListItem(itm.id, title, itm.poster_path, releaseDate, itm.vote_average);
         }
-
-        i++;
-    }
-
-    return listToReturn;
+    });
 }
 
 //  <summary>
 //  retuns data for grouped images
 exports.mapPosterGroup = (list, count = 0) => {
     count = count || list.length;
-    let i = 0; listToReturn = [];
 
-    while (listToReturn.length < count && i < list.length) {
-        if (list[i].poster_path) {
-            let itm = list[i];
+    return iterate(list, count, (itm) => {
+        if (itm.poster_path) {
+            let itm = itm;
             listToReturn.push(
-                new BaseTitleDetails(itm.id, itm.media_type, itm.title, itm.poster_path, itm.release_date));
+                new BaseTitleDetails(itm.id, itm.title, itm.poster_path, itm.release_date));
         }
-
-        i++;
-    }
-
-    return listToReturn;
+    });
 }
 
 //  <summary>
 //  returns data for home page highlights reel
 exports.mapHighlightsList = (list, count = 0) => {
     count = count || list.length;
-    let i = 0, listToReturn = [];
 
-    while (listToReturn.length < count && i < list.length) {
-        if (list[i].poster_path && list[i].backdrop_path) {
-            let itm = list[i],
-                title = itm.title || itm.name,
-                releaseDate = itm.release_date || itm.first_air_date;
+    return iterate(list, count, (itm) => {
+        if (itm.poster_path && itm.backdrop_path) {
+            let title = itm.title || itm.name, releaseDate = itm.release_date || itm.first_air_date;
 
-            listToReturn.push(
-                new HighlightsItem(itm.id, itm.media_type, title, itm.poster_path, releaseDate, itm.backdrop_path));
+            return new HighlightsItem(itm.id, title, itm.poster_path, releaseDate, itm.media_type, itm.backdrop_path);
         }
-
-        i++;
-    }
-
-    return listToReturn;
+    });
 }
 
 //  <summary>
@@ -66,7 +48,6 @@ exports.mapTitleDetails = (data) => {
 
     return new TitleFullDetails(
         data.id,
-        data.media_type,
         title, data.poster_path,
         releaseDate,
         data.overview,
@@ -76,15 +57,16 @@ exports.mapTitleDetails = (data) => {
     );
 }
 
-exports.mapWatchlist = (list) => {
-    return list.map(itm => {
-        return {
-            id: itm.id,
-            title: itm.title,
-            release_year: itm.release_date.slice(0, 4),
-            poster_path: `https://image.tmdb.org/t/p/w342${itm.poster_path}`
-        }
-    })
+exports.mapTitleList = (list, refList) => {
+    const listToReturn = list.map(itm => {
+        const title = itm.title || itm.name, releaseDate = itm.release_date || itm.first_air_date;
+
+        const mediaType = refList.filter(ref => ref.tmdbId == itm.id)[0].mediaType;
+
+        return new TitleListItem(itm.id, title, itm.poster_path, releaseDate, mediaType);
+    });
+
+    return listToReturn;
 }
 
 //  <summary> 
@@ -98,10 +80,10 @@ exports.selectRelevantVideo = (list) => {
                     score: setVideoScore(vid)
                 });
             }
-    
+
             return acc;
         }, []).sort((a, b) => b.score - a.score)[0];
-        
+
         return list.find(vid => vid.id == result.id);
 
     } else {
@@ -109,6 +91,12 @@ exports.selectRelevantVideo = (list) => {
     }
 }
 
+//~ --------------------
+//~     Utilities
+//~ --------------------
+
+//  <summary> 
+//  returns a score based on set criteria to help with selecting most relevant video from a list
 const setVideoScore = (videoData) => {
     const name = videoData.name.toLowerCase();
     const type = videoData.type.toLowerCase();
@@ -135,14 +123,27 @@ const setVideoScore = (videoData) => {
     return score;
 }
 
+//  <summary> 
+//  allows iterating over an array to retrieive a set amount of items which meet a certain criteria
+const iterate = (list, count, execute) => {
+    let listToReturn = [], i = 0;
+
+    while (listToReturn.length < count && i < list.length) {
+        listToReturn = listToReturn.concat([execute(list[i])]);
+
+        i++;
+    }
+
+    return listToReturn;
+}
+
 
 //~ --------------------
 //~     Types
 //~ --------------------
 class BaseTitleDetails {
-    constructor(tmdbId, mediaType, title, posterPath, releaseDate) {
+    constructor(tmdbId, title, posterPath, releaseDate) {
         this.tmdbId = tmdbId;
-        this.mediaType = mediaType;
         this.title = title;
         this.posterSm = `https://image.tmdb.org/t/p/w185${posterPath}`;
         this.posterLg = `https://image.tmdb.org/t/p/w342${posterPath}`;
@@ -153,8 +154,8 @@ class BaseTitleDetails {
 }
 
 class TitleFullDetails extends BaseTitleDetails {
-    constructor(tmdbId, mediaType, title, posterPath, releaseDate, summary, runtime, voteAverage, backdropPath) {
-        super(tmdbId, mediaType, title, posterPath, releaseDate);
+    constructor(tmdbId, title, posterPath, releaseDate, summary, runtime, voteAverage, backdropPath) {
+        super(tmdbId, title, posterPath, releaseDate);
         this.summary = summary;
         this.runtime = runtime;
         this.voteAverage = voteAverage;
@@ -163,19 +164,23 @@ class TitleFullDetails extends BaseTitleDetails {
 }
 
 class PosterListItem extends BaseTitleDetails {
-    constructor(tmdbId, mediaType, title, posterPath, releaseDate, avgRating) {
-        super(tmdbId, mediaType, title, posterPath, releaseDate);
-        this.avgRating = this.motelRating(avgRating);
+    constructor(tmdbId, title, posterPath, releaseDate, avgRating) {
+        super(tmdbId, title, posterPath, releaseDate);
+        this.avgRating = avgRating;
     }
+}
 
-    motelRating = (rating) => {
-        return Math.round(Number(rating/2))
+class TitleListItem extends BaseTitleDetails {
+    constructor(tmdbId, title, posterPath, releaseDate, mediaType) {
+        super(tmdbId, title, posterPath, releaseDate);
+        this.mediaType = mediaType;
     }
 }
 
 class HighlightsItem extends BaseTitleDetails {
-    constructor(tmdbId, mediaType, title, posterPath, releaseDate, backdropPath) {
-        super(tmdbId, mediaType, title, posterPath, releaseDate);
+    constructor(tmdbId, title, posterPath, releaseDate, mediaType, backdropPath) {
+        super(tmdbId, title, posterPath, releaseDate);
+        this.mediaType = mediaType;
         this.backdropSm = `https://image.tmdb.org/t/p/w780${backdropPath}`;
         this.backdropLg = `https://image.tmdb.org/t/p/w1280${backdropPath}`;
     }
