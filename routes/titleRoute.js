@@ -24,11 +24,9 @@ router.get('/:mediaType/:id', async (req, res, next) => {
         }
 
         const response = await Promise.all([
-                getTitleDetails(mediaType, tmdbId),
-                getTitleVideos(mediaType, tmdbId)
+            getTitleDetails(mediaType, tmdbId),
+            getTitleVideos(mediaType, tmdbId)
         ]);
-        
-        console.log('detail', mapTitleDetails(response[0]))
 
         res.render('title', {
             isAuth: req.isAuth,
@@ -36,13 +34,13 @@ router.get('/:mediaType/:id', async (req, res, next) => {
             mediaType: mediaType,
             video: selectRelevantVideo(response[1].results || []),
             isWatchlisted: user && user.watchlist[0]
-                ? (user.watchlist[0].tmdbId == tmdbId) 
+                ? (user.watchlist[0].tmdbId == tmdbId)
                 : false,
             userRating: user && user.ratings[0]
-                ?  user.ratings[0].rating
+                ? user.ratings[0].rating
                 : -1
         });
-        
+
     } catch (e) {
         return next(e);
     }

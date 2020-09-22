@@ -13,8 +13,10 @@ router.get('/', async (req, res) => {
         
         const response = await Promise.all(user.watchlist.map(itm => tmdb.getTitleDetails(itm.mediaType, itm.tmdbId)));
         
-        res.render('watchlist', { titles: mapTitleList(response, user.watchlist) });
-        //res.status(200).json({ user, titles: mapTitleList(response, user.watchlist) });
+        return res.render('watchlist', { 
+            isAuth: req.isAuth,
+            titles: mapTitleList(response, user.watchlist) 
+        });
 
     } catch (e) {
         res.status(500).json({ message: "Oops! Something went wrong", error: e });
@@ -41,7 +43,7 @@ router.post('/', async (req, res) => {
         user.watchlist.push(newWatchlist._id);
         await user.save();
         
-        res.status(200).json({ message: 'Movie successfuly added to watchlist', newMovie: newWatchlist });
+        return res.status(200).json({ message: 'Movie successfuly added to watchlist', newMovie: newWatchlist });
 
     } catch (e) {
         res.status(500).json({ message: 'Oops! Something went wrong', error: e });
@@ -50,18 +52,10 @@ router.post('/', async (req, res) => {
 
 router.delete('/:id', async (req, res) => {
     const { 'id': tmdbId } = req.params;
-    const { '_id': userid, watchlist } = req.session.user;
+    const { '_id': userid } = req.session.user;
 
     try {
-        const titleToDelete = await Watchlist.findOne({ tmdbId });
-        
-        watchlist.splice(watchlist.findIndex(itm => itm._id == titleToDelete._id), 1);
-
-        await User.findByIdAndUpdate(userid, {
-            $pull: {
-                watchlist: titleToDelete._id
-            }
-        });
+        //const titleToDelete = await Watchlist.findOne({ tmdbId });
         
         res.status(200).json({ message: 'Successfuly removed from watchlist', movieId: titleToDelete._id });
 
