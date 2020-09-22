@@ -18,9 +18,8 @@ exports.mapPosterGroup = (list, count = 0) => {
 
     return iterate(list, count, (itm) => {
         if (itm.poster_path) {
-            let itm = itm;
-            listToReturn.push(
-                new BaseTitleDetails(itm.id, itm.title, itm.poster_path, itm.release_date));
+            let title = itm.title || itm.name, releaseDate = itm.release_date || itm.first_air_date;
+            return new BaseTitleDetails(itm.id, title, itm.poster_path, releaseDate);
         }
     });
 }
