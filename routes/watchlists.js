@@ -8,7 +8,7 @@ const Mongoose = require('mongoose');
 const ObjectId = Mongoose.Types.ObjectId;
 
 router.get('/', async (req, res) => {
-    const { '_id': userId } = req.session.user;
+    const { userId } = req.session.user;
 
     try {
         const user = await User.findOne({ _id: userId }).populate('watchlist');
@@ -44,13 +44,13 @@ router.post('/', async (req, res) => {
         const watchlist = await Watchlist.findOne({ tmdbId });
 
         if (watchlist) {
-            await Watchlist.updateOne({ tmdbId }, {
+            await watchlist.updateOne({
                 $push: {
                     posted: new ObjectId(userId)
                 }
             });
             
-            await User.updateOne({ _id: userId }, {
+            await user.updateOne({
                 $push: {
                     watchlist: new ObjectId(watchlist._id)
                 }
@@ -63,7 +63,7 @@ router.post('/', async (req, res) => {
                 posted: [ new ObjectId(userId) ]
             });
             
-            await User.updateOne({ _id: userId }, {
+            await user.updateOne({
                 $push: {
                     watchlist: new ObjectId(newWatchlist._id)
                 }
@@ -98,7 +98,7 @@ router.delete('/', async (req, res) => {
             }
         });
 
-        await User.updateOne({ _id: userId }, {
+        await user.updateOne({
             $pull: {
                 watchlist: user.watchlist[0]._id
             }
@@ -110,19 +110,5 @@ router.delete('/', async (req, res) => {
         res.status(500).json({ message: 'Error', e });
     }
 });
-
-// router.delete('/:id', async (req, res) => {
-//     const { 'id': tmdbId } = req.params;
-//     const { '_id': userid } = req.session.user;
-
-//     try {
-//         //const titleToDelete = await Watchlist.findOne({ tmdbId });
-
-//         res.status(200).json({ message: 'Successfuly removed from watchlist', movieId: titleToDelete._id });
-
-//     } catch (e) {
-//         res.status(500).json({ message: 'Oops! Something went wrong', error: e });
-//     }
-// });
 
 module.exports = router;
