@@ -1,7 +1,8 @@
 var titlePage = {};
 titlePage.btnAddWatchlist = null;
+titlePage.player = null;
 
-titlePage.createWatchlistAnchor = function() {
+titlePage.createWatchlistAnchor = function () {
     var parent = document.querySelector('.title__button--watchlist');
 
     parent.removeChild(titlePage.btnAddWatchlist);
@@ -15,15 +16,17 @@ titlePage.createWatchlistAnchor = function() {
 }
 
 titlePage.addMovieToWatchlist = function (tmdbId, mediaType) {
-    http('POST', 'http://localhost:3000/watchlist', { tmdbId, mediaType })
-        .then(titlePage.createWatchlistAnchor())
-        .catch(function(error) {
-            console.log('error:', error);
-        });
+    mainJs.requestUpdateWatchlist(tmdbId, mediaType)
+        .then(function(res) {
+            console.log(res)
+            if (res.ok) {
+                titlePage.createWatchlistAnchor()
+            }
+        })
 }
 
-titlePage.updateTitleRating = function( tmdbId, rating) {
-    http('POST', 'http://localhost:3000/rating', { tmdbId, rating });
+titlePage.updateTitleRating = function (tmdbId, rating) {
+
 }
 
 titlePage.init = function () {
@@ -31,8 +34,9 @@ titlePage.init = function () {
     var slctRating = document.querySelector('select[name=slct_rating]');
 
     if (titlePage.btnAddWatchlist) {
-        titlePage.btnAddWatchlist.addEventListener('click', function() {
-            titlePage.addMovieToWatchlist(this.getAttribute('data-id'), this.getAttribute('data-type'));
+        titlePage.btnAddWatchlist.addEventListener('click', function () {
+            var tmdbId = this.getAttribute('data-id'), mediaType = this.getAttribute('data-type');
+            titlePage.addMovieToWatchlist(tmdbId, mediaType);
         });
     }
 
@@ -40,15 +44,13 @@ titlePage.init = function () {
         //~ set value of rating dropdown from hidden input value
         slctRating.value = document.querySelector('input[id=hdn_user_rating]').value;
 
-        slctRating.addEventListener('change', function(e) {
+        slctRating.addEventListener('change', function (e) {
             titlePage.updateTitleRating(this.getAttribute('data-id'), parseInt(e.target.value));
         });
     }
 }
 
 window.addEventListener('load', titlePage.init);
-
-titlePage.player = null;
 
 //~ --------------------------------------------------------------
 //~     YouTube iframe API
@@ -57,22 +59,11 @@ titlePage.player = null;
 
 function onYouTubeIframeAPIReady() {
     var key = document.querySelector('#video_iframe').getAttribute('data-src');
-        
+
     titlePage.player = new YT.Player('video_iframe', {
         videoId: key,
         width: '100%',
         height: '100%',
-        events: {
-            //'onReady': onPlayerReady,
-            //'onStateChange': onPlayerStateChange
-        }
+        events: {}
     });
-}
-
-function onPlayerReady(event) {
-    console.log('on ready', event, event.target);
-}
-
-function onPlayerStateChange(event) {
-    console.log('change', event, event.target);
 }

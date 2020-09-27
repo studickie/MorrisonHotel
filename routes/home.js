@@ -20,6 +20,7 @@ router.get('/', async (req, res) => {
 
         res.render('index', {
             isAuth: req.isAuth,
+            apiUrl: req.apiUrl,
             highlights: mapHighlightsList(response[0].results, 10),
             moviesNowPlaying: mapPosterGroup(response[1].results, 3),
             moviesUpcoming: mapPosterGroup(response[2].results, 3)

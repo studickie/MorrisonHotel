@@ -10,17 +10,18 @@ const {
     selectRelevantVideo
 } = require('../utils/movieMapper');
 
-router.get('/:mediaType/:id', async (req, res, next) => {
-    const { id: tmdbId, mediaType } = req.params;
+router.get('/:mediaType/:tmdbId', async (req, res, next) => {
+    const { tmdbId, mediaType } = req.params;
 
     try {
         let user;
         if (req.isAuth) {
+            const { userId } = req.session.user;
             const populateQuery = [
                 { path: 'watchlist', match: { tmdbId }, select: 'tmdbId' },
                 { path: 'ratings', match: { tmdbId }, select: 'rating' }];
 
-            user = await User.findById(req.session.user).populate(populateQuery);
+            user = await User.findById(userId).populate(populateQuery);
         }
 
         const response = await Promise.all([
@@ -30,6 +31,7 @@ router.get('/:mediaType/:id', async (req, res, next) => {
 
         res.render('title', {
             isAuth: req.isAuth,
+            apiUrl: req.apiUrl,
             title: mapTitleDetails(response[0]),
             mediaType: mediaType,
             video: selectRelevantVideo(response[1].results || []),

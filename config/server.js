@@ -1,7 +1,5 @@
+require('dotenv').config();
 const mongoose = require('mongoose');
-const dotenv = require('dotenv');
-dotenv.config();
-const app = require('./app');
 
 const options = {
     useNewUrlParser: true,
@@ -25,9 +23,4 @@ mongoose.connection.on('error', (error) => {
 // When the connection is disconnected
 mongoose.connection.on('disconnected', () => {  
     console.log('Mongoose disconnected');
-});
-
-const port = process.env.PORT || 3000;
-app.listen(port, () => {
-    console.log(`Server is running on ${port}`);
 });
