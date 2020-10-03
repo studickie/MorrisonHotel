@@ -62,7 +62,19 @@ exports.mapTitleList = (list, refList) => {
 
         const mediaType = refList.filter(ref => ref.tmdbId == itm.id)[0].mediaType;
 
-        return new TitleListItem(itm.id, title, itm.poster_path, releaseDate, mediaType);
+        return new TitleListItem(itm.id, title, itm.poster_path, releaseDate, mediaType, itm.vote_average);
+    });
+
+    return listToReturn;
+}
+
+exports.mapTitleListWithRatings = (list, refList) => {
+    const listToReturn = list.map(itm => {
+        const title = itm.title || itm.name, releaseDate = itm.release_date || itm.first_air_date;
+
+        const ref = refList.filter(ref => ref.tmdbId == itm.id)[0];
+
+        return new RatedTitleListItem(itm.id, title, itm.poster_path, releaseDate, ref.mediaType, itm.vote_average, ref.rating);
     });
 
     return listToReturn;
@@ -170,9 +182,17 @@ class PosterListItem extends BaseTitleDetails {
 }
 
 class TitleListItem extends BaseTitleDetails {
-    constructor(tmdbId, title, posterPath, releaseDate, mediaType) {
+    constructor(tmdbId, title, posterPath, releaseDate, mediaType, voteAverage) {
         super(tmdbId, title, posterPath, releaseDate);
         this.mediaType = mediaType;
+        this.voteAverage = voteAverage;
+    }
+}
+
+class RatedTitleListItem extends TitleListItem {
+    constructor(tmdbId, title, posterPath, releaseDate, mediaType, voteAverage, userRating) {
+        super(tmdbId, title, posterPath, releaseDate, mediaType, voteAverage);
+        this.userRating = userRating;
     }
 }
 

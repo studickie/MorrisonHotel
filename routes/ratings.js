@@ -1,43 +1,93 @@
+const path = require('path');
 const express = require('express');
 const router = express.Router();
-const Rating = require('../models/ratingModel');
-const User = require('../models/userModel');
+const User = require(path.resolve(__dirname, '../models/userModel'));
+const Rating = require(path.resolve(__dirname, '../models/ratingModel'));
+const { getTitleDetails } = require(path.resolve(__dirname, "../utils/tmdb"));
+const { mapTitleListWithRatings } = require(path.resolve(__dirname, "../utils/movieMapper"));
+const catchAsync = require(path.resolve(__dirname, '../utils/catchAsync'));
+const mongoose = require('mongoose');
+const ObjectId = mongoose.Types.ObjectId;
 
-router.post('/', async (req, res) => {
-    const { tmdbId, 'rating': userRating } = req.body;
-    const { '_id': userid } = req.session.user;
+router.get('/', catchAsync(async (req, res) => {
+    const { userId } = req.session.user;
 
-    try {
-        const user = await User.findOne({ _id: userid }).populate({
-            path: 'ratings', 
-            match: { tmdbId }
+    const user = await User.findOne({ _id: userId}).populate('ratings');
+
+    const response = await Promise.all(user.ratings.map(itm => {
+        return getTitleDetails(itm.mediaType, itm.tmdbId);
+    }));
+
+    return res.render('titleList', {
+        isAuth: req.isAuth,
+        apiUrl: req.apiUrl,
+        showWatchlistButton: false,
+        titles: mapTitleListWithRatings(response, user.ratings)
+    });
+}));
+
+router.post('/', catchAsync(async (req, res) => {
+    const { tmdbId, 'rating': userRating, mediaType } = req.body;
+    const { userId } = req.session.user;
+
+    const user = await User.findOne({ _id: userId }).populate({
+        path: 'ratings', 
+        match: { tmdbId }
+    });
+    
+    let rating;
+    if (user.ratings[0]) {
+        //- update existing rating
+        rating = await Rating.updateOne({_id: user.ratings[0]._id}, {
+            rating: userRating
         });
-        
-        let rating;
-        if (user.ratings[0]) {
-            //- update existing rating
-            rating = await Rating.findById(user.ratings[0]._id);
-            rating.rating = userRating;
-            await rating.save();
 
-        } else {
-            //~ create new rating
-            rating = await Rating.create({
-                tmdbId: tmdbId,
-                rating: userRating,
-                posted: userid
-            });
+    } else {
+        //~ create new rating
+        rating = await Rating.create({
+            tmdbId: tmdbId,
+            mediaType: mediaType,
+            rating: userRating,
+            posted: userId
+        });
 
-            //~ only push to user if new rating
-            user.ratings.push(rating._id);
-            await user.save();
-        }
-        
-        res.status(200). json({ message: 'Successfuly rated title', rating: rating });
-        
-    } catch (e) {
-        res.status(500).json({ message: "Oops! Something went wrong", error: e });
+        //~ only push to user if new rating
+        await user.updateOne({
+            $push: {
+                ratings: (new ObjectId(rating._id))
+            }
+        });
     }
-});
+    
+    res.status(200). json({ message: 'Successfuly rated title', rating: rating });
+}));
+
+router.delete('/', catchAsync(async (req, res) => {
+    const { tmdbId } = req.body;
+    const { userId } = req.session.user;
+
+    const user = await User.findOne({ _id: userId }).populate({
+        path: 'ratings',
+        match: { tmdbId }
+    });
+
+    if (!user.ratings) {
+        res.status(404).json({ message: 'Requested title not found'});
+    }
+
+    await Rating.deleteOne({ _id: user.ratings[0]._id });
+
+    //~ ------------------------------------------------------------
+    //~     Mongoose's Documnet#updateOne method
+    //~     masteringjs.io/tutorials/mongoose/update
+    //~ ------------------------------------------------------------
+    await user.updateOne({
+        $pull: {
+            ratings: new ObjectId(user.ratings[0]._id)
+        }
+    });
+
+    res.status(200).json({ message: 'Rating successfuly removed'});
+}));
 
 module.exports = router;

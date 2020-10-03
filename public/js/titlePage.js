@@ -1,5 +1,6 @@
 var titlePage = {};
 titlePage.btnAddWatchlist = null;
+titlePage.slctRating = null;
 titlePage.player = null;
 
 titlePage.createWatchlistAnchor = function () {
@@ -15,48 +16,51 @@ titlePage.createWatchlistAnchor = function () {
     parent.appendChild(anchor);
 }
 
-titlePage.addMovieToWatchlist = function (tmdbId, mediaType) {
-    mainJs.requestUpdateWatchlist(tmdbId, mediaType)
-        .then(function(res) {
-            console.log(res)
-            if (res.ok) {
-                titlePage.createWatchlistAnchor()
-            }
-        })
-}
-
-titlePage.updateTitleRating = function (tmdbId, rating) {
-
-}
-
-titlePage.init = function () {
+titlePage.initWatchlist = function () {
     titlePage.btnAddWatchlist = document.querySelector('button[name=btn_watchlist_add]');
-    var slctRating = document.querySelector('select[name=slct_rating]');
 
     if (titlePage.btnAddWatchlist) {
         titlePage.btnAddWatchlist.addEventListener('click', function () {
             var tmdbId = this.getAttribute('data-id'), mediaType = this.getAttribute('data-type');
-            titlePage.addMovieToWatchlist(tmdbId, mediaType);
-        });
-    }
-
-    if (slctRating) {
-        //~ set value of rating dropdown from hidden input value
-        slctRating.value = document.querySelector('input[id=hdn_user_rating]').value;
-
-        slctRating.addEventListener('change', function (e) {
-            titlePage.updateTitleRating(this.getAttribute('data-id'), parseInt(e.target.value));
+            mainJs.requestUpdateWatchlist(tmdbId, mediaType)
+                .then(function (res) {
+                    if (res.ok) {
+                        titlePage.createWatchlistAnchor()
+                    }
+                });
         });
     }
 }
 
-window.addEventListener('load', titlePage.init);
+titlePage.initRating = function () {
+    titlePage.slctRating = document.querySelector('select[name=slct_rating]');
+
+    if (titlePage.slctRating) {
+        //~ set value of rating dropdown from hidden input value
+        titlePage.slctRating.value = document.querySelector('input[id=hdn_user_rating]').value;
+
+        titlePage.slctRating.addEventListener('change', function (e) {
+            var tmdbId = this.getAttribute('data-id'), mediaType = this.getAttribute('data-type'),
+                rating = parseInt(this.value);
+
+            if (rating < 1) {
+                mainJs.requestDeleteRating(tmdbId);
+            } else {
+                mainJs.requestUpdateRating(rating, tmdbId, mediaType);
+            }
+        });
+    }
+}
+
+window.addEventListener('load', function () {
+    titlePage.initWatchlist();
+    titlePage.initRating();
+});
 
 //~ --------------------------------------------------------------
 //~     YouTube iframe API
-//~     https://developers.google.com/youtube/iframe_api_reference
+//~     developers.google.com/youtube/iframe_api_reference
 //~ --------------------------------------------------------------
-
 function onYouTubeIframeAPIReady() {
     var key = document.querySelector('#video_iframe').getAttribute('data-src');
 
@@ -66,4 +70,4 @@ function onYouTubeIframeAPIReady() {
         height: '100%',
         events: {}
     });
-}
+}      

@@ -20,12 +20,14 @@ const bodyParser = require('body-parser');
 const helmet = require('helmet');
 const session = require(path.resolve(__dirname, './session'));
 const userSettings = require(path.resolve(__dirname, '../middleware/userSettings'));
+const userAuth = require(path.resolve(__dirname, '../middleware/userAuth'));
+const { logErrors } = require(path.resolve(__dirname, '../middleware/handleError'));
 
-app.use(express.static(path.resolve(__dirname, '../public')));
 app.use(helmet());
 app.use(session);
-app.use(bodyParser.urlencoded({ extended: true }));
 app.use(userSettings);
+app.use(bodyParser.urlencoded({ extended: true }));
+app.use(express.static(path.resolve(__dirname, '../public')));
 
 /**
  *      ROUTES
@@ -34,15 +36,17 @@ app.use(userSettings);
 const home = require(path.resolve(__dirname, '../routes/home'));
 const users = require(path.resolve(__dirname, '../routes/users'));
 const titles = require(path.resolve(__dirname, '../routes/titles'));
-const watchlsits = require(path.resolve(__dirname, '../routes/watchlists'));
+const watchlists = require(path.resolve(__dirname, '../routes/watchlists'));
 const ratings = require(path.resolve(__dirname, '../routes/ratings'));
 
 app.get('/favicon.ico', (req, res) => res.status(204));
 app.use('/', home);
 app.use('/title', titles);
 app.use('/user', users);
-app.use('/watchlist', watchlsits);
-app.use('/rating', ratings);
+app.use('/watchlist', userAuth, watchlists);
+app.use('/ratings', userAuth, ratings);
+
+app.use(logErrors);
 
 const port = process.env.PORT || 3000;
 app.listen(port, () => {

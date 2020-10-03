@@ -4,17 +4,16 @@ function SmoothScroller(scrollElement) {
     this._scrollElement = scrollElement;
     this._scrollList = new ScrollList(scrollElement.querySelector('[data-role=scroll_list]'));
 
-    this._changeValues = {
-        forward: 1,
-        back: -1,
-        noChange: 0
-    };
-
     this.addTouchEvents();
     this.addClickEvents();
 }
 
 SmoothScroller.prototype = {
+    changeValues: {
+        forward: 1,
+        back: -1,
+        noChange: 0
+    },
     handleChangeEvent: function (changeValue) {
         if (this.canScroll(this._index, changeValue)) {
             this._index = this.calcDifference(this._index, changeValue);
@@ -43,12 +42,12 @@ SmoothScroller.prototype = {
 
         buttons.forEach(function(btn) {
             btn.addEventListener('click', function(e) {
-                var changeValue = ctrl._changeValues.noChange;
+                var changeValue = ctrl.changeValues.noChange;
                 
                 if (this.name == 'scroll_right') {
-                    changeValue = ctrl._changeValues.back;
+                    changeValue = ctrl.changeValues.back;
                 } else {
-                    changeValue = ctrl._changeValues.forward;
+                    changeValue = ctrl.changeValues.forward;
                 }
 
                 ctrl.handleChangeEvent(changeValue);
@@ -60,16 +59,16 @@ SmoothScroller.prototype = {
     },
     calcChangeValue(delta) {
         return (delta > 0)
-            ? this._changeValues.back
+            ? this.changeValues.back
             : (delta < 0)
-                ? this._changeValues.forward
-                : this._changeValues.noChange;
+                ? this.changeValues.forward
+                : this.changeValues.noChange;
     },
     canScroll: function (index, changeValue) {
         switch (changeValue) {
-            case this._changeValues.back:
+            case this.changeValues.back:
                 return (index < this._scrollList.length - 1);
-            case this._changeValues.forward:
+            case this.changeValues.forward:
                 return (index > 0);
             default:
                 return false;

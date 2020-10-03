@@ -36,14 +36,14 @@ block content
                         .title__rating.title__rating--user 
                             if isAuth
                                 input(type="hidden" value= userRating id="hdn_user_rating")
-                                select(name="slct_rating" data-id= title.tmdbId)
-                                    each num in [-1, 10, 9, 8, 7, 6, 5, 4, 3, 2, 1]
+                                select(name="slct_rating" data-id= title.tmdbId data-type= mediaType)
+                                    each num in [-1, 10, 9, 8, 7, 6, 5, 4, 3, 2, 1, 0]
                                         if num == -1
                                             option(value= num disabled selected) Rate
                                         else 
                                             option(value= num)= num
                             else
-                                a.title__anchor--rate(href="/signin") Sign in to rate
+                                a.title__anchor--rate(href="/user/auth/signin") Sign in to rate
                     .title__button--watchlist
                         if isWatchlisted
                             a(href='/watchlist') See my watchlist
@@ -52,5 +52,5 @@ block content
                                 data-id= title.tmdbId data-type= mediaType) Add to watchlist
 
 block scripts
-    script(src="/js/title.js" type="text/javascript")
+    script(src="/js/titlePage.js" type="text/javascript")
     script(src="https://www.youtube.com/iframe_api" type="text/javascript" defer="true")

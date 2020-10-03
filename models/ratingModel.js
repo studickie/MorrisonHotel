@@ -14,11 +14,11 @@ const RatingSchema = new mongoose.Schema({
         type: String,
         required: true
     },
-    posted: [{
+    posted: {
         type: mongoose.Schema.Types.ObjectId,
         ref: 'User',
         required: true
-    }]
+    }
 });
 
 module.exports = mongoose.model('Rating', RatingSchema);
