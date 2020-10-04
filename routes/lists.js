@@ -9,18 +9,16 @@ router.get('/search', catchAsync(async (req, res) => {
     const { query } = req.query;
 
     if (!query) {
-        return res.status(404).json({ message: 'No search paramters provided' });
+        return res.status(404).json({ message: 'No search paramters provided', query });
     }
 
     const response = await getSearchResults(query);
-    
+
     return res.render('titleList', { 
         isAuth: req.isAuth,
         apiUrl: req.apiUrl,
         titles: mapTitleList(response.results) 
     });
 }));
-
-
 
 module.exports = router;

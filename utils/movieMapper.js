@@ -182,7 +182,7 @@ class BaseTitleDetails {
         this.releaseYear = this.dateToYear(releaseDate);
     }
 
-    dateToYear = (date) => date.slice(0, 4);
+    dateToYear = (date) => date ? date.slice(0, 4) : '';
 }
 
 class TitleFullDetails extends BaseTitleDetails {
