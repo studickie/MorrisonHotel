@@ -6,11 +6,11 @@ const {
     getTrending,
     getNowPlayingMovies,
     getUpcommingMovies
-} = require('../utils/tmdb');
+} = require(path.resolve(__dirname, '../utils/tmdb'));
 const {
     mapHighlightsList,
     mapPosterGroup
-} = require('../utils/movieMapper');
+} = require(path.resolve(__dirname, '../utils/movieMapper'));
 
 router.get('/', catchAsync(async (req, res) => {
     const response = await Promise.all([

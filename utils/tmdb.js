@@ -19,7 +19,7 @@ exports.getPopularMovies = async () => {
     } catch (err) {
         return err;
     }
-};
+}
 
 exports.getTrending = async (timeframe = 'day', mediaType = 'all') => {
     try {
@@ -71,6 +71,7 @@ exports.getUpcommingMovies = async () => {
     }
 }
 
+
 exports.getTitleDetails = async (mediaType, titleId) => {
     try {
         const response = await axios.get(`https://api.themoviedb.org/3/${mediaType}/${titleId}`, {
@@ -85,7 +86,7 @@ exports.getTitleDetails = async (mediaType, titleId) => {
     } catch (err) {
         return err;
     }
-};
+}
 
 exports.getTitleVideos = async (mediaType, titleId) => {
     try {
@@ -101,7 +102,7 @@ exports.getTitleVideos = async (mediaType, titleId) => {
     } catch (err) {
         return err;
     }
-};
+}
 
 exports.getTitleCredits = async (titleId) => {
     try {
@@ -116,9 +117,28 @@ exports.getTitleCredits = async (titleId) => {
     } catch (err) {
         return err;
     }
-};
+}
 
-exports.getConfig = async () => {
+exports.getSearchResults = async (query, mediaType = 'multi') => {
+    try {
+        const response = await axios.get(`https://api.themoviedb.org/3/search/multi`, {
+            params: {
+                api_key: process.env.TMDB_KEY3,
+                language: 'en-US',
+                query: query,
+                region: 'US',
+                include_adult: false
+            }
+        });
+
+        return response.data;
+
+    } catch (err) {
+        return err;
+    }
+}
+
+exports.getConfig = async function () {
     try {
         const response = await axios.get('https://api.themoviedb.org/3/configuration', {
             params: {
@@ -131,4 +151,4 @@ exports.getConfig = async () => {
     } catch (err) {
         return err;
     }
-};
+}

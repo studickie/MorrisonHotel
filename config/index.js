@@ -9,6 +9,7 @@ const express = require('express');
 
 const app = express();
 
+app.set('query parser', 'simple');
 app.set('view engine', 'pug');
 app.set('views', path.resolve(__dirname, '../views'));
 
@@ -38,6 +39,7 @@ const users = require(path.resolve(__dirname, '../routes/users'));
 const titles = require(path.resolve(__dirname, '../routes/titles'));
 const watchlists = require(path.resolve(__dirname, '../routes/watchlists'));
 const ratings = require(path.resolve(__dirname, '../routes/ratings'));
+const lists = require(path.resolve(__dirname, '../routes/lists'));
 
 app.get('/favicon.ico', (req, res) => res.status(204));
 app.use('/', home);
@@ -45,6 +47,7 @@ app.use('/title', titles);
 app.use('/user', users);
 app.use('/watchlist', userAuth, watchlists);
 app.use('/ratings', userAuth, ratings);
+app.use('/lists', lists);
 
 app.use(logErrors);
 

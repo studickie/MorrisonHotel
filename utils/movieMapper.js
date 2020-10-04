@@ -56,7 +56,28 @@ exports.mapTitleDetails = (data) => {
     );
 }
 
-exports.mapTitleList = (list, refList) => {
+exports.mapTitleList = (list, refList = undefined) => {
+    const listToReturn = list.reduce((acc, itm) => {
+        if (itm.media_type && itm.media_type == 'person') {
+            return acc;
+        }
+
+        let refObj = undefined;
+        if (refList != undefined) {
+             refObj = refList.filter(ref => ref.tmdbId == itm.id)[0];
+        }
+        const title = itm.title || itm.name;
+        const releaseDate = itm.release_date || itm.first_air_date;
+        const mediaType = itm.media_type || (refObj && refObj.mediaType) || '';
+
+        acc.push(new TitleListItem(itm.id, title, itm.poster_path, releaseDate, mediaType, itm.vote_average));
+        return acc;
+    }, []);
+
+    return listToReturn;
+}
+
+exports.mapTitleListToReference = (list, refList) => {
     const listToReturn = list.map(itm => {
         const title = itm.title || itm.name, releaseDate = itm.release_date || itm.first_air_date;
 
