@@ -1,10 +1,11 @@
 .search__container
     form.form__search(name="search" method="GET" action="/lists/search" enctype="application/x-www-form-urlencoded")
-        label.search__label(for="inp_search") Search
-        .input__group
-            span.input__icon
-                i.fas.fa-search(aria-hidden="true")
-            input.search__input(type="text" name="query" id="inp_search" required="true" min="4" max="64")
-        .search__button
-            button.button__search(type="submit" id="btn_search") Search!
+        .search
+            label.search__label(for="inp_search") Search titles
+            .input__group
+                span.input__icon
+                    i.fas.fa-search(aria-hidden="true")
+                input.search__input(type="text" name="query" id="inp_search" required="true" min="4" max="64" placeholder="Search titles")
+            .search__button
+                button.button__search(type="submit" id="btn_search") Search!
     

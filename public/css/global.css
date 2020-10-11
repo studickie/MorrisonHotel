@@ -428,7 +428,7 @@
     .title__actions {
         display: flex;
         flex-flow: row nowrap;
-        padding: 0.5rem 0
+        padding: 0.5rem 0;
     }
 
     .title__ratings {
@@ -537,8 +537,7 @@
     }
 }
 
-@media(min-width: 48rem) {
-
+@media (min-width: 48rem) {
     .title__actions {
         padding: 1rem 0;
     }
@@ -560,11 +559,10 @@
         flex-basis: unset;
         margin-right: 5%;
     }
-       
 }
 
 /** '.titleList' Specific - START */
-@media(min-width: 0rem) {
+@media (min-width: 0rem) {
     .titleList__list {
         display: flex;
         flex-flow: row wrap;
@@ -773,5 +771,75 @@
 @media (min-width: 64rem) {
     .scroller__container {
         max-width: calc(var(--app-width) - (var(--app-padding-lg) * 2));
+    }
+}
+
+/** '.search' Specific - START  */
+@media (min-width: 0rem) {
+    .search__container {
+        padding-top: 1rem;
+    }
+
+    .search__container--emptyPage > span {
+        display: inline-block;
+        width: 100%;
+        margin: 1rem 0;
+        text-align: center;
+    }
+
+    .search__container--emptyPage > span:first-of-type {
+        font-size: 1.8rem;
+    }
+
+    .search__container--emptyPage > span:last-of-type {
+        font-size: 1.2rem;
+    }
+
+    .search {
+        position: relative;
+        display: flex;
+        flex-flow: row nowrap;
+        justify-content: center;
+        align-items: center;
+        height: 4rem;
+    }
+
+    .search__label {
+        position: absolute;
+        z-index: -1;
+    }
+
+    .input__group {
+        flex: 1;
+        display: flex;
+        flex-flow: row nowrap;
+    }
+
+    .input__icon {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        width: 50px;
+        height: 50px;
+        background-color: white;
+        border: 1px solid black;
+        border-right: none;
+    }
+
+    .search__input {
+        width: 100%;
+        height: 50px;
+        border: 1px solid black;
+        border-left: none;
+    }
+
+    .search__button {
+        height: 50px;
+    }
+
+    .search__button > button {
+        height: 100%;
+        border: 1px solid black;
+        border-left: none;
     }
 }

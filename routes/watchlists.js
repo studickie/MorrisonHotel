@@ -20,6 +20,7 @@ router.get('/', catchAsync(async (req, res) => {
     return res.render('titleList', {
         isAuth: req.isAuth,
         apiUrl: req.apiUrl,
+        showTitleSearch: response.length == 0,
         showWatchlistButton: false,
         showWatchlistRemove: true,  
         titles: mapTitleList(response, user.watchlist)
@@ -77,7 +78,6 @@ router.post('/', catchAsync(async (req, res) => {
 router.delete('/', catchAsync(async (req, res) => {
     const { tmdbId } = req.body;
     const { userId } = req.session.user;
-    console.log('delete', tmdbId);
     
     const user = await User.findOne({ _id: userId }).populate({
         path: 'watchlist',

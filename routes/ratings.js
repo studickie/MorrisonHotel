@@ -21,6 +21,7 @@ router.get('/', catchAsync(async (req, res) => {
     return res.render('titleList', {
         isAuth: req.isAuth,
         apiUrl: req.apiUrl,
+        showTitleSearch: response.length == 0,
         showWatchlistButton: false,
         titles: mapTitleListWithRatings(response, user.ratings)
     });

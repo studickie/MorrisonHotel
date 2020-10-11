@@ -17,6 +17,7 @@ router.get('/search', catchAsync(async (req, res) => {
     return res.render('titleList', { 
         isAuth: req.isAuth,
         apiUrl: req.apiUrl,
+        showTitleSearch: response.results.length == 0,
         titles: mapTitleList(response.results) 
     });
 }));

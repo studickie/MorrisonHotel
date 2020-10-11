@@ -3,37 +3,43 @@ extends layout/index.pug
 block content
     .titleList
         .page__wrapper
-            ul.titleList__list
-                each ttl in titles
-                    li.titleList__item
-                        .titleList__poster
-                            img(src= ttl.posterSm alt=`poster art for '${ttl.title}'`)
-                        .titleList__details
-                            div.titleList__title
-                                span= ttl.title
-                                span= "(" + ttl.releaseYear + ")"
-                            div.titleList__rating
-                                span
-                                    i.fas.fa-star.icon__star(aria-label="Average rating")
+            if showTitleSearch
+                .search__container--emptyPage
+                    span No titles found
+                    span Search to find new titles!
+                    include includes/searchInput
+            else 
+                ul.titleList__list
+                    each ttl in titles
+                        li.titleList__item(id= ttl.tmdbId)
+                            .titleList__poster
+                                img(src= ttl.posterSm alt=`poster art for '${ttl.title}'`)
+                            .titleList__details
+                                div.titleList__title
+                                    span= ttl.title
+                                    span= "(" + ttl.releaseYear + ")"
+                                div.titleList__rating
                                     span
-                                        span.rating__numerator= ttl.voteAverage
-                                        span.rating__denominator /10
-                                if ttl.userRating
-                                    span
-                                        i.fas.fa-user(aria-label="User rating")
+                                        i.fas.fa-star.icon__star(aria-label="Average rating")
                                         span
-                                            span.rating__numerator= ttl.userRating
+                                            span.rating__numerator= ttl.voteAverage
                                             span.rating__denominator /10
+                                    if ttl.userRating
+                                        span
+                                            i.fas.fa-user(aria-label="User rating")
+                                            span
+                                                span.rating__numerator= ttl.userRating
+                                                span.rating__denominator /10
 
-                            if showWatchlistButton
-                                div.button__watchlist.button__watchlist--add
-                                    button(type="button" name="btn_watchlist_add" data-id= ttl.tmdbId data-type= ttl.mediaType) Add to Watchlist
+                                if showWatchlistButton
+                                    div.button__watchlist.button__watchlist--add
+                                        button(type="button" name="btn_watchlist_add" data-id= ttl.tmdbId data-type= ttl.mediaType) Add to Watchlist
 
-                            else if showWatchlistRemove
-                                div.button__watchlist.button__watchlist--remove
-                                    button(type="button" name="btn_watchlist_remove" data-id= ttl.tmdbId) Remove
+                                else if showWatchlistRemove
+                                    div.button__watchlist.button__watchlist--remove
+                                        button(type="button" name="btn_watchlist_remove" data-id= ttl.tmdbId) Remove
 
-                        a(href= `/title/${ttl.mediaType}/${ttl.tmdbId}`)
+                            a(href= `/title/${ttl.mediaType}/${ttl.tmdbId}`)
 
 block scripts
     script(src="/js/listPage.js" type="text/javascript")

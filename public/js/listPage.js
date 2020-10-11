@@ -1,5 +1,13 @@
 var listPage = {};
 
+listPage.removeDeletedTitle = function(titleId) {
+    var parent = document.querySelector('.titleList__list');
+    var item = document.getElementById(titleId);
+
+    parent.removeChild(item);
+    window.location.reload();
+}
+
 listPage.initAddWatchlistButtons = function() {
     var button_add = document.querySelectorAll('button[name=btn_watchlist_add]');
 
@@ -20,7 +28,10 @@ listPage.initRemoveWatchlistButtons = function() {
         button_remove.forEach(btn => {
             btn.addEventListener('click', function() {
                 var tmdbId = this.getAttribute('data-id');
-                mainJs.requestDeleteWatchlistTitle(tmdbId);
+                mainJs.requestDeleteWatchlistTitle(tmdbId)
+                    .then(function() {
+                        listPage.removeDeletedTitle(tmdbId);
+                    })
             });
         });
     }

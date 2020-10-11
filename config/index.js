@@ -50,6 +50,15 @@ app.use('/ratings', userAuth, ratings);
 app.use('/lists', lists);
 
 app.use(logErrors);
+app.use((req, res) => {
+    res.status(404);
+    res.render('notFound');
+});
+
+app.use((req, res) => {
+    res.status(500);
+    res.render('notFound');
+})
 
 const port = process.env.PORT || 3000;
 app.listen(port, () => {
