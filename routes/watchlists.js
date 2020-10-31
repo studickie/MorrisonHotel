@@ -83,7 +83,7 @@ router.delete('/', catchAsync(async (req, res) => {
         path: 'watchlist',
         match: { tmdbId }
     });
-
+    
     if (user.watchlist.length == 0) {
         return res.status(404).json({ message: 'Title not found' });
     }
@@ -92,6 +92,7 @@ router.delete('/', catchAsync(async (req, res) => {
     //~     Mongoose's Documnet#updateOne method
     //~     masteringjs.io/tutorials/mongoose/update
     //~ ------------------------------------------------------------
+
     await Watchlist.updateOne({ tmdbId }, {
         $pull: {
             posted: new ObjectId(userId)

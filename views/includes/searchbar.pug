@@ -1,0 +1,10 @@
+form(name="search" method="GET" action="/lists/search" enctype="application/x-www-form-urlencoded")
+    .search__wrapper
+        .search__inputGroup
+            label(for="inp_search") Search titles
+            .search__input.input__decorated--left
+                input(type="text" name="query" id="inp_search" required="true" min="4" max="64" placeholder="Search titles")
+                span.input__icon
+                    i.fas.fa-search(aria-hidden="true")
+        .search__button
+            button.button__search(type="submit" id="btn_search") Search!

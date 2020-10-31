@@ -4,38 +4,58 @@ block content
     .page__signin
         .page__wrapper
             .signin__container
-                form.signin__form(name="signin" method="POST" action="" enctype="application/x-www-form-urlencoded")
-                    fieldset
-                        legend.signin__legend= "Sign in"
-
-                        if errors
-                            each err in errors
-                                if err.param == 'email'
-                                    .signin__inputGroup
-                                        label.signin__label(for="email") Email
-                                        input.signin__input(type="text" id="email" name="email" value= err.value)
-                                    .signin__alert--error 
-                                        span.alert__icon--error &#33;
-                                        span.alert__text= err.msg
-                        else
+                .form__wrapper
+                    form.signin__form(name="signin" method="POST" action="" enctype="application/x-www-form-urlencoded")
+                        fieldset
+                            legend.signin__legend= "Sign in"
                             .signin__inputGroup
                                 label.signin__label(for="email") Email
-                                input.signin__input(type="text" id="email" name="email")        
-
-
-                        if errors
-                            each err in errors
-                                if err.param == 'password'
-                                    .signin__inputGroup
-                                        label.signin__label(for="password") Password
-                                        input.signin__input(type="password" id="password" name="password" value= err.value)
-                                    .signin__alert--error 
-                                        span.alert__icon--error &#33;
-                                        span.alert__text= err.msg
-                        else
+                                .input__decorated--left
+                                    input.signin__input(type="text" id="email" name="email")
+                                    span.input__icon
+                                        i.fas.fa-user(aria-hidden="true")
                             .signin__inputGroup
                                 label.signin__label(for="password") Password
-                                input.signin__input(type="password" id="password" name="password")
+                                .input__decorated--left
+                                    input.signin__input(type="password" id="password" name="password")
+                                    span.input__icon
+                                        i.fas.fa-key(aria-hidden="true")
+                            .signin__footer
+                                .signin__button
+                                    button(type="submit") Sign in
+                                .signin__guest
+                                    span Sign-in as a 
+                                        a.signin__anchor--guest(href="#") Guest 
 
-                        .signin__button
-                            button(type="submit" name="submit") Sign in
+
+
+
+
+                                //- if errors
+                                //-     each err in errors
+                                //-         if err.param == 'email'
+                                //-             .signin__inputGroup
+                                //-                 label.signin__label(for="email") Email
+                                //-                 input.signin__input(type="text" id="email" name="email" value= err.value)
+                                //-             .signin__alert--error 
+                                //-                 span.alert__icon--error &#33;
+                                //-                 span.alert__text= err.msg
+                                //- else
+                                //-     .signin__inputGroup
+                                //-         label.signin__label(for="email") Email
+                                //-         input.signin__input(type="text" id="email" name="email")        
+
+
+                                //- if errors
+                                //-     each err in errors
+                                //-         if err.param == 'password'
+                                //-             .signin__inputGroup
+                                //-                 label.signin__label(for="password") Password
+                                //-                 input.signin__input(type="password" id="password" name="password" value= err.value)
+                                //-             .signin__alert--error 
+                                //-                 span.alert__icon--error &#33;
+                                //-                 span.alert__text= err.msg
+                                //- else
+                                //-     .signin__inputGroup
+                                //-         label.signin__label(for="password") Password
+                                //-         input.signin__input(type="password" id="password" name="password")
