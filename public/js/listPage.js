@@ -14,8 +14,17 @@ listPage.initAddWatchlistButtons = function() {
     if (button_add.length > 0) {
         button_add.forEach(btn => {
             btn.addEventListener('click', function() {
-                var tmdbId = this.getAttribute('data-id'), mediaType = this.getAttribute('data-type');
-                mainJs.requestUpdateWatchlist(tmdbId, mediaType);
+                var tmdbId = this.getAttribute('data-id');
+                var mediaType = this.getAttribute('data-type');
+
+                http.requestUpdateWatchlist(tmdbId, mediaType)
+                    .then(function(res) {
+                        if (res.ok) {
+                            //- nothing to run
+                        } else {
+                            console.log('Error - requestUpdateWatchlist');
+                        }
+                    });
             });
         });
     }
@@ -28,10 +37,15 @@ listPage.initRemoveWatchlistButtons = function() {
         button_remove.forEach(btn => {
             btn.addEventListener('click', function() {
                 var tmdbId = this.getAttribute('data-id');
-                mainJs.requestDeleteWatchlistTitle(tmdbId)
-                    .then(function() {
-                        listPage.removeDeletedTitle(tmdbId);
-                    })
+
+                http.requestDeleteWatchlistTitle(tmdbId)
+                    .then(function(res) {
+                        if (res.ok) {
+                            listPage.removeDeletedTitle(tmdbId);
+                        } else {
+                            console.log('Error - requestDeleteWatchlistTitle');    
+                        }  
+                    });
             });
         });
     }

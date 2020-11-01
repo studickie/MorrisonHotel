@@ -22,10 +22,12 @@ titlePage.initWatchlist = function () {
     if (titlePage.btnAddWatchlist) {
         titlePage.btnAddWatchlist.addEventListener('click', function () {
             var tmdbId = this.getAttribute('data-id'), mediaType = this.getAttribute('data-type');
-            mainJs.requestUpdateWatchlist(tmdbId, mediaType)
+            http.requestUpdateWatchlist(tmdbId, mediaType)
                 .then(function (res) {
                     if (res.ok) {
-                        titlePage.createWatchlistAnchor()
+                        titlePage.createWatchlistAnchor();
+                    } else {
+                        console.log('Error - requestUpdateWatchlist'); 
                     }
                 });
         });
@@ -39,14 +41,29 @@ titlePage.initRating = function () {
         //~ set value of rating dropdown from hidden input value
         titlePage.slctRating.value = document.querySelector('input[id=hdn_user_rating]').value;
 
-        titlePage.slctRating.addEventListener('change', function (e) {
-            var tmdbId = this.getAttribute('data-id'), mediaType = this.getAttribute('data-type'),
-                rating = parseInt(this.value);
+        titlePage.slctRating.addEventListener('change', function () {
+            var tmdbId = this.getAttribute('data-id');
+            var mediaType = this.getAttribute('data-type');
+            var rating = parseInt(this.value);
 
             if (rating < 1) {
-                mainJs.requestDeleteRating(tmdbId);
+                http.requestDeleteRating(tmdbId)
+                    .then(function(res) {
+                        if (res.ok) {
+                            //- nothing to run
+                        } else {
+                            console.log('Error - requestDeleteRating');
+                        }
+                    });
             } else {
-                mainJs.requestUpdateRating(rating, tmdbId, mediaType);
+                http.requestUpdateRating(rating, tmdbId, mediaType)
+                    .then(function(res) {
+                        if (res.ok) {
+                            //- nothing to run
+                        } else {
+                            console.log('Error - requestUpdateRating');
+                        }
+                    });
             }
         });
     }

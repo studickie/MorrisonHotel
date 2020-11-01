@@ -1,44 +1,42 @@
 header
     .page__wrapper
         .header__wrapper
-            h1 Motel Movies
-            .menu(data-role="dropdown")
-                .menu__wrapper--button
+            h1 
+                a(href="/") Motel Movies
+
+            if (isAuth)
+                .menu--dropdown(id="menu")
                     button.menu__button(type="button" name="btn_toggle" aria-label="Toggle menu" aria-haspopup="true" aria-expanded="false")
                         i.fas.fa-bars(aria-hidden="true")
-                .menu__wrapper--nav
-                    nav.menu__nav   
-                        ul.menu__list(aria-role="listbox")
+                    .menu__backdrop
+                        label(aria-label="Close menu")
+                    .menu__wrapper--nav
+                        nav.menu__nav   
+                            ul.menu__list(aria-role="listbox")
+                                li.menu__item
+                                    a.menu__anchor(href="/watchlist" tabindex="0") 
+                                        span.anchor__label Watchlist
+                                        span.anchor__icon(aria-hidden="true")
+                                            include ../../includes/iconPopcorn
+                                li.menu__item
+                                    a.menu__anchor(href="/ratings" tabindex="0") 
+                                        span.anchor__label Rated titles
+                                        span.anchor__icon(aria-hidden="true")
+                                            include ../../includes/iconStar
+                                li.menu__item
+                                    button.menu__anchor--signout(type="button" name="btn_signout" tabindex="0")
+                                        span.anchor__label Sign out
+                                        span.anchor__icon(aria-hidden="true")
+                                            i.fas.fa-sign-out-alt
+            else
+                .menu--inline
+                    nav.menu__nav
+                        ul.menu__list
                             li.menu__item
-                                a.menu__anchor(href="/watchlist") 
-                                    span.anchor__label My watchlist
+                                a.menu__anchor--signin(href="/user/auth/signin")
+                                    span.anchor__label Sign in
                                     span.anchor__icon(aria-hidden="true")
-                                        include ../../includes/iconPopcorn
-                            li.menu__item
-                                a.menu__anchor(href="/ratings") 
-                                    span.anchor__label My rated titles
-                                    span.anchor__icon(aria-hidden="true")
-                                        include ../../includes/iconStar
-                            li.menu__item
-                                button.menu__anchor--signout(type="button" name="btn_signout")
-                                    span.anchor__label Sign out
-                                    span.anchor__icon(aria-hidden="true")
-                                        i.fas.fa-sign-out-alt
-
-                        //- if isAuth
-                        //-     li.dropdown__item
-                        //-         a(href="/watchlist") 
-                        //-         include ../../includes/iconPopcorn
-                        //-         | My watchlist
-
-                        //-     li.dropdown__item
-                        //-         a(href="/ratings") My rated titles
-
-                        //-     li.dropdown__item
-                        //-         button(type="button" name="btn_signout") Sign Out
-                        //- else 
-                        //-     li.dropdown__item
-                        //-         a(href="/user/auth/signin") Sign In
+                                        i.fas.fa-sign-in-alt
 
 
 

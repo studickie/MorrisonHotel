@@ -7,7 +7,7 @@ block content
                 .search__container--emptyPage
                     span No titles found
                     span Search to find new titles!
-                    include includes/searchInput
+                    include includes/searchbar
             else 
                 ul.titleList__list
                     each ttl in titles
@@ -20,7 +20,7 @@ block content
                                     span= "(" + ttl.releaseYear + ")"
                                 div.titleList__rating
                                     span
-                                        i.fas.fa-star.icon__star(aria-label="Average rating")
+                                        include ./includes/iconStar
                                         span
                                             span.rating__numerator= ttl.voteAverage
                                             span.rating__denominator /10

@@ -1,20 +1,24 @@
 function ToggleElement(element, state) {
     this._element = element;
+    this._button = element.children.btn_toggle;
     this._active = state || false;
 
-    this.addClickEvents();
+    this._button.addEventListener('click', this.handleToggle.bind(this));
 }
 
 ToggleElement.prototype = {
-    addClickEvents: function () {
-        var ctrl = this, button = this._element.children.btn_toggle;
-        
-        if (button) {
-            button.addEventListener('click', function () {
-                ctrl._active = !ctrl._active;
-
-                ctrl._element.classList.toggle('toggle--active', ctrl._active);
-            });
-        }
+    toggleActive: function () {
+        this._active = !this._active;
+    },
+    toggleStyle: function () {
+        this._element.classList.toggle('toggle--active', this._active);
+    },
+    toggleAriaLabels: function () {
+        this._button.setAttribute('aria-expanded', this._active);
+    },
+    handleToggle: function () {
+        this.toggleActive();
+        this.toggleAriaLabels();
+        this.toggleStyle();
     }
 };

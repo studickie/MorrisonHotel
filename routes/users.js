@@ -11,6 +11,13 @@ router.get('/auth/signin', (req, res) => {
 });
 
 router.post('/auth/signin', userValidationRules(), userValidation, catchAsync(async (req, res) => {
+    if (req.query.user == "guest") {
+        const user = await User.findOne({ email: process.env.GUEST_LOGIN_EMAIL });
+
+        req.session.user = { userId: user._id };
+        return res.redirect('/');
+    }
+
     if (req.errors) {
         return res.render('signin', { errors: req.errors });
     }
@@ -24,13 +31,6 @@ router.post('/auth/signin', userValidationRules(), userValidation, catchAsync(as
 
     req.session.user = { userId: user._id };
     return res.redirect('/');
-}));
-
-router.post('/auth/signin?mode=guest', catchAsync(async (req, res) => {
-    const user = await User.findOne({ email: process.env.GUEST_EMAIL });
-
-    req.session.user = user._id;
-    res.redirect('/');
 }));
 
 router.post('/auth/signup', userValidationRules(), userValidation, catchAsync(async (req, res) => {
