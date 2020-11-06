@@ -1,0 +1,42 @@
+extends layout/index.pug
+
+block content
+    if titles.length == 0
+        section.section--banner
+            .page__wrapper
+                .banner__wrapper
+                    p.banner__text--titleList       
+                        span.text--block Hmm...?
+                        span.text--block= "No titles matching \"" +  searchQuery + "\" were found. Try Again!"
+        //- Search Section
+        section.section--search
+            .page__wrapper
+                include includes/searchbar
+
+    else  
+        section
+            .section__head
+                .page__wrapper
+                    .section__title
+                        h2 Watchlist
+        section
+            .page__wrapper
+                .titleList__wrapper
+                    ul.titleList__list(id='lst_titles')
+                        each ttl in titles
+                            li.titleList__item(id= ttl.tmdbId)
+                                .titleList__poster
+                                    img(src= ttl.posterSm alt=`poster art for '${ttl.title}'`)
+                                .titleList__details
+                                    .titleList__title
+                                        span= ttl.title
+                                        span= "(" + ttl.releaseYear + ")"
+                                    .titleList__ratings
+                                        .rating--average
+                                            .rating__wrapper
+                                                span.rating__icon
+                                                    include ./includes/iconStar
+                                                span.rating__value
+                                                    span= ttl.voteAverage
+
+                                a(href= `/title/${ttl.mediaType}/${ttl.tmdbId}`)

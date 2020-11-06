@@ -1,0 +1,52 @@
+extends layout/index.pug
+
+block content
+    if titles.length == 0
+        section.section--banner
+            .page__wrapper
+                .banner__wrapper
+                    p.banner__text--titleList
+                        span.text--block You have no rated titles.
+                        span.text--block Search your favorite films and TV shows and show them love!
+        //- Search Section
+        section.section--search
+            .page__wrapper
+                include includes/searchbar
+    else
+        section
+            .section__head
+                .page__wrapper
+                    .section__title
+                        h2 Rated titles
+        section
+            .page__wrapper
+                .titleList__wrapper
+                    ul.titleList__list
+                        each ttl in titles
+                            li.titleList__item(id= ttl.tmdbId)
+                                .titleList__poster
+                                    img(src= ttl.posterSm alt=`poster art for '${ttl.title}'`)
+                                .titleList__details
+                                    .titleList__title
+                                        span= ttl.title
+                                        span= "(" + ttl.releaseYear + ")"
+                                    .titleList__ratings
+                                        .ratingGroup
+                                            .rating--average
+                                                .rating__wrapper
+                                                    span.rating__icon
+                                                        include ./includes/iconStar
+                                                    span.rating__value
+                                                        span= ttl.voteAverage
+                                            .rating--user
+                                                input(type="hidden" value= ttl.userRating name="hdn_user_rating")
+                                                select(name="slct_rating" data-id= ttl.tmdbId data-type= ttl.mediaType)
+                                                    each num in [-1, 10, 9, 8, 7, 6, 5, 4, 3, 2, 1, 0]
+                                                        if num == -1
+                                                            option(value= num disabled selected) Rate
+                                                        else 
+                                                            option(value= num)= num
+                                a(href= `/title/${ttl.mediaType}/${ttl.tmdbId}`)
+
+block scripts
+    script(src="/js/ratedTitlesPage.js" type="text/javascript")

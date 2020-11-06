@@ -16,7 +16,7 @@ module.exports = session({
     secret: process.env.SESSION_SECRET,
     cookie: {
         httpOnly: true,
-        maxAge: new Date().getTime() + (24 * 60 * 60 * 1000),
+        maxAge: 60 + 1000,
     },
     store: store,
     resave: true,

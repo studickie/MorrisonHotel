@@ -95,6 +95,10 @@
     .text--green {
         color: var(--tmdb-green);
     }
+
+    .text--block {
+        display: block;
+    }
 }
 
 @media (min-width: 64rem) {
@@ -158,6 +162,8 @@
     }
 }
 
+
+
 /** Form Base Styles - START */
 @media (min-width: 0rem) {
     label {
@@ -212,6 +218,75 @@
     }
 }
 
+/** Sign-in Page, Form Specific - START  */
+@media (min-width: 0rem) {
+
+    .page__signin {
+        height: calc(100vh - (var(--height-header) + var(--height-footer)));
+        background-image: linear-gradient(to bottom right, var(--tmdb-green), var(--tmdb-blue));
+    }
+
+    .signin__container {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        height: 100%;
+    }
+
+    .form__wrapper {
+        max-width: 90%;
+        max-height: 80%;
+        padding: 50px 50px 45px;
+        background-color: hsla(184, 69%, 88%, 0.6);
+        box-shadow: 0 6px 12px hsla(0, 0%, 5%, 0.5);
+    }
+
+    .signin__form {
+        font-size: 1rem;
+    }
+
+    .signin__legend {
+        margin: 0.5em 0;
+        font-size: 1.5em;
+    }
+
+    .signin__inputGroup {
+        display: flex;
+        flex-flow: column nowrap;
+        margin: 0.5em 0 1em;
+    }
+
+    .signin__input {
+        height: 2.375em;
+    }
+
+    .signin__label {
+        margin-bottom: 0.5em;
+    }
+
+    .signin__footer {
+        display: flex;
+        flex-flow: row-reverse wrap;
+        justify-content: space-between;
+        margin-top: 1.2em;
+    }
+
+    .signin__button {
+        height: 2.375em;
+    }
+
+    .signin__button button {
+        padding: 0.5em 0.875em;
+    }
+
+    .signin__guest {
+        width: 45%;
+        text-align: center;
+        line-height: 1.3em;
+        font-size: 0.9em;
+    }
+}
+
 /** Page Header - START */
 @media (min-width: 0rem) {
     header {
@@ -232,6 +307,7 @@
     .header__wrapper h1{
         flex-basis: 60%;
         flex-grow: 1;
+        font-size: 1.4rem;
     }
 
     .header__wrapper h1 a {
@@ -351,7 +427,8 @@
         transition: color 160ms ease;
     }
 
-    .menu__anchor {
+    .menu__anchor,
+    .menu__anchor--signout {
         padding: 1rem;
     }
 
@@ -447,13 +524,18 @@
         height: inherit;
     }
 
-    .banner__text {
+    .banner__text,
+    .banner__text--titleList {
         width: 100%;
         text-align: center;
         color: var(--text-white);
         font-size: 1.2em;
         font-weight: 600;
         line-height: 1.6em;
+    }
+
+    .banner__text--titleList span:first-of-type {
+        font-size: 2.2rem;
     }
 
     .banner__text span:first-of-type {
@@ -675,6 +757,175 @@
     }
 }
 
+/** '.title' Specific - START */
+@media (min-width: 0rem) {
+
+    .title {
+        position: relative;
+        display: flex;
+        flex-flow: row wrap;
+    }
+
+    .title__main {
+        display: flex;
+        flex-flow: row wrap;
+    }
+
+    .title__video {
+        order: 1;
+        flex-basis: 100%;
+        position: relative;
+        height: 0;
+        padding-bottom: 56.25%;
+        overflow: hidden;
+    }
+
+    .title__video iframe {
+        position: absolute;
+        display: block;
+        width: 100%;
+        height: 100%;
+    }
+
+    .title__poster {
+        order: 2;
+        flex-basis: var(--title-poster-width-sm);
+        padding: 1rem 0.5rem 1rem 0;
+    }
+
+    .title__summary {
+        order: 3;
+        flex-basis: 60%;
+        padding: 1rem 0 1rem 0.5rem;
+    }
+
+    .title__summary > p {
+        font-size: 0.8rem;
+        color: var(--text-white);
+    }
+
+    /*  ratings, watchlist section */
+
+    .title__actions {
+        display: flex;
+        flex-flow: row nowrap;
+        padding: 0.5rem 0;
+    }
+
+    .title__ratings {
+        flex-basis: var(--title-poster-width-sm);
+        display: flex;
+        flex-flow: row wrap;
+    }
+
+    .title__rating--average {
+        width: 100%;
+        margin: 0.5rem 0;
+        font-size: 1.6rem;
+        color: var(--text-white);
+    }
+
+    .title__rating--user {
+        width: 100%;
+        margin: 0.5rem 0.25rem;
+        margin-right: 0;
+    }
+
+    .title__button--watchlist {
+        flex-grow: 1;
+        display: flex;
+        flex-flow: row nowrap;
+        justify-content: center;
+        align-items: center;
+    }
+
+    .title__button--watchlist > button,
+    .title__button--watchlist > a {
+        display: inline-block;
+        width: auto;
+        padding: 0.5rem 1rem;
+        text-align: center;
+        font-family: var(--type-header);
+        font-weight: 600;
+        background-color: var(--tmdb-blue);
+        border: 1px solid var(--tmdb-navy);
+    }
+}
+
+@media (min-width: 40rem) {
+
+    .title__video {
+        order: 2;
+        flex-basis: auto;
+        flex-grow: 1;
+        padding-bottom: 42%; /* why does 42 work? */
+    }
+
+    .title__poster {
+        order: 1;
+        flex-basis: var(--title-poster-width-lg);
+        padding: 0;
+    }
+
+    .title__summary {
+        flex-basis: 100%;
+        padding: 2rem 10px;
+        color: hsl(0, 0%, 90%);
+    }
+
+    .title__summary > p {
+        font-size: 1rem;
+    }
+
+    .title__ratings {
+        flex-basis: var(--title-poster-width-lg);
+        align-items: center;
+    }
+
+    .title__rating--average,
+    .title__rating--user {
+        padding: 0;
+    }
+
+    .title__rating--average > div {
+        justify-content: center;
+    }
+ 
+    .title__rating--user {
+        margin: 0.5rem 0;
+    }
+
+    .title__button--watchlist > button,
+    .title__button--watchlist > a {
+        width: 60%;
+        font-size: 1.3rem;
+    }
+}
+
+@media (min-width: 48rem) {
+
+    .title__actions {
+        padding: 1rem 0;
+    }
+
+    .title__ratings {
+        justify-content: flex-start;
+    }
+
+    .title__rating--average,
+    .title__rating--user {
+        flex: 1;
+    }
+
+    .title__rating--average {
+        font-size: 1.9rem;
+    }
+
+    .title__rating--user {
+        text-align: center;
+    }
+}
+
 /** '.titleList' Specific - START */
 @media (min-width: 0rem) {
 
@@ -727,16 +978,12 @@
         font-size: 14px;
     }
 
-    .titleList__rating {
-        display: flex;
-        flex-flow: row nowrap;
-        justify-content: space-between;
-        margin: 8px 0;
+    .titleList__ratings {
+        margin: 0.5rem 0;
     }
 
-    .titleList__rating i {
-        margin-right: 4px;
-        color: var(--highlight-yellow);
+    .titleList__ratings .rating--average {
+        font-size: 1.2rem;
     }
 
     .button__watchlist {
@@ -754,258 +1001,34 @@
     }
 }
 
-/** Sign-in Page, Form Specific - START  */
-@media (min-width: 0rem) {
-
-    .page__signin {
-        height: calc(100vh - (var(--height-header) + var(--height-footer)));
-        background-image: linear-gradient(to bottom right, var(--tmdb-green), var(--tmdb-blue));
-    }
-
-    .signin__container {
+/** '.rating' Specific -START */
+@media(min-width: 0rem) {
+    .ratingGroup {
         display: flex;
-        justify-content: center;
+        flex-flow: row wrap;
         align-items: center;
-        height: 100%;
-    }
-
-    .form__wrapper {
-        max-width: 90%;
-        max-height: 80%;
-        padding: 50px 50px 45px;
-        background-color: hsla(184, 69%, 88%, 0.6);
-        box-shadow: 0 6px 12px hsla(0, 0%, 5%, 0.5);
-    }
-
-    .signin__form {
-        font-size: 1rem;
-    }
-
-    .signin__legend {
-        margin: 0.5em 0;
-        font-size: 1.5em;
-    }
-
-    .signin__inputGroup {
-        display: flex;
-        flex-flow: column nowrap;
-        margin: 0.5em 0 1em;
-    }
-
-    .signin__input {
-        height: 2.375em;
-    }
-
-    .signin__label {
-        margin-bottom: 0.5em;
-    }
-
-    .signin__footer {
-        display: flex;
-        flex-flow: row-reverse wrap;
         justify-content: space-between;
-        margin-top: 1.2em;
     }
 
-    .signin__button {
-        height: 2.375em;
-    }
-
-    .signin__button button {
-        padding: 0.5em 0.875em;
-    }
-
-    .signin__guest {
-        width: 45%;
-        text-align: center;
-        line-height: 1.3em;
-        font-size: 0.9em;
-    }
-}
-
-/** Title Page Specific - START */
-@media (min-width: 0rem) {
-
-    .title {
-        position: relative;
+    .rating__wrapper {
         display: flex;
         flex-flow: row wrap;
-    }
-
-    .title > div {
-        display: flex;
-        flex-flow: row wrap;
-    }
-
-    .title__video {
-        order: 1;
-        flex-basis: 100%;
-        position: relative;
-        height: 0;
-        padding-bottom: 56.25%;
-        overflow: hidden;
-    }
-
-    .title__video iframe {
-        position: absolute;
-        display: block;
-        width: 100%;
-        height: 100%;
-    }
-
-    .title__poster {
-        order: 2;
-        flex-basis: var(--title-poster-width-sm);
-        padding: 1rem 0.5rem 1rem 0;
-    }
-
-    .title__summary {
-        order: 3;
-        flex-basis: 60%;
-        padding: 1rem 0 1rem 0.5rem;
-    }
-
-    .title__summary > p {
-        font-size: 0.8rem;
-        color: hsla(0, 0%, 80%);
-    }
-
-    /*  ratings, watchlist section */
-
-    .title__actions {
-        display: flex;
-        flex-flow: row nowrap;
-        padding: 0.5rem 0;
-    }
-
-    .title__ratings {
-        flex-basis: var(--title-poster-width-sm);
-        display: flex;
-        flex-flow: row wrap;
-        justify-content: center;
-        align-items: center;
-    }
-
-    .title__rating--average {
-        display: flex;
-        flex-flow: row wrap;
-        justify-content: center;
-        align-items: center;
-        width: 100%;
-        padding-bottom: 0.25rem;
-    }
-
-    .title__rating--average i {
-        flex-basis: 20%;
-        font-size: 1rem;
-        text-align: center;
-    }
-
-    .title__rating--average .rating__numerator {
-        margin-right: 0.2rem;
-        font-size: 1.6rem;
-        color: var();
-    }
-
-    .title__rating--average .rating__denominator {
-        color: hsl(0, 0%, 70%);
-    }
-
-    .title__rating--user {
-        padding-top: 0.25rem;
-    }
-
-    .title__button--watchlist {
-        flex-grow: 1;
-        display: flex;
-        flex-flow: row nowrap;
-        justify-content: center;
-        align-items: center;
-    }
-
-    .title__button--watchlist > button,
-    .title__button--watchlist > a {
-        display: inline-block;
-        width: auto;
-        padding: 0.5rem 1rem;
-        text-align: center;
-        font-family: var(--type-header);
-        font-weight: 600;
-        background-color: var(--tmdb-blue);
-        border: 1px solid var(--tmdb-navy);
-    }
-}
-
-@media (min-width: 40rem) {
-
-    .title__video {
-        order: 2;
-        flex-basis: auto;
-        flex-grow: 1;
-        padding-bottom: 42%; /* why does 42 work? */
-    }
-
-    .title__poster {
-        order: 1;
-        flex-basis: var(--title-poster-width-lg);
-        padding: 0;
-    }
-
-    .title__summary {
-        flex-basis: 100%;
-        padding: 2rem 10px;
-        color: hsl(0, 0%, 90%);
-    }
-
-    .title__summary > p {
-        font-size: 1rem;
-    }
-
-    .title__ratings {
-        flex-basis: var(--title-poster-width-lg);
-    }
-
-    .title__rating--average,
-    .title__rating--user {
-        padding: 0;
-    }
-
-    .title__rating--average i {
-        font-size: 1.3rem;
-    }
-
-    .title__rating--average .rating__numerator {
-        font-size: 2rem;
-    }
-
-    .title__button--watchlist > button,
-    .title__button--watchlist > a {
-        width: 60%;
-        font-size: 1.3rem;
-    }
-}
-
-@media (min-width: 48rem) {
-
-    .title__actions {
-        padding: 1rem 0;
-    }
-
-    .title__ratings {
         justify-content: flex-start;
+        align-items: center;
+        width: 100%;
     }
 
-    .title__rating--average,
-    .title__rating--user {
-        flex: 1;
+    .rating__icon {
+        height: 1em;
+        margin-right: 0.25em;
+        font-size: 1em;
     }
 
-    .title__rating--user {
-        text-align: center;
+    .rating__icon path {
+        fill: var(--highlight-yellow);
     }
 
-    .title__rating--average i {
-        flex-basis: unset;
-        margin-right: 5%;
+    .rating__value {
+        font-size: 1em;
     }
 }

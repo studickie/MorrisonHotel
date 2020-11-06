@@ -52,12 +52,18 @@ app.use('/lists', lists);
 app.use(logErrors);
 app.use((req, res) => {
     res.status(404);
-    res.render('notFound');
+    res.render('notFound', {
+        isAuth: req.isAuth,
+        apiUrl: req.apiUrl
+    });
 });
 
 app.use((req, res) => {
     res.status(500);
-    res.render('notFound');
+    res.render('notFound', {
+        isAuth: req.isAuth,
+        apiUrl: req.apiUrl
+    });
 })
 
 const port = process.env.PORT || 3000;

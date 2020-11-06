@@ -16,8 +16,8 @@ router.get('/', catchAsync(async (req, res) => {
     const response = await Promise.all(
         user.watchlist.map(itm => tmdb.getTitleDetails(itm.mediaType, itm.tmdbId))
     );
-
-    return res.render('titleList', {
+    
+    return res.render('watchlist', {
         isAuth: req.isAuth,
         apiUrl: req.apiUrl,
         showTitleSearch: response.length == 0,

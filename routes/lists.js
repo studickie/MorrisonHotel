@@ -14,9 +14,10 @@ router.get('/search', catchAsync(async (req, res) => {
 
     const response = await getSearchResults(query);
 
-    return res.render('titleList', { 
+    return res.render('searchTitles', { 
         isAuth: req.isAuth,
         apiUrl: req.apiUrl,
+        searchQuery: query,
         showTitleSearch: response.results.length == 0,
         titles: mapTitleList(response.results) 
     });

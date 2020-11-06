@@ -27,7 +27,7 @@ mainJs.initSignoutButton = function () {
 
 mainJs.initGuestButton = function () {
     var btn_guest = document.querySelector('#btn_guest');
-    console.log(btn_guest);
+    
     if (btn_guest) {
         btn_guest.addEventListener('click', http.requestGuest);
     }

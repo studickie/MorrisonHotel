@@ -18,7 +18,7 @@ router.get('/', catchAsync(async (req, res) => {
         return getTitleDetails(itm.mediaType, itm.tmdbId);
     }));
 
-    return res.render('titleList', {
+    return res.render('ratedTitles', {
         isAuth: req.isAuth,
         apiUrl: req.apiUrl,
         showTitleSearch: response.length == 0,

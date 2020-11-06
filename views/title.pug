@@ -1,7 +1,6 @@
 extends layout/index.pug
 
 block content
-
     section
         .section__head.section__head--title
             .page__wrapper
@@ -10,30 +9,28 @@ block content
         .section__main--title
             .page__wrapper
                 .title
-                    div
+                    .title__main
                         .title__video
                             if video.key
                                 div(id="video_iframe" data-src= video.key)
-
                         .title__poster
                             picture(id="poster_picture")
                                 source(media="(max-width:639px)" srcset= title.posterSm)
                                 source(media="(min-width:640px)" srcset= title.posterLg)
                                 img(src= title.posterLg alt= `Movie poster for '${title.title}'`)
-
                         .title__summary
                             p= title.summary
-
         .section__main.section__main--gray
             .page__wrapper
                 .title__actions
                     .title__ratings
-                        .title__rating.title__rating--average
-                            include ./includes/iconStar
-                            span
-                                span.rating__numerator= title.voteAverage
-                                span.rating__denominator /10
-                        .title__rating.title__rating--user 
+                        .title__rating--average
+                            .rating__wrapper
+                                span.rating__icon
+                                    include ./includes/iconStar
+                                span.rating__value
+                                    span= title.voteAverage
+                        .title__rating--user 
                             if isAuth
                                 input(type="hidden" value= userRating id="hdn_user_rating")
                                 select(name="slct_rating" data-id= title.tmdbId data-type= mediaType)
