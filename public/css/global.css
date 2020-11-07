@@ -535,7 +535,11 @@
     }
 
     .banner__text--titleList span:first-of-type {
-        font-size: 2.2rem;
+        font-size: 1em;
+    }
+
+    .banner__text--titleList span:last-of-type {
+        font-size: 0.8em;
     }
 
     .banner__text span:first-of-type {
