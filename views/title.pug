@@ -42,12 +42,14 @@ block content
                             else
                                 a.title__anchor--rate(href="/user/auth/signin") Sign in to rate
                     .title__button--watchlist
-                        if isWatchlisted
-                            a(href='/watchlist') See my watchlist
-                        else
-                            button(type="button" name="btn_watchlist_add" 
-                                data-id= title.tmdbId data-type= mediaType) Add to watchlist
-
+                        if isAuth
+                            if isWatchlisted
+                                a(href='/watchlist') See my watchlist
+                            else
+                                button(type="button" name="btn_watchlist_add" 
+                                    data-id= title.tmdbId data-type= mediaType) Add to watchlist
+                        else 
+                            a(href='/user/auth/signin') Add to watchlist
 block scripts
     script(src="/js/titlePage.js" type="text/javascript")
     script(src="https://www.youtube.com/iframe_api" type="text/javascript" defer="true")
