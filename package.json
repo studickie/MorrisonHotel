@@ -29,7 +29,7 @@
     "express-validator": "^6.6.1",
     "helmet": "^3.23.3",
     "mongoose": "^5.9.18",
-    "pug": "^3.0.0"
+    "pug": "^3.0.1"
   },
   "devDependencies": {
     "nodemon": "^2.0.4"
